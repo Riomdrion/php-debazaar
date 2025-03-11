@@ -45,4 +45,38 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Advertenties van gebruiker
+    public function advertenties() {
+        return $this->hasMany(Advertentie::class);
+    }
+
+    public function verhuurAdvertenties() {
+        return $this->hasMany(VerhuurAdvertentie::class);
+    }
+
+    public function bedrijf() {
+        return $this->hasOne(Bedrijf::class);
+    }
+
+    public function favorites() {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function bids() {
+        return $this->hasMany(Bid::class);
+    }
+
+    public function rentals() {
+        return $this->hasMany(Rental::class, 'huurder_id');
+    }
+
+    public function agendaItems() {
+        return $this->hasMany(AgendaItem::class);
+    }
+
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
+
 }
