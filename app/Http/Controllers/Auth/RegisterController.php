@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -48,11 +48,19 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            'user_type' => ['required', 'in:klant,particulier,bedrijf'],
+        ];
+
+        if ($data['user_type'] === 'bedrijf') {
+            $rules['company_name'] = ['required', 'string', 'max:255'];
+            $rules['custom_url'] = ['required', 'string', 'max:255', 'unique:bedrijfs,custom_url'];
+        }
+
+        return Validator::make($data, $rules);
     }
 
     /**
@@ -63,10 +71,27 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        // Map the user_type to the corresponding role in your database
+        $roleMapping = [
+            'klant' => 'gebruiker',        // Klant maps to gebruiker
+            'particulier' => 'particulier', // Particulier maps to particulier
+            'bedrijf' => 'zakelijk',       // Bedrijf maps to zakelijk
+        ];
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => $roleMapping[$data['user_type']], // Map user_type to role
         ]);
+
+        if ($data['user_type'] === 'bedrijf') {
+            $user->bedrijf()->create([
+                'naam' => $data['company_name'],
+                'custom_url' => $data['custom_url'],
+            ]);
+        }
+
+        return $user;
     }
 }
