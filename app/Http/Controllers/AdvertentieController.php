@@ -62,17 +62,15 @@ class AdvertentieController extends Controller
         return view('advertenties.show', compact('advertentie', 'isFavoriet'));
     }
 
-    public function edit(Advertentie $advertentie)
+    public function edit($id)
     {
-        $this->authorize('update', $advertentie);
+        $advertentie = Advertentie::findOrFail($id);
 
         return view('advertenties.edit', compact('advertentie'));
     }
 
     public function update(Request $request, Advertentie $advertentie)
     {
-        $this->authorize('update', $advertentie);
-
         $validated = $request->validate([
             'titel' => 'required|string|max:255',
             'beschrijving' => 'required|string',

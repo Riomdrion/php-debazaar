@@ -54,9 +54,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Advertenties (koop/verkoop)
-    Route::resource('advertenties', AdvertentieController::class);
-    Route::get('/advertenties/{advertentie}', [AdvertentieController::class, 'show'])->name('advertenties.show');
-    Route::get('/advertenties/{advertentie}', [AdvertentieController::class, 'edit'])->name('advertenties.edit');
+    Route::resource('advertenties', AdvertentieController::class)->parameters([
+        'advertenties' => 'advertentie',
+    ]);
+
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class);
 
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
