@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Advertentie;
+use App\Models\Favoriet;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+
 
 class FavorietController extends Controller
 {
-    public function store(Request $request, Advertentie $advertentie)
+    public function store(Advertentie $advertentie): RedirectResponse
     {
         Favoriet::firstOrCreate([
             'user_id' => Auth::id(),
@@ -16,4 +20,3 @@ class FavorietController extends Controller
         return back()->with('success', 'Advertentie toegevoegd aan favorieten.');
     }
 }
-

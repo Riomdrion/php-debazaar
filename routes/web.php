@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdvertentieController;
@@ -8,7 +9,7 @@ use App\Http\Controllers\VerhuurAdvertentieController;
 use App\Http\Controllers\BedrijfController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AgendaController;
-use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\FavorietController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\BidController;
 
@@ -58,7 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::post('advertenties/{advertentie}/favoriet', [FavorietController::class, 'store'])->name('favorieten.store');
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
-    Route::get('agenda', [AgendaItemController::class, 'index'])->name('agenda.index');
+    Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
     // Verhuur-advertenties
     Route::resource('verhuur', VerhuurAdvertentieController::class);
@@ -75,7 +76,7 @@ Route::middleware('auth')->group(function () {
         ->only(['index','store','destroy']);
 
     // Favorieten
-    Route::resource('favorites', FavoriteController::class)
+    Route::resource('favorites', FavorietController::class)
         ->only(['index','store','destroy']);
 
     // Bids (biedingen)

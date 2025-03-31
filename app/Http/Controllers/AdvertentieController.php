@@ -24,14 +24,17 @@ class AdvertentieController extends Controller
 
     public function create()
     {
-        // Check of gebruiker er al 4 heeft
-        if (Auth::user()->advertenties()->count() >= 4) {
+        if (auth()->user()->advertenties()->count() >= 4) {
             return redirect()->route('advertenties.index')
                 ->withErrors(['Je mag maximaal 4 advertenties aanmaken.']);
         }
 
-        return view('advertenties.create');
+        // Haal alle advertenties op behalve die van de huidige gebruiker
+        $alleAdvertenties = Advertentie::where('user_id', '!=', auth()->id())->get();
+
+        return view('advertenties.create', compact('alleAdvertenties'));
     }
+
 
     public function store(Request $request)
     {

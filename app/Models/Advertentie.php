@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Advertentie extends Model
 {
+    protected $fillable = [
+        'titel',
+        'beschrijving',
+        'prijs',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

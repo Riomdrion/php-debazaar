@@ -15,7 +15,7 @@
                     <h2 class="text-lg font-semibold">{{ $advertentie->titel }}</h2>
                     <p class="text-sm text-gray-600">{{ Str::limit($advertentie->beschrijving, 100) }}</p>
                     <p class="text-sm font-bold mt-2">&euro; {{ $advertentie->prijs }}</p>
-                    <a href="{{ route('advertenties.show', $advertentie) }}" class="text-blue-500 mt-2 inline-block">Bekijk</a>
+                    <a href="{{ route('advertenties.show', ['advertentie' => $advertentie]) }}" class="text-blue-500 mt-2 inline-block">Bekijk</a>
                 </div>
             @endforeach
         </div>
