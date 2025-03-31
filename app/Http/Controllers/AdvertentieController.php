@@ -54,9 +54,12 @@ class AdvertentieController extends Controller
         return redirect()->route('advertenties.index')->with('success', 'Advertentie geplaatst!');
     }
 
-    public function show(Advertentie $advertentie)
+
+    public function show($id)
     {
-        return view('advertenties.show', compact('advertentie'));
+        $advertentie = Advertentie::with('favorieten')->findOrFail($id);
+        $isFavoriet = $advertentie->favorieten->contains('user_id', Auth::id());
+        return view('advertenties.show', compact('advertentie', 'isFavoriet'));
     }
 
     public function edit(Advertentie $advertentie)

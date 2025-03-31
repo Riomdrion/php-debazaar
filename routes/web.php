@@ -54,9 +54,9 @@ Route::middleware('auth')->group(function () {
 
     // Advertenties (koop/verkoop)
     Route::resource('advertenties', AdvertentieController::class);
+    Route::get('/advertenties/{advertentie}', [AdvertentieController::class, 'show'])->name('advertenties.show');
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class);
 
-    Route::post('advertenties/{advertentie}/favoriet', [FavorietController::class, 'store'])->name('favorieten.store');
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
     Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
 
     // Favorieten
     Route::resource('favorites', FavorietController::class)
-        ->only(['index','store','destroy']);
+        ->only(['store']);
 
     // Bids (biedingen)
     // Stel dat je alleen een overzicht, maken en verwijderen wilt:

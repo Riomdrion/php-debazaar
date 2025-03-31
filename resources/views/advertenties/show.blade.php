@@ -4,9 +4,14 @@
         <p class="text-gray-700 mt-2">{{ $advertentie->beschrijving }}</p>
         <p class="text-lg font-semibold mt-4">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
 
-        <form method="POST" action="{{ route('favorieten.store', ['advertentie' => $advertentie->id]) }}" class="mt-4">
+        <form method="POST" action="{{ route('favorites.store') }}">
             @csrf
-            <button type="submit" class="btn btn-secondary">Toevoegen aan favorieten</button>
+            <input type="hidden" name="advertentie_id" value="{{ $advertentie->id }}">
+            <label>
+                <input type="checkbox" name="is_favoriet" {{ $isFavoriet ? 'checked' : '' }}>
+                Toevoegen aan favorieten
+            </label>
+            <button type="submit" class="btn btn-primary mt-2">Opslaan</button>
         </form>
 
         <form method="POST" action="{{ route('reviews.store', ['advertentie' => $advertentie->id]) }}" class="mt-6">
