@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdvertentieController;
@@ -30,7 +31,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 // Voorbeeld: home controller
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/dashboard', function () {
@@ -40,6 +40,8 @@ Route::get('/dashboard', function () {
 // Groepeer routes die alleen voor ingelogde gebruikers toegankelijk zijn
 Route::middleware('auth')->group(function () {
 
+    Route::post('/logout', [LogoutController::class, 'destroy'])
+        ->name('logout');
     /*
      * Resource routes voor jouw Bazaar-app
      * Deze genereren automatisch de 7 RESTful routes (index, create, store, show, edit, update, destroy)
