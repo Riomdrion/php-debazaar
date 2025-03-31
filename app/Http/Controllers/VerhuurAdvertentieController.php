@@ -6,59 +6,29 @@ use Illuminate\Http\Request;
 
 class VerhuurAdvertentieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        if (Auth::user()->verhuurAdvertenties()->count() >= 4) {
+            return back()->withErrors(['Je mag maximaal 4 verhuuradvertenties aanmaken.']);
+        }
+
+        return view('verhuur.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        if (Auth::user()->verhuurAdvertenties()->count() >= 4) {
+            return back()->withErrors(['Je mag maximaal 4 verhuuradvertenties aanmaken.']);
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $validated = $request->validate([
+            'advertentie_id' => 'required|exists:advertenties,id',
+            'start_datum' => 'required|date',
+            'eind_datum' => 'required|date|after:start_datum',
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        Auth::user()->verhuurAdvertenties()->create($validated);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('advertenties.index')->with('success', 'Verhuuradvertentie geplaatst.');
     }
 }

@@ -2,63 +2,88 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advertentie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdvertentieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Advertentie::query();
+
+        // Optioneel: filteren op titel of iets anders
+        if ($request->filled('zoek')) {
+            $query->where('titel', 'like', '%' . $request->zoek . '%');
+        }
+
+        $advertenties = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('advertenties.index', compact('advertenties'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        // Check of gebruiker er al 4 heeft
+        if (Auth::user()->advertenties()->count() >= 4) {
+            return redirect()->route('advertenties.index')
+                ->withErrors(['Je mag maximaal 4 advertenties aanmaken.']);
+        }
+
+        return view('advertenties.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        if (Auth::user()->advertenties()->count() >= 4) {
+            return redirect()->route('advertenties.index')
+                ->withErrors(['Je mag maximaal 4 advertenties aanmaken.']);
+        }
+
+        $validated = $request->validate([
+            'titel' => 'required|string|max:255',
+            'beschrijving' => 'required|string',
+            'prijs' => 'required|numeric|min:0',
+        ]);
+
+        Auth::user()->advertenties()->create($validated);
+
+        return redirect()->route('advertenties.index')->with('success', 'Advertentie geplaatst!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Advertentie $advertentie)
     {
-        //
+        return view('advertenties.show', compact('advertentie'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Advertentie $advertentie)
     {
-        //
+        $this->authorize('update', $advertentie);
+
+        return view('advertenties.edit', compact('advertentie'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Advertentie $advertentie)
     {
-        //
+        $this->authorize('update', $advertentie);
+
+        $validated = $request->validate([
+            'titel' => 'required|string|max:255',
+            'beschrijving' => 'required|string',
+            'prijs' => 'required|numeric|min:0',
+        ]);
+
+        $advertentie->update($validated);
+
+        return redirect()->route('advertenties.show', $advertentie)->with('success', 'Advertentie bijgewerkt!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Advertentie $advertentie)
     {
-        //
+        $this->authorize('delete', $advertentie);
+
+        $advertentie->delete();
+
+        return redirect()->route('advertenties.index')->with('success', 'Advertentie verwijderd.');
     }
 }

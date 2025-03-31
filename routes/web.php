@@ -43,6 +43,12 @@ Route::middleware('auth')->group(function () {
 
     // Advertenties (koop/verkoop)
     Route::resource('advertenties', AdvertentieController::class);
+    Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class);
+
+    Route::post('advertenties/{advertentie}/favoriet', [FavorietController::class, 'store'])->name('favorieten.store');
+    Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
+
+    Route::get('agenda', [AgendaItemController::class, 'index'])->name('agenda.index');
 
     // Verhuur-advertenties
     Route::resource('verhuur', VerhuurAdvertentieController::class);
