@@ -1,5 +1,8 @@
 <x-app-layout>
     <div class="p-6 max-w-3xl mx-auto">
+        @if (auth()->id() === $advertentie->user_id)
+            <a href="{{ route('advertenties.show', $advertentie->id) }}" class="text-blue-500 mt-2 inline-block">Edit advertentie</a>
+        @endif
         <h1 class="text-2xl font-bold">{{ $advertentie->titel }}</h1>
         <p class="text-gray-700 mt-2">{{ $advertentie->beschrijving }}</p>
         <p class="text-lg font-semibold mt-4">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>

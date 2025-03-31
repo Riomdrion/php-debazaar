@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
     // Advertenties (koop/verkoop)
     Route::resource('advertenties', AdvertentieController::class);
     Route::get('/advertenties/{advertentie}', [AdvertentieController::class, 'show'])->name('advertenties.show');
+    Route::get('/advertenties/{advertentie}', [AdvertentieController::class, 'edit'])->name('advertenties.edit');
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class);
 
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
