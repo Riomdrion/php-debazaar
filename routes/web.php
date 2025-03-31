@@ -76,8 +76,8 @@ Route::middleware('auth')->group(function () {
         ->only(['index','store','destroy']);
 
     // Favorieten
-    Route::resource('favorites', FavorietController::class)
-        ->only(['store']);
+    Route::post('/favorites/toggle', [FavorietController::class, 'toggle'])->name('favorites.toggle');
+
 
     // Bids (biedingen)
     // Stel dat je alleen een overzicht, maken en verwijderen wilt:

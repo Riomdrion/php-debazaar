@@ -10,32 +10,31 @@ use Illuminate\Support\Facades\Auth;
 
 class FavorietController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function toggle(Request $request): RedirectResponse
     {
         $request->validate([
             'advertentie_id' => 'required|exists:advertenties,id',
         ]);
 
-        Favoriet::firstOrCreate([
-            'user_id' => Auth::id(),
-            'advertentie_id' => $request->advertentie_id,
-        ]);
+        $advertentieId = $request->advertentie_id;
+        $userId = Auth::id();
+        $isFavoriet = $request->has('is_favoriet');
 
-        return back()->with('success', 'Advertentie toegevoegd aan favorieten.');
-    }
-
-    public function destroy($id): RedirectResponse
-    {
-        $favoriet = Favoriet::where('user_id', Auth::id())
-            ->where('advertentie_id', $id)
-            ->first();
-
-        if ($favoriet) {
-            $favoriet->delete();
-            return back()->with('success', 'Advertentie verwijderd uit favorieten.');
+        if ($isFavoriet) {
+            Favoriet::firstOrCreate([
+                'user_id' => $userId,
+                'advertentie_id' => $advertentieId,
+            ]);
+            $message = 'Advertentie toegevoegd aan favorieten.';
+        } else {
+            Favoriet::where('user_id', $userId)
+                ->where('advertentie_id', $advertentieId)
+                ->delete();
+            $message = 'Advertentie verwijderd uit favorieten.';
         }
 
-        return back()->withErrors(['Advertentie niet gevonden in favorieten.']);
+        return back()->with('success', $message);
     }
+
 
 }
