@@ -14,4 +14,10 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function advertentie()
+    {
+        return $this->belongsTo(Advertentie::class);
+    }
+
+
 }

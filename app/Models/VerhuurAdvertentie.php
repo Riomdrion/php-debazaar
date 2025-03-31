@@ -21,4 +21,8 @@ class VerhuurAdvertentie extends Model
     public function reviews() {
         return $this->morphMany(Review::class, 'reviewable');
     }
+    public function advertentie()
+    {
+        return $this->belongsTo(Advertentie::class);
+    }
 }

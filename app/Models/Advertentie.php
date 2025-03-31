@@ -6,19 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Advertentie extends Model
 {
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function reviews() {
-        return $this->morphMany(Review::class, 'reviewable');
+    public function verhuurAdvertentie()
+    {
+        return $this->hasOne(VerhuurAdvertentie::class);
     }
 
-    public function bids() {
-        return $this->hasMany(Bid::class);
+    public function favorieten()
+    {
+        return $this->hasMany(Favoriet::class);
     }
 
-    public function favorites() {
-        return $this->hasMany(Favorite::class);
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function gerelateerdeAdvertenties()
+    {
+        return $this->belongsToMany(Advertentie::class, 'advertentie_koppelingen', 'advertentie_id', 'gekoppeld_id');
     }
 }
