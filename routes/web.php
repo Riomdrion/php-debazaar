@@ -30,8 +30,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 // Voorbeeld: home controller
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 // Groepeer routes die alleen voor ingelogde gebruikers toegankelijk zijn
 Route::middleware('auth')->group(function () {
@@ -40,6 +44,10 @@ Route::middleware('auth')->group(function () {
      * Resource routes voor jouw Bazaar-app
      * Deze genereren automatisch de 7 RESTful routes (index, create, store, show, edit, update, destroy)
      */
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Advertenties (koop/verkoop)
     Route::resource('advertenties', AdvertentieController::class);
@@ -80,7 +88,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/agenda', [AgendaController::class, 'index'])
         ->name('agenda.index');
 });
-
+require __DIR__.'/auth.php';
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
