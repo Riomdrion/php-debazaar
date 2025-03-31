@@ -74,3 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/agenda', [AgendaController::class, 'index'])
         ->name('agenda.index');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
