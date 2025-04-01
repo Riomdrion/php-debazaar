@@ -58,7 +58,10 @@ Route::middleware('auth')->group(function () {
         'advertenties' => 'advertentie',
     ]);
 
-    Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class);
+
+    Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
+        'verhuuradvertenties' => 'verhuuradvertentie',
+    ]);
 
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
 

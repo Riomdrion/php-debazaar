@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="p-6 max-w-2xl mx-auto">
         <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">📝 Nieuwe Advertentie</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">📝 Nieuwe Verhuuradvertentie</h1>
 
-            <form method="POST" action="{{ route('advertenties.store') }}" class="space-y-6">
+            <form method="POST" action="{{ route('verhuuradvertenties.store') }}" class="space-y-6">
                 @csrf
 
                 <div>
@@ -21,21 +21,23 @@
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Prijs</label>
-                    <input type="number" name="prijs" step="0.01"
+                    <label class="block text-gray-700 font-medium mb-1">Dagprijs (€)</label>
+                    <input type="number" name="dagprijs" step="0.01"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
                            required>
                 </div>
 
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">Koppel andere advertenties</label>
-                    <select name="koppelingen[]" multiple
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400">
-                        @foreach ($alleAdvertenties as $optie)
-                            <option value="{{ $optie->id }}">{{ $optie->titel }}</option>
-                        @endforeach
-                    </select>
-                    <p class="text-sm text-gray-500 mt-1">Houd <kbd>Ctrl</kbd> of <kbd>Cmd</kbd> ingedrukt om meerdere te selecteren.</p>
+                    <label class="block text-gray-700 font-medium mb-1">Borg (€)</label>
+                    <input type="number" name="borg" step="0.01"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
+                           required>
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" name="is_actief" id="is_actief"
+                           class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded">
+                    <label for="is_actief" class="text-gray-700 font-medium">Actief</label>
                 </div>
 
 

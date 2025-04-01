@@ -3,7 +3,7 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
             <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 Advertenties</h1>
 
-            <a href="{{ route('advertenties.create') }}"
+            <a href="{{ route('verhuuradvertenties.create') }}"
                class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                 ➕ Nieuwe advertentie
             </a>
@@ -16,16 +16,16 @@
         </form>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            @forelse ($advertenties as $advertentie)
+            @forelse ($verhuuradvertenties as $verhuuradvertentie)
                 <div class="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-5 flex flex-col justify-between">
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $advertentie->titel }}</h2>
-                        <p class="text-gray-600 text-sm">{{ Str::limit($advertentie->beschrijving, 100) }}</p>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $verhuuradvertentie->titel }}</h2>
+                        <p class="text-gray-600 text-sm">{{ Str::limit($verhuuradvertentie->beschrijving, 100) }}</p>
                     </div>
 
                     <div class="mt-4 flex items-center justify-between">
-                        <span class="text-green-600 font-bold text-lg">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</span>
-                        <a href="{{ route('advertenties.show', $advertentie->id) }}"
+                        <span class="text-green-600 font-bold text-lg">&euro; {{ number_format($verhuuradvertentie->prijs, 2, ',', '.') }}</span>
+                        <a href="{{ route('verhuuradvertenties.show', $verhuuradvertentie->id) }}"
                            class="text-blue-600 font-medium hover:underline">
                             👉 Bekijk
                         </a>
@@ -33,12 +33,13 @@
                 </div>
             @empty
                 <div class="col-span-full text-center text-gray-500 mt-8">
-                    Geen advertenties gevonden.
+                    Geen verhuurAdvertenties gevonden.
                 </div>
             @endforelse
         </div>
+
         <div class="mt-8">
-            {{ $advertenties->links() }}
+            {{ $verhuuradvertenties->links() }}
         </div>
     </div>
 </x-app-layout>
