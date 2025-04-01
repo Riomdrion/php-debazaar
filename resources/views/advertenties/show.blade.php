@@ -23,6 +23,23 @@
                 </div>
             </div>
 
+            @if ($advertentie->gekoppeldeAdvertenties->isNotEmpty())
+                <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">Gekoppelde advertenties</h3>
+                    <ul class="list-disc ml-6 space-y-2">
+                        @foreach ($advertentie->gekoppeldeAdvertenties as $gekoppeld)
+                            <li>
+                                <a href="{{ route('advertenties.show', $gekoppeld->id) }}"
+                                   class="text-blue-500 hover:underline">
+                                    {{ $gekoppeld->titel }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
             <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ Favoriet maken</h2>
             <form method="POST" action="{{ route('favorites.toggle') }}">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertentie;
+use App\Models\AdvertentieKoppeling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Endroid\QrCode\QrCode;
@@ -35,7 +36,7 @@ class AdvertentieController extends Controller
         }
 
         // Haal alle advertenties op behalve die van de huidige gebruiker
-        $alleAdvertenties = Advertentie::where('user_id', '!=', auth()->id())->get();
+        $alleAdvertenties = Advertentie::all();
 
         return view('advertenties.create', compact('alleAdvertenties'));
     }
@@ -51,6 +52,8 @@ class AdvertentieController extends Controller
             'titel' => 'required|string|max:255',
             'beschrijving' => 'required|string',
             'prijs' => 'required|numeric|min:0',
+            'koppelingen' => 'array',
+            'koppelingen.*' => 'exists:advertenties,id',
         ]);
 
         $advertentie = Auth::user()->advertenties()->create($validated);
@@ -68,12 +71,30 @@ class AdvertentieController extends Controller
         $advertentie->qr_code = 'storage/' . $filename;
         $advertentie->save();
 
+        // Save koppelingen
+        if (!empty($validated['koppelingen'])) {
+            foreach ($validated['koppelingen'] as $gekoppeldId) {
+                // voorkom dubbele koppelingen
+                $bestaatAl = AdvertentieKoppeling::where('advertentie_id', $advertentie->id)
+                    ->where('gekoppeld_id', $gekoppeldId)
+                    ->exists();
+
+                if (!$bestaatAl) {
+                    AdvertentieKoppeling::create([
+                        'advertentie_id' => $advertentie->id,
+                        'gekoppeld_id' => $gekoppeldId,
+                    ]);
+                }
+            }
+        }
+
         return redirect()->route('advertenties.index')->with('success', 'Advertentie geplaatst!');
     }
     public function show($id)
     {
-        $advertentie = Advertentie::with('favorieten')->findOrFail($id);
+        $advertentie = Advertentie::with(['favorieten', 'gekoppeldeAdvertenties'])->findOrFail($id);
         $isFavoriet = $advertentie->favorieten->contains('user_id', Auth::id());
+
         return view('advertenties.show', compact('advertentie', 'isFavoriet'));
     }
 

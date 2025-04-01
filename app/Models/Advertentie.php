@@ -33,8 +33,13 @@ class Advertentie extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function gerelateerdeAdvertenties()
+    public function gekoppeldeAdvertenties()
     {
-        return $this->belongsToMany(Advertentie::class, 'advertentie_koppelingen', 'advertentie_id', 'gekoppeld_id');
+        return $this->belongsToMany(
+            Advertentie::class,
+            'advertentie_koppelingen',
+            'advertentie_id',
+            'gekoppeld_id'
+        );
     }
 }

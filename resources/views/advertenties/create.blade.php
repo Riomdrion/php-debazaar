@@ -20,14 +20,13 @@
             </div>
 
             <div class="mb-4">
-                <label class="block mb-1">Koppel andere advertenties</label>
-                <div class="grid grid-cols-2 gap-2">
-                    @foreach ($alleAdvertenties as $optie)
-                        <label class="flex items-center gap-2">
-                            <input type="checkbox" name="koppelingen[]" value="{{ $optie->id }}">
-                            <span>{{ $optie->titel }}</span>
-                        </label>
-                    @endforeach
+                <div class="mb-4">
+                    <label class="block mb-1">Koppel andere advertenties</label>
+                    <select name="koppelingen[]" class="select select-bordered w-full" multiple>
+                        @foreach ($alleAdvertenties as $optie)
+                            <option value="{{ $optie->id }}">{{ $optie->titel }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 
