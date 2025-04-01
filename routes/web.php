@@ -72,9 +72,6 @@ Route::middleware('auth')->group(function () {
     // Verhuur-advertenties
     Route::resource('verhuur', VerhuurAdvertentieController::class);
 
-    // Bedrijf (voor whitelabel, eigen look & feel, etc.)
-    Route::resource('bedrijven', BedrijfController::class);
-
     // Contracts (PDF-upload en -export)
     Route::resource('contracts', ContractController::class);
 
