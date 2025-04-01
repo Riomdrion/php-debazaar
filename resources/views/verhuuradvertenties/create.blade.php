@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="flex items-center">
-                    <input type="checkbox" name="is_actief" id="is_actief"
+                    <input type="checkbox" name="is_actief" id="is_actief" value="1"
                            class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded">
                     <label for="is_actief" class="text-gray-700 font-medium">Actief</label>
                 </div>

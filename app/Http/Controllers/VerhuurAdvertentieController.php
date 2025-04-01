@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\VerhuurAdvertentie;
 use App\Models\AdvertentieKoppeling;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class VerhuurAdvertentieController extends Controller
 {
@@ -38,7 +41,7 @@ class VerhuurAdvertentieController extends Controller
             'beschrijving' => 'required|string',
             'dagprijs' => 'required|numeric|min:0',
             'borg' => 'required|numeric|min:0',
-            'is_actief' => 'boolean'
+            'is_actief' => 'sometimes|boolean'
         ]);
 
         $verhuurAdvertentie = new VerhuurAdvertentie($validated);
@@ -46,7 +49,20 @@ class VerhuurAdvertentieController extends Controller
         $verhuurAdvertentie->is_actief = $request->has('is_actief');
         $verhuurAdvertentie->save();
 
-        return redirect()->route('verhuuradvertenties.index')->with('success', 'Verhuuradvertentie geplaatst!');
+        // ✅ QR-code correct opbouwen (v5-stijl)
+        $qrCode = (new QrCode(route('advertenties.show', $verhuurAdvertentie->id)));
+
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        $filename = 'qrcodes/' . Str::uuid() . '.png';
+        $path = storage_path('app/public/' . $filename);
+        $result->saveToFile($path);
+
+        $verhuurAdvertentie->qr_code = 'storage/' . $filename;
+        $verhuurAdvertentie->save();
+
+        return redirect()->route('verhuuradvertenties.show', $verhuurAdvertentie)->with('success', 'Advertentie bijgewerkt!');
     }
 
     public function show($id)
@@ -80,8 +96,9 @@ class VerhuurAdvertentieController extends Controller
     }
 
 
-    public function destroy(VerhuurAdvertentie $verhuurAdvertentie)
+    public function destroy($id)
     {
+        $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
         $verhuurAdvertentie->delete();
         return redirect()->route('verhuuradvertenties.index')->with('success', 'Advertentie verwijderd.');
     }
