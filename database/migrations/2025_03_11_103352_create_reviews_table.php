@@ -13,15 +13,20 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->morphs('reviewable'); // kan advertentie of gebruiker zijn
-            $table->foreignId('user_id')->constrained(); // reviewer
-            $table->foreignId('bedrijf_id')->constrained("bedrijfs"); // reviewer
-            $table->foreignId('advertentie_id')->constrained("advertensies"); // reviewer
-            $table->foreignId('verhuuradvertentie_id')->constrained("verhuuradvertenties"); // reviewer
+
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // wie schrijft de review
+
+            // Doelen van de review (slechts één wordt gebruikt per record)
+            $table->foreignId('advertentie_id')->nullable()->constrained('advertenties')->onDelete('cascade');
+            $table->foreignId('verhuur_advertentie_id')->nullable()->constrained('verhuur_advertenties')->onDelete('cascade');
+            $table->foreignId('bedrijf_id')->nullable()->constrained('bedrijfs')->onDelete('cascade');
+
             $table->integer('rating');
             $table->text('bericht')->nullable();
+
             $table->timestamps();
         });
+
     }
 
     /**
