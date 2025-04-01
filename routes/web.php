@@ -30,7 +30,7 @@ Auth::routes();
 
 // Home route
 Route::get('/', function () {
-    return view('welcome');
+    return view('../auth/login');
 });
 
 // Voorbeeld: home controller

@@ -10,7 +10,7 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     // Redirect users to the welcome page after login
-    protected $redirectTo = '/';
+    protected $redirectTo = '/dashboard';
 
     public function __construct()
     {
