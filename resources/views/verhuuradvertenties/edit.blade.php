@@ -2,6 +2,16 @@
     <div class="p-6 max-w-2xl mx-auto">
         <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
             <h1 class="text-3xl font-bold text-gray-800 mb-6">✏️ Verhuuradvertentie bewerken</h1>
+            @if ($errors->any())
+                <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4">
+                    <strong>Er zijn fouten opgetreden:</strong>
+                    <ul class="list-disc list-inside mt-2">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form method="POST" action="{{ route('verhuuradvertenties.update', $verhuurAdvertentie) }}" class="space-y-6">
                 @csrf
@@ -39,7 +49,7 @@
                 </div>
 
                 <div class="flex items-center">
-                    <input type="checkbox" name="is_actief" id="is_actief"
+                    <input type="checkbox" name="is_actief" id="is_actief" value="1"
                            class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
                         {{ old('is_actief', $verhuurAdvertentie->is_actief) ? 'checked' : '' }}>
                     <label for="is_actief" class="text-gray-700 font-medium">Actief</label>

@@ -68,30 +68,15 @@ class VerhuurAdvertentieController extends Controller
             'beschrijving' => 'required|string',
             'dagprijs' => 'required|numeric|min:0',
             'borg' => 'required|numeric|min:0',
-            'is_actief' => 'boolean',
-            'koppelingen' => 'array',
-            'koppelingen.*' => 'exists:advertenties,id',
+            'is_actief' => 'sometimes|boolean',
         ]);
 
-        $verhuurAdvertentie = new VerhuurAdvertentie($validated);
-        $verhuurAdvertentie->user_id = auth()->id(); // ✅ verplicht veld zetten
+        $verhuurAdvertentie->fill($validated);
+        $verhuurAdvertentie->user_id = auth()->id();
         $verhuurAdvertentie->is_actief = $request->has('is_actief');
         $verhuurAdvertentie->save();
 
-
-        // Koppelingen updaten
-        AdvertentieKoppeling::where('advertentie_id', $verhuurAdvertentie->id)->delete();
-
-        if (!empty($validated['koppelingen'])) {
-            foreach ($validated['koppelingen'] as $gekoppeldId) {
-                AdvertentieKoppeling::create([
-                    'advertentie_id' => $verhuurAdvertentie->id,
-                    'gekoppeld_id' => $gekoppeldId,
-                ]);
-            }
-        }
-
-        return redirect()->route('verhuuradvertenties.index')->with('success', 'Verhuuradvertentie bijgewerkt!');
+        return redirect()->route('verhuuradvertenties.show', $verhuurAdvertentie)->with('success', 'Advertentie bijgewerkt!');
     }
 
 
