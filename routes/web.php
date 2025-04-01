@@ -67,9 +67,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
-    // Verhuur-advertenties
-    Route::resource('verhuur', VerhuurAdvertentieController::class);
-
     // Bedrijf (voor whitelabel, eigen look & feel, etc.)
     Route::resource('bedrijven', BedrijfController::class);
 

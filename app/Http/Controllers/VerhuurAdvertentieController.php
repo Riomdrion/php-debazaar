@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertentie;
 use App\Models\VerhuurAdvertentie;
 use App\Models\AdvertentieKoppeling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
 
 class VerhuurAdvertentieController extends Controller
 {
@@ -53,15 +49,16 @@ class VerhuurAdvertentieController extends Controller
         return redirect()->route('verhuuradvertenties.index')->with('success', 'Verhuuradvertentie geplaatst!');
     }
 
-    public function show(VerhuurAdvertentie $verhuurAdvertentie)
+    public function show($id)
     {
-        return view('verhuuradvertenties.show', compact('verhuurAdvertentie'));
+        $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
+        return view('verhuuradvertenties.show', compact('verhuurAdvertentie', ));
     }
 
-    public function edit(VerhuurAdvertentie $verhuurAdvertentie)
+    public function edit($id)
     {
-        $andereAdvertenties = Auth::user()->advertenties;
-        return view('verhuuradvertenties.edit', compact('verhuurAdvertentie', 'andereAdvertenties'));
+        $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
+        return view('verhuuradvertenties.edit', compact('verhuurAdvertentie'));
     }
 
     public function update(Request $request, VerhuurAdvertentie $verhuurAdvertentie)
@@ -76,10 +73,13 @@ class VerhuurAdvertentieController extends Controller
             'koppelingen.*' => 'exists:advertenties,id',
         ]);
 
-        $verhuurAdvertentie->update($validated);
+        $verhuurAdvertentie = new VerhuurAdvertentie($validated);
+        $verhuurAdvertentie->user_id = auth()->id(); // ✅ verplicht veld zetten
         $verhuurAdvertentie->is_actief = $request->has('is_actief');
         $verhuurAdvertentie->save();
 
+
+        // Koppelingen updaten
         AdvertentieKoppeling::where('advertentie_id', $verhuurAdvertentie->id)->delete();
 
         if (!empty($validated['koppelingen'])) {
@@ -93,6 +93,7 @@ class VerhuurAdvertentieController extends Controller
 
         return redirect()->route('verhuuradvertenties.index')->with('success', 'Verhuuradvertentie bijgewerkt!');
     }
+
 
     public function destroy(VerhuurAdvertentie $verhuurAdvertentie)
     {
