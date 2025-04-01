@@ -43,4 +43,10 @@ class VerhuurAdvertentie extends Model
         return $this->hasMany(Favoriet::class);
     }
 
+    public function agendaItems()
+    {
+        return $this->hasMany(AgendaItem::class);
+    }
+
+
 }

@@ -63,14 +63,17 @@ Route::middleware('auth')->group(function () {
         'advertenties' => 'advertentie',
     ]);
 
-
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
         'verhuuradvertenties' => 'verhuuradvertentie',
     ]);
 
+    // Agenda
+    Route::resource('agenda', AgendaController::class)->parameters([
+        'agenda' => 'agendaItem',
+    ]);
+
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
-    Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
     // Verhuur-advertenties
     Route::resource('verhuur', VerhuurAdvertentieController::class);
@@ -92,12 +95,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('bids', BidController::class)
         ->only(['index','store','destroy']);
 
-    /*
-     * Agenda - voorbeeld: alleen index (weergave planning),
-     * je kunt er ook voor kiezen om 'store', 'update', etc. te bieden
-     */
-    Route::get('/agenda', [AgendaController::class, 'index'])
-        ->name('agenda.index');
 });
 require __DIR__.'/auth.php';
 Auth::routes();
