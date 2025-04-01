@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('dagprijs', 8, 2);
             $table->decimal('borg', 8, 2);
             $table->boolean('is_actief')->default(true);
+            $table->string('qr_code')->nullable();
             $table->timestamps();
         });
     }

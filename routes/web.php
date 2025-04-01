@@ -63,7 +63,10 @@ Route::middleware('auth')->group(function () {
         'advertenties' => 'advertentie',
     ]);
 
-    Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class);
+
+    Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
+        'verhuuradvertenties' => 'verhuuradvertentie',
+    ]);
 
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
@@ -71,6 +74,9 @@ Route::middleware('auth')->group(function () {
 
     // Verhuur-advertenties
     Route::resource('verhuur', VerhuurAdvertentieController::class);
+
+    // Bedrijf (voor whitelabel, eigen look & feel, etc.)
+    Route::resource('bedrijven', BedrijfController::class);
 
     // Contracts (PDF-upload en -export)
     Route::resource('contracts', ContractController::class);

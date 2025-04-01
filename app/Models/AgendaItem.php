@@ -10,7 +10,9 @@ class AgendaItem extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function verhuurAdvertentie() {
-        return $this->belongsTo(VerhuurAdvertentie::class);
+    public function verhuurAdvertentie()
+    {
+        return $this->belongsTo(VerhuurAdvertentie::class, 'verhuur_advertentie_id');
     }
+
 }

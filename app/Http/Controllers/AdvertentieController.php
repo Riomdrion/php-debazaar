@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertentie;
 use App\Models\AdvertentieKoppeling;
+use App\Models\VerhuurAdvertentie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Endroid\QrCode\QrCode;
@@ -22,9 +23,7 @@ class AdvertentieController extends Controller
         if ($request->filled('zoek')) {
             $query->where('titel', 'like', '%' . $request->zoek . '%');
         }
-
         $advertenties = $query->orderBy('created_at', 'desc')->paginate(10);
-
         return view('advertenties.index', compact('advertenties'));
     }
 
