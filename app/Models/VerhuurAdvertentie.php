@@ -37,4 +37,10 @@ class VerhuurAdvertentie extends Model
     {
         return $this->hasMany(Rental::class);
     }
+
+    public function favorieten()
+    {
+        return $this->hasMany(Favoriet::class);
+    }
+
 }

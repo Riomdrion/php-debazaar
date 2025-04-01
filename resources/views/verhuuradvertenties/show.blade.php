@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="p-6 max-w-2xl mx-auto">
+    <div class="p-6 max-w-2xl mx-auto space-y-6">
         <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
             <div class="flex space-x-6 justify-between">
                 <div>
@@ -40,5 +40,22 @@
             </div>
             @endif
         </div>
+            <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ Favoriet maken</h2>
+                <form method="POST" action="{{ route('favorites.toggle') }}">
+                    @csrf
+                    <input type="hidden" name="advertentie_id" value="{{ $verhuurAdvertentie->id }}">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" name="is_favoriet"
+                               {{ $isFavoriet ? 'checked' : '' }} class="form-checkbox text-blue-600">
+                        <label class="text-gray-700">Toevoegen aan favorieten</label>
+                    </div>
+                    <button type="submit"
+                            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                        Opslaan
+                    </button>
+                </form>
+            </div>
+
     </div>
 </x-app-layout>

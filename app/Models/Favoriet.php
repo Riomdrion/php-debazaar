@@ -15,4 +15,7 @@ class Favoriet extends Model
     public function advertentie() {
         return $this->belongsTo(Advertentie::class);
     }
+    public function verhuurAdvertentie() {
+        return $this->belongsTo(VerhuurAdvertentie::class);
+    }
 }

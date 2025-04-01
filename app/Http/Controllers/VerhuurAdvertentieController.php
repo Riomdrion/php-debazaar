@@ -68,7 +68,8 @@ class VerhuurAdvertentieController extends Controller
     public function show($id)
     {
         $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
-        return view('verhuuradvertenties.show', compact('verhuurAdvertentie', ));
+        $isFavoriet = $verhuurAdvertentie->favorieten->contains('user_id', Auth::id());
+        return view('verhuuradvertenties.show', compact('verhuurAdvertentie', 'isFavoriet'));
     }
 
     public function edit($id)
