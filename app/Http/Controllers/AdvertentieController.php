@@ -92,7 +92,9 @@ class AdvertentieController extends Controller
     }
     public function show($id)
     {
-        $advertentie = Advertentie::with(['favorieten', 'gekoppeldeAdvertenties'])->findOrFail($id);
+        // Laad user en bedrijf met advertentie
+        $advertentie = Advertentie::with(['user.bedrijf', 'favorieten', 'gekoppeldeAdvertenties'])->findOrFail($id);
+
         $isFavoriet = $advertentie->favorieten->contains('user_id', Auth::id());
 
         return view('advertenties.show', compact('advertentie', 'isFavoriet'));

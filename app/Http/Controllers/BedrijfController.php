@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bedrijf;
 use Illuminate\Http\Request;
 
 class BedrijfController extends Controller
@@ -11,7 +12,9 @@ class BedrijfController extends Controller
      */
     public function index()
     {
-        //
+        // Haal alle bedrijven op
+        $bedrijven = Bedrijf::all();
+        return view('bedrijven.index', compact('bedrijven'));
     }
 
     /**
@@ -19,7 +22,7 @@ class BedrijfController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -27,7 +30,17 @@ class BedrijfController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Valideer en sla een nieuw bedrijf op
+        $validated = $request->validate([
+            'naam' => 'required|string|max:255',
+            'beschrijving' => 'nullable|string',
+            // Voeg andere velden toe die je nodig hebt
+        ]);
+
+        Bedrijf::create($validated);
+
+        return redirect()->route('bedrijven.index')
+            ->with('success', 'Bedrijf succesvol aangemaakt.');
     }
 
     /**
@@ -35,7 +48,10 @@ class BedrijfController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Haal specifiek bedrijf op
+        $bedrijf = Bedrijf::findOrFail($id);
+
+        return view('bedrijven.show', compact('bedrijf'));
     }
 
     /**
@@ -43,7 +59,7 @@ class BedrijfController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**
@@ -51,7 +67,7 @@ class BedrijfController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
     }
 
     /**
@@ -59,6 +75,6 @@ class BedrijfController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
     }
 }

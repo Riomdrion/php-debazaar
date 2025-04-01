@@ -17,6 +17,11 @@
                         &euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
                 </div>
                 <div>
+                    @if ($advertentie->user && $advertentie->user->bedrijf)
+                        <a href="{{ route('bedrijven.show', ['bedrijf' => $advertentie->user->bedrijf->id]) }}" class="text-blue-500 hover:underline">
+                            Bekijk Bedrijfsreviews
+                        </a>
+                    @endif
                     @if ($advertentie->qr_code)
                         <img src="{{ asset($advertentie->qr_code) }}" alt="QR Code" class="w-48 h-48">
                     @endif

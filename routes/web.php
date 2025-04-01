@@ -39,6 +39,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+ // Advertenties (koop/verkoop)
+    Route::resource('bedrijven', BedrijfController::class)->parameters([
+        'bedrijven' => 'bedrijf',
+    ]);
+
 // Groepeer routes die alleen voor ingelogde gebruikers toegankelijk zijn
 Route::middleware('auth')->group(function () {
 
