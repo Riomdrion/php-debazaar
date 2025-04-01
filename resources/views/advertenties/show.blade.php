@@ -9,13 +9,21 @@
             </div>
         @endif
 
-        <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
-            <h1 class="text-3xl font-bold text-gray-800">{{ $advertentie->titel }}</h1>
-            <p class="text-gray-600 mt-4">{{ $advertentie->beschrijving }}</p>
-            <p class="text-xl font-semibold text-green-600 mt-4">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
-        </div>
+            <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200 flex space-x-6 justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">{{ $advertentie->titel }}</h1>
+                    <p class="text-gray-600 mt-4">{{ $advertentie->beschrijving }}</p>
+                    <p class="text-xl font-semibold text-green-600 mt-4">
+                        &euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
+                </div>
+                <div>
+                    @if ($advertentie->qr_code)
+                        <img src="{{ asset($advertentie->qr_code) }}" alt="QR Code" class="w-48 h-48">
+                    @endif
+                </div>
+            </div>
 
-        <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
+            <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ Favoriet maken</h2>
             <form method="POST" action="{{ route('favorites.toggle') }}">
                 @csrf

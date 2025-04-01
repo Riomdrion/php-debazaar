@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Advertentie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Illuminate\Support\Str;
 
 class AdvertentieController extends Controller
 {
@@ -35,7 +40,6 @@ class AdvertentieController extends Controller
         return view('advertenties.create', compact('alleAdvertenties'));
     }
 
-
     public function store(Request $request)
     {
         if (Auth::user()->advertenties()->count() >= 4) {
@@ -49,12 +53,23 @@ class AdvertentieController extends Controller
             'prijs' => 'required|numeric|min:0',
         ]);
 
-        Auth::user()->advertenties()->create($validated);
+        $advertentie = Auth::user()->advertenties()->create($validated);
+
+        // ✅ QR-code correct opbouwen (v5-stijl)
+        $qrCode = (new QrCode(route('advertenties.show', $advertentie->id)));
+
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        $filename = 'qrcodes/' . Str::uuid() . '.png';
+        $path = storage_path('app/public/' . $filename);
+        $result->saveToFile($path);
+
+        $advertentie->qr_code = 'storage/' . $filename;
+        $advertentie->save();
 
         return redirect()->route('advertenties.index')->with('success', 'Advertentie geplaatst!');
     }
-
-
     public function show($id)
     {
         $advertentie = Advertentie::with('favorieten')->findOrFail($id);

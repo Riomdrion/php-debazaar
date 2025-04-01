@@ -10,10 +10,11 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-http": "*",
+        "endroid/qr-code": "^6.0",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
-        "laravel/ui": "*",
-        "ext-http": "*"
+        "laravel/ui": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -10,6 +10,7 @@ class Advertentie extends Model
         'titel',
         'beschrijving',
         'prijs',
+        'qr_code',
     ];
 
     public function user()
