@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('verhuur_advertentie_id')->constrained();
-            $table->foreignId('huurder_id')->constrained('users');
-            $table->date('startdatum');
-            $table->date('einddatum');
+            $table->foreignId('agenda_item_id')->constrained()->cascadeOnDelete();
             $table->decimal('slijtage_kosten', 10, 2)->nullable();
             $table->string('retour_foto')->nullable();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

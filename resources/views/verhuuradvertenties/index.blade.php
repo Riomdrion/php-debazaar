@@ -1,11 +1,11 @@
 <x-app-layout>
     <div class="p-6 max-w-7xl mx-auto space-y-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 Advertenties</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 Verhuur Advertenties</h1>
 
             <a href="{{ route('verhuuradvertenties.create') }}"
                class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                ➕ Nieuwe advertentie
+                ➕ Nieuwe verhuur advertentie
             </a>
         </div>
 
@@ -24,7 +24,7 @@
                     </div>
 
                     <div class="mt-4 flex items-center justify-between">
-                        <span class="text-green-600 font-bold text-lg">&euro; {{ number_format($verhuuradvertentie->prijs, 2, ',', '.') }}</span>
+                        <span class="text-green-600 font-bold text-lg">&euro; {{ number_format($verhuuradvertentie->dagprijs, 2, ',', '.') }} per dag</span>
                         <a href="{{ route('verhuuradvertenties.show', $verhuuradvertentie->id) }}"
                            class="text-blue-600 font-medium hover:underline">
                             👉 Bekijk

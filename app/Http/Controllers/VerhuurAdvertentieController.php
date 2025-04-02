@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\VerhuurAdvertentie;
 use App\Models\AdvertentieKoppeling;
+use App\Models\WearSetting;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class VerhuurAdvertentieController extends Controller
 {
@@ -38,7 +42,8 @@ class VerhuurAdvertentieController extends Controller
             'beschrijving' => 'required|string',
             'dagprijs' => 'required|numeric|min:0',
             'borg' => 'required|numeric|min:0',
-            'is_actief' => 'boolean'
+            'is_actief' => 'sometimes|boolean',
+            'vervangingswaarde' => 'nullable|numeric|min:0'
         ]);
 
         $verhuurAdvertentie = new VerhuurAdvertentie($validated);
@@ -46,19 +51,52 @@ class VerhuurAdvertentieController extends Controller
         $verhuurAdvertentie->is_actief = $request->has('is_actief');
         $verhuurAdvertentie->save();
 
-        return redirect()->route('verhuuradvertenties.index')->with('success', 'Verhuuradvertentie geplaatst!');
+        // ✅ QR-code correct opbouwen (v5-stijl)
+        $qrCode = (new QrCode(route('advertenties.show', $verhuurAdvertentie->id)));
+
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        $filename = 'qrcodes/' . Str::uuid() . '.png';
+        $path = storage_path('app/public/' . $filename);
+        $result->saveToFile($path);
+
+        $verhuurAdvertentie->qr_code = 'storage/' . $filename;
+        $verhuurAdvertentie->save();
+
+        // automatiche aanmaken van de wear settings
+        WearSetting::create([
+            'verhuur_advertentie_id' => $verhuurAdvertentie->id,
+            'slijtage_per_dag' => 1.0,
+            'slijtage_per_verhuur' => 2.0,
+            'categorie_modifier' => 1.0,
+        ]);
+
+        return redirect()->route('verhuuradvertenties.show', $verhuurAdvertentie)->with('success', 'Advertentie bijgewerkt!');
     }
 
     public function show($id)
     {
-        $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
-        return view('verhuuradvertenties.show', compact('verhuurAdvertentie', ));
+        $verhuurAdvertentie = VerhuurAdvertentie::with([
+            'agendaItems',
+            'agendaItems.rental',
+            'user.bedrijf',
+            'favorieten'
+        ])->findOrFail($id);
+
+        $isFavoriet = $verhuurAdvertentie->favorieten->contains('user_id', Auth::id());
+
+        return view('verhuuradvertenties.show', compact('verhuurAdvertentie', 'isFavoriet'));
     }
+
+
 
     public function edit($id)
     {
         $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
-        return view('verhuuradvertenties.edit', compact('verhuurAdvertentie'));
+
+        $slijtage = WearSetting::where('verhuur_advertentie_id', $id)->first();
+        return view('verhuuradvertenties.edit', compact('verhuurAdvertentie', 'slijtage'));
     }
 
     public function update(Request $request, VerhuurAdvertentie $verhuurAdvertentie)
@@ -68,35 +106,22 @@ class VerhuurAdvertentieController extends Controller
             'beschrijving' => 'required|string',
             'dagprijs' => 'required|numeric|min:0',
             'borg' => 'required|numeric|min:0',
-            'is_actief' => 'boolean',
-            'koppelingen' => 'array',
-            'koppelingen.*' => 'exists:advertenties,id',
+            'is_actief' => 'sometimes|boolean',
+            'vervangingswaarde' => 'nullable|numeric|min:0',
         ]);
 
-        $verhuurAdvertentie = new VerhuurAdvertentie($validated);
-        $verhuurAdvertentie->user_id = auth()->id(); // ✅ verplicht veld zetten
+        $verhuurAdvertentie->fill($validated);
+        $verhuurAdvertentie->user_id = auth()->id();
         $verhuurAdvertentie->is_actief = $request->has('is_actief');
         $verhuurAdvertentie->save();
 
-
-        // Koppelingen updaten
-        AdvertentieKoppeling::where('advertentie_id', $verhuurAdvertentie->id)->delete();
-
-        if (!empty($validated['koppelingen'])) {
-            foreach ($validated['koppelingen'] as $gekoppeldId) {
-                AdvertentieKoppeling::create([
-                    'advertentie_id' => $verhuurAdvertentie->id,
-                    'gekoppeld_id' => $gekoppeldId,
-                ]);
-            }
-        }
-
-        return redirect()->route('verhuuradvertenties.index')->with('success', 'Verhuuradvertentie bijgewerkt!');
+        return redirect()->route('verhuuradvertenties.show', $verhuurAdvertentie)->with('success', 'Advertentie bijgewerkt!');
     }
 
 
-    public function destroy(VerhuurAdvertentie $verhuurAdvertentie)
+    public function destroy($id)
     {
+        $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
         $verhuurAdvertentie->delete();
         return redirect()->route('verhuuradvertenties.index')->with('success', 'Advertentie verwijderd.');
     }

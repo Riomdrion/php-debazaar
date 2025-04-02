@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rental extends Model
 {
-    public function verhuurAdvertentie() {
-        return $this->belongsTo(VerhuurAdvertentie::class);
+    protected $fillable = [
+        'agenda_item_id',
+        'slijtage_kosten',
+        'retour_foto',
+    ];
+    public function AgendaItem()
+    {
+        return $this->belongsTo(AgendaItem::class);
     }
 
-    public function huurder() {
-        return $this->belongsTo(User::class, 'huurder_id');
-    }
 }

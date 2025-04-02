@@ -18,6 +18,7 @@ class VerhuurAdvertentie extends Model
         'is_actief',
         'qr_code',
         'user_id',
+        'vervangingswaarde',
     ];
 
     protected $casts = [
@@ -33,11 +34,26 @@ class VerhuurAdvertentie extends Model
     }
 
     // Rentals (verhuur periodes)
-    public function rentals()
+    public function rental()
     {
         return $this->hasMany(Rental::class);
     }
     public function reviews() {
         return $this->hasMany(Review::class);
+    }
+
+    public function favorieten()
+    {
+        return $this->hasMany(Favoriet::class);
+    }
+
+    public function AgendaItems()
+    {
+        return $this->hasMany(AgendaItem::class);
+    }
+
+    public function wearSetting()
+    {
+        return $this->hasOne(WearSetting::class);
     }
 }

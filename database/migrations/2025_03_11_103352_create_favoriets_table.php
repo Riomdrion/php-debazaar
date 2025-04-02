@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('advertentie_id')->constrained();
+            $table->foreignId('advertentie_id')->nullable()->constrained('advertenties')->onDelete('cascade');
+            $table->foreignId('verhuur_advertentie_id')->nullable()->constrained('verhuur_advertenties')->onDelete('cascade');
             $table->timestamps();
         });
+
     }
 
     /**
