@@ -82,6 +82,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('reviews', ReviewController::class)
         ->only(['index','store','destroy']);
 
+    // Rental
+    Route::resource('rentals', RentalController::class)
+        ->only(['create','store','show']);
+
     // Favorieten
     Route::post('/favorites/toggle', [FavorietController::class, 'toggle'])->name('favorites.toggle');
 

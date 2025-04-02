@@ -76,9 +76,22 @@
                     @foreach ($alleAgendaItems as $item)
                         <li class="border border-gray-200 rounded-lg p-3">
                             <strong>{{ ucfirst($item->type) }}</strong><br>
-                            <strong>Titel:</strong> {{ $item->titel }}<br>
+                            @if (auth()->id() === $item->user_id)
+                                <strong>Titel:</strong> {{ $item->titel }}<br>
+                            @endif
                             <strong>Van:</strong> {{ Carbon::parse($item->start)->format('d-m-Y H:i') }}<br>
-                            <strong>Tot:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}
+                            <strong>Tot:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}<br>
+                            @if (Carbon::parse($item->eind)->isToday() || Carbon::parse($item->eind)->isPast())
+                                @if (auth()->id() === $item->user_id)
+                                    <form method="POST" action="{{ route('agenda.store', $item->id) }}">
+                                        @csrf
+                                        <button type="submit"
+                                                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                                            Inleveren
+                                        </button>
+                                    </form>
+                                @endif
+                            @endif
                         </li>
                     @endforeach
                 </ul>
@@ -124,11 +137,6 @@
                 alert('Startdatum mag niet na einddatum vallen.');
                 document.getElementById('start').value = '';
                 document.getElementById('eind').value = '';
-                return;
-            }
-            if (new Date(start) < new Date()) {
-                alert('Startdatum mag niet in het verleden zijn.');
-                document.getElementById('start').value = '';
                 return;
             }
 
