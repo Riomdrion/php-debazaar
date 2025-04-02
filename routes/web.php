@@ -84,9 +84,10 @@ Route::middleware('auth')->group(function () {
         ->only(['index', 'store', 'destroy']);
 
     // Rental
-    Route::resource('rentals', RentalController::class)->parameters([
-        'rentals' => 'rental',
-    ]);
+    Route::get('/rentals/create/{verhuurAdvertentie}/{agendaItem}', [RentalController::class, 'create'])
+        ->name('rentals.create');
+    Route::post('/rentals/store', [RentalController::class, 'store'])
+        ->name('rentals.store');
 
     // Favorieten
     Route::post('/favorites/toggle', [FavorietController::class, 'toggle'])->name('favorites.toggle');

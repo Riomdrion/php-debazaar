@@ -5,7 +5,7 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-6">📦 Product inleveren</h1>
             <div class="mb-4">
 
-                <p><strong>Advertentie:</strong> {{ $verhuurAdvertentie->titel}} {{ $agendaItem->id }}</p>
+                <p><strong>Advertentie:</strong> {{ $verhuurAdvertentie->titel}}</p>
                 <p><strong>Periode:</strong> {{ Carbon::parse($agendaItem->start)->format('d-m-Y H:i') }} t/m {{ Carbon::parse($agendaItem->eind)->format('d-m-Y H:i') }}</p>
                 <p><strong>Gehuurd door:</strong> {{$user->name ?? 'Onbekend' }}</p>
             </div>

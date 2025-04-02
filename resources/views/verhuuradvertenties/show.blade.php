@@ -83,11 +83,10 @@
                             <strong>Tot:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}<br>
                             @if (Carbon::parse($item->eind)->isToday() || Carbon::parse($item->eind)->isPast())
                                 @if (auth()->id() === $item->user_id)
-                                    <a href="{{ route('rentals.create', ['agendaItem' => $item, 'verhuurAdvertentie' => $verhuurAdvertentie]) }}"
+                                    <a href="{{ route('rentals.create', [$verhuurAdvertentie->id, $item->id]) }}"
                                        class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
                                         Inleveren
                                     </a>
-
                                 @endif
                             @endif
                         </li>

@@ -12,9 +12,14 @@ use Illuminate\Support\Facades\Storage;
 
 class RentalController extends Controller
 {
-    public function create(AgendaItem $agendaItem,VerhuurAdvertentie $verhuurAdvertentie)
+    public function create($verhuurAdvertentieid, $agendaItemid)
     {
+        $agendaItem = AgendaItem::findOrFail($agendaItemid);
+        $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($verhuurAdvertentieid);
+
+        // Haal de ingelogde gebruiker op)
         $user = Auth::user();
+
 
         return view('rentals.create', compact('agendaItem', 'user', 'verhuurAdvertentie'));
     }
