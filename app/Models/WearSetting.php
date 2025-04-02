@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WearSetting extends Model
 {
+    protected $table = 'wear_settings';
     protected $fillable = [
         'verhuur_advertentie_id',
         'slijtage_per_dag',

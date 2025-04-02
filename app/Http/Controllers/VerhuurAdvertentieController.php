@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\VerhuurAdvertentie;
 use App\Models\AdvertentieKoppeling;
+use App\Models\WearSetting;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
@@ -63,6 +64,14 @@ class VerhuurAdvertentieController extends Controller
         $verhuurAdvertentie->qr_code = 'storage/' . $filename;
         $verhuurAdvertentie->save();
 
+        // automatiche aanmaken van de wear settings
+        WearSetting::create([
+            'verhuur_advertentie_id' => $verhuurAdvertentie->id,
+            'slijtage_per_dag' => 1.0,
+            'slijtage_per_verhuur' => 2.0,
+            'categorie_modifier' => 1.0,
+        ]);
+
         return redirect()->route('verhuuradvertenties.show', $verhuurAdvertentie)->with('success', 'Advertentie bijgewerkt!');
     }
 
@@ -79,7 +88,9 @@ class VerhuurAdvertentieController extends Controller
     public function edit($id)
     {
         $verhuurAdvertentie = VerhuurAdvertentie::findOrFail($id);
-        return view('verhuuradvertenties.edit', compact('verhuurAdvertentie'));
+
+        $slijtage = WearSetting::where('verhuur_advertentie_id', $id)->first();
+        return view('verhuuradvertenties.edit', compact('verhuurAdvertentie', 'slijtage'));
     }
 
     public function update(Request $request, VerhuurAdvertentie $verhuurAdvertentie)
