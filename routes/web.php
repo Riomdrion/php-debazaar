@@ -96,8 +96,7 @@ Route::middleware('auth')->group(function () {
 
     // Bids (biedingen)
     // Stel dat je alleen een overzicht, maken en verwijderen wilt:
-    Route::resource('bids', BidController::class)
-        ->only(['index', 'store', 'destroy']);
+    Route::post('/advertenties/{advertentie}/bids', [BidController::class, 'store'])->name('bids.store');
 
 });
 require __DIR__ . '/auth.php';

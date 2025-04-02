@@ -42,4 +42,9 @@ class Advertentie extends Model
             'gekoppeld_id'
         );
     }
+    public function bids()
+    {
+        return $this->hasMany(Bid::class);
+    }
+
 }

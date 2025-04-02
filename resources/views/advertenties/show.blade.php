@@ -46,7 +46,7 @@
             </div>
         @endif
 
-
+        <!-- Favorite Placement Form -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ Favoriet maken</h2>
             <form method="POST" action="{{ route('favorites.toggle') }}">
@@ -64,51 +64,98 @@
             </form>
         </div>
 
-            <!-- Review Placement Form -->
-            <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">📝 Review plaatsen</h2>
-                <form method="POST" action="{{ route('reviews.store')}}">
+        <!-- bid placement  form -->
+        <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">💰 Bod plaatsen</h2>
+
+            @if ($advertentie->bids->count() < 4)
+                <form method="POST" action="{{ route('bids.store', $advertentie->id) }}">
                     @csrf
                     <div class="mb-4">
-                        <label class="block text-gray-700 font-medium mb-1">Review</label>
-                        <textarea name="tekst" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300" rows="3" required></textarea>
-                        <input type="hidden" value="{{ $advertentie->id }}" name="advertentie_id">
+                        <label class="block text-gray-700 font-medium mb-1">Bedrag (€)</label>
+                        <input type="number" name="bedrag" min="0.01" step="0.01"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
+                               required>
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-medium mb-1">Score (1 t/m 5)</label>
-                        <input type="number" name="score" min="1" max="5" class="w-20 border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring focus:border-blue-300" required>
-                    </div>
-                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                        Plaatsen
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                        Bieden
                     </button>
                 </form>
-            </div>
-
-            <!-- Display Reviews -->
+            @else
+                <p class="text-red-600 font-medium">Er zijn al 4 biedingen geplaatst voor deze advertentie.</p>
+            @endif
+        </div>
+        <!-- Display Bids -->
             <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">📊 Reviews</h2>
-                @if($advertentie->reviews->isNotEmpty())
-                    <div class="space-y-4">
-                        @foreach($advertentie->reviews as $review)
-                            <div class="border-b pb-4">
-                                <div class="flex justify-between items-center mb-2">
-                                    <div class="flex items-center space-x-2">
-                                        <span class="font-medium text-gray-700">{{ $review->user->name }}</span>
-                                        <div class="flex text-yellow-500">
-                                            @for($i = 1; $i <= $review->rating; $i++)
-                                                ★
-                                            @endfor
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-gray-500">{{ $review->created_at->diffForHumans() }}</span>
-                                </div>
-                                <p class="text-gray-600">{{ $review->bericht }}</p>
-                            </div>
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">📄 Bestaande biedingen</h2>
+
+                @if($advertentie->bids->count() > 0)
+                    <ul class="space-y-2">
+                        @foreach($advertentie->bids->sortByDesc('bedrag') as $bid)
+                            <li class="border border-gray-200 rounded-lg px-4 py-2 bg-gray-50 flex justify-between items-center">
+                                <span>€{{ number_format($bid->bedrag, 2, ',', '.') }}</span>
+                                <span class="text-sm text-gray-500">Gebruiker: {{ $bid->user->name }}</span>
+                            </li>
                         @endforeach
-                    </div>
+                    </ul>
                 @else
-                    <p class="text-gray-500">Nog geen reviews geplaatst.</p>
+                    <p class="text-gray-600">Er zijn nog geen biedingen geplaatst voor deze advertentie.</p>
                 @endif
             </div>
+
+
+
+            <!-- Review Placement Form -->
+        <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">📝 Review plaatsen</h2>
+            <form method="POST" action="{{ route('reviews.store')}}">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-1">Review</label>
+                    <textarea name="tekst"
+                              class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
+                              rows="3" required></textarea>
+                    <input type="hidden" value="{{ $advertentie->id }}" name="advertentie_id">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-1">Score (1 t/m 5)</label>
+                    <input type="number" name="score" min="1" max="5"
+                           class="w-20 border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring focus:border-blue-300"
+                           required>
+                </div>
+                <button type="submit"
+                        class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                    Plaatsen
+                </button>
+            </form>
+        </div>
+
+        <!-- Display Reviews -->
+        <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">📊 Reviews</h2>
+            @if($advertentie->reviews->isNotEmpty())
+                <div class="space-y-4">
+                    @foreach($advertentie->reviews as $review)
+                        <div class="border-b pb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-medium text-gray-700">{{ $review->user->name }}</span>
+                                    <div class="flex text-yellow-500">
+                                        @for($i = 1; $i <= $review->rating; $i++)
+                                            ★
+                                        @endfor
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-500">{{ $review->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-gray-600">{{ $review->bericht }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="text-gray-500">Nog geen reviews geplaatst.</p>
+            @endif
+        </div>
     </div>
 </x-app-layout>

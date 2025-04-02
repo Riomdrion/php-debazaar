@@ -39,7 +39,7 @@ class RentalController extends Controller
 
         $fotoPath = $request->file('retour_foto')->store('retour_fotos', 'public');
 
-        // --- Slijtage berekenen ---
+        // --- Slijtage berekenen --- //
         $start = Carbon::parse($agendaItem->start);
         $eind = Carbon::parse($agendaItem->eind);
         $dagen = $start->diffInDays($eind);
