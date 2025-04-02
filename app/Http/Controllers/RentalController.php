@@ -11,10 +11,6 @@ class RentalController extends Controller
 {
     public function create(AgendaItem $agendaItem)
     {
-        if ($agendaItem->type !== 'Gehuurd') {
-            abort(403, 'Alleen gehuurde items kunnen worden ingeleverd.');
-        }
-
         return view('rentals.create', compact('agendaItem'));
     }
 
