@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -39,10 +40,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
- // Advertenties (koop/verkoop)
-    Route::resource('bedrijven', BedrijfController::class)->parameters([
-        'bedrijven' => 'bedrijf',
-    ]);
+// Advertenties (koop/verkoop)
+Route::resource('bedrijven', BedrijfController::class)->parameters([
+    'bedrijven' => 'bedrijf',
+]);
 
 // Groepeer routes die alleen voor ingelogde gebruikers toegankelijk zijn
 Route::middleware('auth')->group(function () {
@@ -80,23 +81,23 @@ Route::middleware('auth')->group(function () {
     // Reviews
     // Alleen index, store, destroy (geen update/edit nodig als je dat niet wilt)
     Route::resource('reviews', ReviewController::class)
-        ->only(['index','store','destroy']);
+        ->only(['index', 'store', 'destroy']);
 
     // Rental
-    Route::resource('rentals', RentalController::class)
-        ->only(['create','store','show']);
+    Route::resource('rentals', RentalController::class)->parameters([
+        'rentals' => 'rental',
+    ]);
 
     // Favorieten
     Route::post('/favorites/toggle', [FavorietController::class, 'toggle'])->name('favorites.toggle');
 
-
     // Bids (biedingen)
     // Stel dat je alleen een overzicht, maken en verwijderen wilt:
     Route::resource('bids', BidController::class)
-        ->only(['index','store','destroy']);
+        ->only(['index', 'store', 'destroy']);
 
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
