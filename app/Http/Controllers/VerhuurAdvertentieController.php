@@ -77,12 +77,18 @@ class VerhuurAdvertentieController extends Controller
 
     public function show($id)
     {
-        $verhuurAdvertentie = VerhuurAdvertentie::with(['agendaItems', 'user.bedrijf', 'favorieten'])->findOrFail($id);
+        $verhuurAdvertentie = VerhuurAdvertentie::with([
+            'agendaItems',
+            'agendaItems.rental',
+            'user.bedrijf',
+            'favorieten'
+        ])->findOrFail($id);
 
         $isFavoriet = $verhuurAdvertentie->favorieten->contains('user_id', Auth::id());
 
         return view('verhuuradvertenties.show', compact('verhuurAdvertentie', 'isFavoriet'));
     }
+
 
 
     public function edit($id)

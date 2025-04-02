@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Rental;
 
 class AgendaItem extends Model
 {
@@ -27,6 +28,11 @@ class AgendaItem extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function rental()
+    {
+        return $this->hasOne(Rental::class);
     }
 
 }

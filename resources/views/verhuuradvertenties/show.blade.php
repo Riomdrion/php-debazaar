@@ -77,19 +77,28 @@
             @else
                 <ul class="space-y-2">
                     @foreach ($alleAgendaItems as $item)
-                        <li class="border border-gray-200 rounded-lg p-3">
-                            <strong>{{ ucfirst($item->type) }}</strong><br>
-                            @if (auth()->id() === $item->user_id)
-                                <strong>Titel:</strong> {{ $item->titel }}<br>
-                            @endif
-                            <strong>Van:</strong> {{ Carbon::parse($item->start)->format('d-m-Y H:i') }}<br>
-                            <strong>Tot:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}<br>
+                        <li class="p-3">
+                            <div class="mb-6">
+                                <strong>{{ ucfirst($item->type) }}</strong><br>
+                                @if (auth()->id() === $item->user_id)
+                                    <strong>Titel:</strong> {{ $item->titel }}<br>
+                                @endif
+                                <strong>Van:</strong> {{ Carbon::parse($item->start)->format('d-m-Y H:i') }}<br>
+                                <strong>Tot:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}<br>
+                            </div>
                             @if (Carbon::parse($item->eind)->isToday() || Carbon::parse($item->eind)->isPast())
                                 @if (auth()->id() === $item->user_id)
-                                    <a href="{{ route('rentals.create', [$verhuurAdvertentie->id, $item->id]) }}"
-                                       class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                                        Inleveren
-                                    </a>
+                                    @if ($item->rental)
+                                        <a href="{{ route('rentals.show', [$item->rental->id]) }}"
+                                           class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                                            Bekijk Rental
+                                        </a>
+                                    @else
+                                        <a href="{{ route('rentals.create', [$verhuurAdvertentie->id, $item->id]) }}"
+                                           class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                                            Inleveren
+                                        </a>
+                                    @endif
                                 @endif
                             @endif
                         </li>
