@@ -4,7 +4,7 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-6">📋 Inlevering bevestigd</h1>
 
             <div class="space-y-2 text-gray-700">
-                <p><strong>Advertentie:</strong> {{ $rental->agendaItem->verhuurAdvertentie->titel ?? 'Onbekend' }}</p>
+                <p><strong>Advertentie:</strong> {{ $agendaItem->verhuurAdvertentie->titel ?? 'Onbekend' }}</p>
                 <p><strong>Gehuurd door:</strong> {{ $rental->agendaItem->user->name }}</p>
                 <p><strong>Periode:</strong> {{ $rental->agendaItem->start->format('d-m-Y H:i') }} t/m {{ $rental->agendaItem->eind->format('d-m-Y H:i') }}</p>
                 <p><strong>Slijtagekosten:</strong> €{{ number_format($rental->slijtage_kosten, 2, ',', '.') }}</p>

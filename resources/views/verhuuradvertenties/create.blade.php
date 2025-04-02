@@ -34,6 +34,13 @@
                            required>
                 </div>
 
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">Vervangingswaarde (€)</label>
+                    <input type="number" name="vervangingswaarde" step="1.00"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
+                           required>
+                </div>
+
                 <div class="flex items-center">
                     <input type="checkbox" name="is_actief" id="is_actief" value="1"
                            class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded">

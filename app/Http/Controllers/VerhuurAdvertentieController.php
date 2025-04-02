@@ -41,7 +41,8 @@ class VerhuurAdvertentieController extends Controller
             'beschrijving' => 'required|string',
             'dagprijs' => 'required|numeric|min:0',
             'borg' => 'required|numeric|min:0',
-            'is_actief' => 'sometimes|boolean'
+            'is_actief' => 'sometimes|boolean',
+            'vervangingswaarde' => 'nullable|numeric|min:0'
         ]);
 
         $verhuurAdvertentie = new VerhuurAdvertentie($validated);
@@ -89,6 +90,7 @@ class VerhuurAdvertentieController extends Controller
             'dagprijs' => 'required|numeric|min:0',
             'borg' => 'required|numeric|min:0',
             'is_actief' => 'sometimes|boolean',
+            'vervangingswaarde' => 'nullable|numeric|min:0',
         ]);
 
         $verhuurAdvertentie->fill($validated);

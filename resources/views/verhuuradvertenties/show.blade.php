@@ -8,6 +8,9 @@
                     <p><strong>Beschrijving:</strong> {{ $verhuurAdvertentie->beschrijving }}</p>
                     <p><strong>Dagprijs:</strong> €{{ number_format($verhuurAdvertentie->dagprijs, 2) }}</p>
                     <p><strong>Borg:</strong> €{{ number_format($verhuurAdvertentie->borg, 2) }}</p>
+                    @if (auth()->id() === $verhuurAdvertentie->user_id)
+                        <p><strong>vervangingswaarde:</strong> €{{ number_format($verhuurAdvertentie->vervangingswaarde, 2) }}</p>
+                    @endif
                     <p><strong>Status:</strong><span
                                 class="{{ $verhuurAdvertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">{{ $verhuurAdvertentie->is_actief ? 'Actief' : 'Inactief' }}</span>
                     </p>

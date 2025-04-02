@@ -18,6 +18,7 @@ class VerhuurAdvertentie extends Model
         'is_actief',
         'qr_code',
         'user_id',
+        'vervangingswaarde',
     ];
 
     protected $casts = [
@@ -51,6 +52,8 @@ class VerhuurAdvertentie extends Model
         return $this->hasMany(AgendaItem::class);
     }
 
-
-
+    public function wearSetting()
+    {
+        return $this->hasOne(WearSetting::class);
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\AgendaItem;
 use App\Models\User;
 use App\Models\VerhuurAdvertentie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,29 +31,44 @@ class RentalController extends Controller
     {
         $request->validate([
             'agenda_item_id' => 'required|exists:agenda_items,id',
-            'retour_foto' => 'required|image|max:2048',
+            'retour_foto' => 'required|image',
         ]);
 
         $agendaItem = AgendaItem::findOrFail($request->agenda_item_id);
+        $verhuurAdvertentie = $agendaItem->verhuurAdvertentie;
 
-        // Foto opslaan
-        $path = $request->file('retour_foto')->store('rentals', 'public');
+        $fotoPath = $request->file('retour_foto')->store('retour_fotos', 'public');
 
-        // Placeholder voor slijtageberekening
-        $slijtageKosten = rand(5, 25); // tijdelijk random bedrag
+        // --- Slijtage berekenen ---
+        $start = Carbon::parse($agendaItem->start);
+        $eind = Carbon::parse($agendaItem->eind);
+        $dagen = $start->diffInDays($eind);
+
+        $wear = $verhuurAdvertentie->wearSetting;
+        $slijtage = 0;
+
+        if ($wear && $verhuurAdvertentie->vervangingswaarde) {
+            $slijtagePercentage = ($dagen * $wear->slijtage_per_dag) + $wear->slijtage_per_verhuur;
+            $slijtagePercentage *= $wear->categorie_modifier;
+
+            $slijtage = ($verhuurAdvertentie->vervangingswaarde * $slijtagePercentage) / 100;
+        }
 
         $rental = Rental::create([
             'agenda_item_id' => $agendaItem->id,
-            'slijtage_kosten' => $slijtageKosten,
-            'retour_foto' => $path,
+            'retour_foto' => $fotoPath,
+            'slijtage_kosten' => $slijtage,
         ]);
 
-        return redirect()->route('rentals.show', $rental);
+        return redirect()->route('rental.show', $rental)->with('success', 'Product succesvol ingeleverd!');
     }
+
 
     // Inlevering tonen
     public function show(Rental $rental)
     {
-        return view('rentals.show', compact('rental'));
+        // Haal de geconnecte agenda op
+        $agendaItem = AgendaItem::findOrFail($rental->agenda_item_id);
+        return view('rentals.show', compact('rental', 'agendaItem'));
     }
 }
