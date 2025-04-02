@@ -64,19 +64,16 @@ class User extends Authenticatable
         return $this->hasMany(Favorite::class);
     }
 
-    public function bids() {
+    public function bid() {
         return $this->hasMany(Bid::class);
     }
 
-    public function rentals() {
-        return $this->hasMany(Rental::class, 'huurder_id');
-    }
-
-    public function agendaItems() {
+    public function AgendaItem()
+    {
         return $this->hasMany(AgendaItem::class);
     }
 
-    public function reviews() {
+    public function review() {
         return $this->hasMany(Review::class);
     }
 
