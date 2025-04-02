@@ -63,7 +63,6 @@ Route::middleware('auth')->group(function () {
         'advertenties' => 'advertentie',
     ]);
 
-
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
         'verhuuradvertenties' => 'verhuuradvertentie',
     ]);
