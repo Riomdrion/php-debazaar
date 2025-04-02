@@ -77,8 +77,8 @@
                         <li class="border border-gray-200 rounded-lg p-3">
                             <strong>{{ ucfirst($item->type) }}</strong><br>
                             <strong>Titel:</strong> {{ $item->titel }}<br>
-                            <strong>Van:</strong> {{ \Carbon\Carbon::parse($item->start)->format('d-m-Y H:i') }}<br>
-                            <strong>Tot:</strong> {{ \Carbon\Carbon::parse($item->eind)->format('d-m-Y H:i') }}
+                            <strong>Van:</strong> {{ Carbon::parse($item->start)->format('d-m-Y H:i') }}<br>
+                            <strong>Tot:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}
                         </li>
                     @endforeach
                 </ul>
@@ -96,13 +96,15 @@
                 <div class="mb-4">
                     <label for="start" class="block font-semibold text-gray-700">Startdatum/tijd</label>
                     <input type="datetime-local" name="start" id="start" required
-                           class="w-full border rounded-lg px-3 py-2 mt-1">
+                           class="w-full border rounded-lg px-3 py-2 mt-1"
+                           onchange="validateDates()">
                 </div>
 
                 <div class="mb-4">
                     <label for="eind" class="block font-semibold text-gray-700">Einddatum/tijd</label>
                     <input type="datetime-local" name="eind" id="eind" required
-                           class="w-full border rounded-lg px-3 py-2 mt-1">
+                           class="w-full border rounded-lg px-3 py-2 mt-1"
+                           onchange="validateDates()">
                 </div>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
                     Opslaan
@@ -110,4 +112,39 @@
             </form>
         </div>
     </div>
+
+
+    <script>
+        function validateDates() {
+            const start = document.getElementById('start').value;
+            const eind = document.getElementById('eind').value;
+            const agendaItems = @json($alleAgendaItems);
+
+            if (start && eind && new Date(start) > new Date(eind)) {
+                alert('Startdatum mag niet na einddatum vallen.');
+                document.getElementById('start').value = '';
+                document.getElementById('eind').value = '';
+                return;
+            }
+            if (new Date(start) < new Date()) {
+                alert('Startdatum mag niet in het verleden zijn.');
+                document.getElementById('start').value = '';
+                return;
+            }
+
+            for (const item of agendaItems) {
+                const itemStart = new Date(item.start);
+                const itemEind = new Date(item.eind);
+
+                if ((new Date(start) >= itemStart && new Date(start) <= itemEind) ||
+                    (new Date(eind) >= itemStart && new Date(eind) <= itemEind) ||
+                    (new Date(start) <= itemStart && new Date(eind) >= itemEind)) {
+                    alert('De ingevoerde datum overlapt met een bestaande verhuurperiode.');
+                    document.getElementById('start').value = '';
+                    document.getElementById('eind').value = '';
+                    return;
+                }
+            }
+        }
+    </script>
 </x-app-layout>
