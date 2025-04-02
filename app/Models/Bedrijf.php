@@ -24,4 +24,7 @@ class Bedrijf extends Model
     public function contracts() {
         return $this->hasMany(Contract::class);
     }
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
 }

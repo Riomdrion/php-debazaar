@@ -18,6 +18,14 @@ class Review extends Model
     {
         return $this->belongsTo(Advertentie::class);
     }
+    public function bedrijfs()
+    {
+        return $this->belongsTo(Bedrijf::class);
+    }
+    public function verhuuradvertentie()
+    {
+        return $this->belongsTo(VerhuurAdvertentie::class);
+    }
 
 
 }
