@@ -88,6 +88,8 @@ Route::middleware('auth')->group(function () {
         ->name('rentals.create');
     Route::post('/rentals/store', [RentalController::class, 'store'])
         ->name('rentals.store');
+    Route::get('/rentals/{rental}', [RentalController::class, 'show'])
+        ->name('rentals.show');
 
     // Favorieten
     Route::post('/favorites/toggle', [FavorietController::class, 'toggle'])->name('favorites.toggle');
