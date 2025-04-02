@@ -48,7 +48,7 @@
             <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ Favoriet maken</h2>
             <form method="POST" action="{{ route('favorites.toggle') }}">
                 @csrf
-                <input type="hidden" name="advertentie_id" value="{{ $verhuurAdvertentie->id }}">
+                <input type="hidden" name="verhuur_advertentie_id" value="{{ $verhuurAdvertentie->id }}">
                 <div class="flex items-center space-x-2">
                     <input type="checkbox" name="is_favoriet"
                            {{ $isFavoriet ? 'checked' : '' }} class="form-checkbox text-blue-600">

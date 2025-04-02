@@ -74,10 +74,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
-
-    // Verhuur-advertenties
-    Route::resource('verhuur', VerhuurAdvertentieController::class);
-
     // Contracts (PDF-upload en -export)
     Route::resource('contracts', ContractController::class);
 
