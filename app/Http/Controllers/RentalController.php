@@ -43,16 +43,11 @@ class RentalController extends Controller
         $start = Carbon::parse($agendaItem->start);
         $eind = Carbon::parse($agendaItem->eind);
         $dagen = $start->diffInDays($eind);
-
         $wear = $verhuurAdvertentie->wearSetting;
-        $slijtage = 0;
+        $slijtagePercentage = ($dagen * $wear->slijtage_per_dag) + $wear->slijtage_per_verhuur;
+        $slijtagePercentage *= $wear->categorie_modifier;
 
-        if ($wear && $verhuurAdvertentie->vervangingswaarde) {
-            $slijtagePercentage = ($dagen * $wear->slijtage_per_dag) + $wear->slijtage_per_verhuur;
-            $slijtagePercentage *= $wear->categorie_modifier;
-
-            $slijtage = ($verhuurAdvertentie->vervangingswaarde * $slijtagePercentage) / 100;
-        }
+        $slijtage = ($verhuurAdvertentie->vervangingswaarde * $slijtagePercentage) / 100;
 
         $rental = Rental::create([
             'agenda_item_id' => $agendaItem->id,
