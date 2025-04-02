@@ -60,7 +60,7 @@ class RentalController extends Controller
             'slijtage_kosten' => $slijtage,
         ]);
 
-        return redirect()->route('rental.show', $rental)->with('success', 'Product succesvol ingeleverd!');
+        return redirect()->route('rentals.show', $rental)->with('success', 'Product succesvol ingeleverd!');
     }
 
 
