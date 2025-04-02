@@ -27,6 +27,13 @@
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
                            required>
                 </div>
+                <hr class="my-4">
+                <div class="flex items-center">
+                    <input type="checkbox" name="is_actief" id="is_actief" value="1"
+                           class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                        {{ old('is_actief', $advertentie->is_actief) ? 'checked' : '' }}>
+                    <label for="is_actief" class="text-gray-700 font-medium">Actief</label>
+                </div>
 
                 <button type="submit"
                         class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition">

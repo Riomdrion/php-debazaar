@@ -17,10 +17,7 @@ class VerhuurAdvertentieController extends Controller
     {
         $query = VerhuurAdvertentie::query();
 
-        // Optioneel: filteren op titel of iets anders
-        if ($request->filled('zoek')) {
-            $query->where('titel', 'like', '%' . $request->zoek . '%');
-        }
+        $query->where('is_actief', true);
         $verhuuradvertenties = $query->orderBy('created_at', 'desc')->paginate(10);
         return view('verhuuradvertenties.index', compact('verhuuradvertenties'));
     }

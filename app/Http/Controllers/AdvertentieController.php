@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertentie;
 use App\Models\AdvertentieKoppeling;
-use App\Models\VerhuurAdvertentie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Endroid\QrCode\QrCode;
@@ -19,10 +18,10 @@ class AdvertentieController extends Controller
     {
         $query = Advertentie::query();
 
-        // Optioneel: filteren op titel of iets anders
         if ($request->filled('zoek')) {
             $query->where('titel', 'like', '%' . $request->zoek . '%');
         }
+        $query->where('is_actief', true);
         $advertenties = $query->orderBy('created_at', 'desc')->paginate(10);
         return view('advertenties.index', compact('advertenties'));
     }
@@ -101,7 +100,7 @@ class AdvertentieController extends Controller
 
     public function edit($id)
     {
-        $advertentie = Advertentie::findOrFail($id);
+        $advertentie = Advertentie::with('bids')->findOrFail($id);
 
         return view('advertenties.edit', compact('advertentie'));
     }
@@ -112,6 +111,7 @@ class AdvertentieController extends Controller
             'titel' => 'required|string|max:255',
             'beschrijving' => 'required|string',
             'prijs' => 'required|numeric|min:0',
+            'is_actief' => 'boolean',
         ]);
 
         $advertentie->update($validated);

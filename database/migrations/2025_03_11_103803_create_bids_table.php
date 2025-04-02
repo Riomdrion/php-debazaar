@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('advertentie_id')->constrained();
             $table->decimal('bedrag', 10, 2)->default(0);
+            $table->boolean('WinningBid')->default(false);
             $table->timestamps();
         });
     }
