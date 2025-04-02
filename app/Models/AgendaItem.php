@@ -19,13 +19,14 @@ class AgendaItem extends Model
         'eind' => 'datetime',
     ];
 
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
-
     public function verhuurAdvertentie()
     {
-        return $this->belongsTo(VerhuurAdvertentie::class, 'verhuur_advertentie_id');
+        return $this->belongsTo(VerhuurAdvertentie::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

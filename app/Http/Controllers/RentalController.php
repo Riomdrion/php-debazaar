@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Rental;
 use App\Models\AgendaItem;
+use App\Models\User;
+use App\Models\VerhuurAdvertentie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class RentalController extends Controller
 {
-    public function create(AgendaItem $agendaItem)
+    public function create(AgendaItem $agendaItem,VerhuurAdvertentie $verhuurAdvertentie)
     {
-        return view('rentals.create', compact('agendaItem'));
+        $user = Auth::user();
+
+        return view('rentals.create', compact('agendaItem', 'user', 'verhuurAdvertentie'));
     }
+
 
     // Inlevering opslaan
     public function store(Request $request)

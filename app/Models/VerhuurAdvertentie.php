@@ -33,7 +33,7 @@ class VerhuurAdvertentie extends Model
     }
 
     // Rentals (verhuur periodes)
-    public function rentals()
+    public function rental()
     {
         return $this->hasMany(Rental::class);
     }
@@ -43,10 +43,11 @@ class VerhuurAdvertentie extends Model
         return $this->hasMany(Favoriet::class);
     }
 
-    public function agendaItems()
+    public function AgendaItems()
     {
         return $this->hasMany(AgendaItem::class);
     }
+
 
 
 }

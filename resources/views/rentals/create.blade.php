@@ -1,12 +1,13 @@
+@php use Carbon\Carbon; @endphp
 <x-app-layout>
     <div class="p-6 max-w-2xl mx-auto">
         <div class="bg-white rounded-2xl shadow-md border border-gray-200 p-6">
             <h1 class="text-3xl font-bold text-gray-800 mb-6">📦 Product inleveren</h1>
-
             <div class="mb-4">
-                <p><strong>Advertentie:</strong> {{ $agendaItem->verhuurAdvertentie->titel ?? 'Onbekend' }}</p>
-                <p><strong>Periode:</strong> {{ $agendaItem->start->format('d-m-Y H:i') }} t/m {{ $agendaItem->eind->format('d-m-Y H:i') }}</p>
-                <p><strong>Gehuurd door:</strong> {{ $agendaItem->user->name }}</p>
+
+                <p><strong>Advertentie:</strong> {{ $verhuurAdvertentie->titel}} {{ $agendaItem->id }}</p>
+                <p><strong>Periode:</strong> {{ Carbon::parse($agendaItem->start)->format('d-m-Y H:i') }} t/m {{ Carbon::parse($agendaItem->eind)->format('d-m-Y H:i') }}</p>
+                <p><strong>Gehuurd door:</strong> {{$user->name ?? 'Onbekend' }}</p>
             </div>
 
             <form method="POST" action="{{ route('rentals.store') }}" enctype="multipart/form-data" class="space-y-6">
