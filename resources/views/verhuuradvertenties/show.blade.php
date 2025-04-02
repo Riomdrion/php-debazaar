@@ -134,8 +134,6 @@
             </form>
         </div>
     </div>
-
-
     <script>
         function validateDates() {
             const start = document.getElementById('start').value;
