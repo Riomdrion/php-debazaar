@@ -10,6 +10,10 @@ class Bid extends Model
         'bedrag',
         'user_id',
         'advertentie_id',
+        'WinningBid',
+    ];
+    protected $casts = [
+        'WinningBid' => 'boolean',
     ];
     public function user() {
         return $this->belongsTo(User::class);
