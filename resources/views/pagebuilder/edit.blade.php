@@ -18,9 +18,15 @@
 
             <div id="components-list">
                 {{-- bestaande componenten --}}
-                @foreach($components as $index => $component)
-                    <x-component-builder :index="$index" :type="$component->type" :data="$component->data" :order="$component->order" />
+                @foreach ($bedrijf->components as $index => $component)
+                    <x-component-builder
+                        :index="$index"
+                        :type="$component->type"
+                        :data="$component->data"
+                        :order="$component->order ?? 0"
+                    />
                 @endforeach
+
             </div>
 
             <button type="button" id="add-component" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-6">

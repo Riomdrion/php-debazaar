@@ -28,11 +28,15 @@ class PageBuilderController extends Controller
             $bedrijf->components()->delete();
 
             foreach ($request->components as $index => $compData) {
-                // Decode JSON vanuit textarea
-                $data = json_decode($compData['data'], true);
+                $data = $compData['data']; // gebruik juiste variabele
 
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    throw new \Exception("Ongeldige JSON in component #{$index}.");
+                // Optioneel: check of het een array of string is, en decodeer indien nodig
+                if (is_string($data)) {
+                    $data = json_decode($data, true);
+
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        throw new \Exception("Ongeldige JSON in component #{$index}.");
+                    }
                 }
 
                 $bedrijf->components()->create([

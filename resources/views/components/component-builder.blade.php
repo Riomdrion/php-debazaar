@@ -1,3 +1,7 @@
+@php
+    $data = $data ?? [];
+@endphp
+
 <div class="p-4 border rounded mb-4 bg-white shadow" data-index="{{ $index }}">
     <label class="block font-semibold mb-1">Type</label>
     <select name="components[{{ $index }}][type]" class="component-type w-full border p-2 rounded mb-2" required>
