@@ -1,27 +1,35 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+            <div class="p-6 max-w-7xl mx-auto space-y-6">
+                <!-- Rest of your content remains unchanged -->
+                <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 Recente Advertenties</h1>
+
+                <!-- Normal Advertisements -->
+                <h2 class="text-2xl font-bold text-gray-800">Normale Advertenties</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    @forelse ($recentNormalAds as $advertentie)
+                        <!-- Advertentie cards -->
+                    @empty
+                        <div class="col-span-full text-center text-gray-500 mt-8">
+                            Geen normale advertenties gevonden.
+                        </div>
+                    @endforelse
+                </div>
+
+                <!-- Rental Advertisements -->
+                <h2 class="text-2xl font-bold text-gray-800 mt-8">Verhuur Advertenties</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    @forelse ($recentRentalAds as $advertentie)
+                        <!-- Advertentie cards -->
+                    @empty
+                        <div class="col-span-full text-center text-gray-500 mt-8">
+                            Geen verhuur advertenties gevonden.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
-        <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-            <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                <div class="flex lg:justify-center lg:col-start-2">
-                    <!-- Logo SVG or Other Content Here -->
-                </div>
-            </header>
-        </div>
-    </div>
 </x-app-layout>
