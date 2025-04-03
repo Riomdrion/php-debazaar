@@ -57,7 +57,7 @@ class RegisterController extends Controller
 
         if ($data['user_type'] === 'bedrijf') {
             $rules['company_name'] = ['required', 'string', 'max:255'];
-            $rules['custom_url'] = ['required', 'string', 'max:255', 'unique:bedrijfs,custom_url'];
+            $rules['slug'] = ['required', 'string', 'max:255', 'unique:bedrijfs,slug'];
         }
 
         return Validator::make($data, $rules);
@@ -88,7 +88,7 @@ class RegisterController extends Controller
         if ($data['user_type'] === 'bedrijf') {
             $user->bedrijf()->create([
                 'naam' => $data['company_name'],
-                'custom_url' => $data['custom_url'],
+                'slug' => $data['slug'],
             ]);
         }
 

@@ -24,7 +24,7 @@ class BedrijfFactory extends Factory
     {
         return [
             'naam' => $this->faker->company,
-            'custom_url' => Str::slug($this->faker->company), // Generate a URL-friendly version of the company name
+            'slug' => Str::slug($this->faker->company), // Generate a URL-friendly version of the company name
             'user_id' => \App\Models\User::factory(), // Create a related user
         ];
     }

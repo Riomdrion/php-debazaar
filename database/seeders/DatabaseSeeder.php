@@ -34,15 +34,15 @@ class DatabaseSeeder extends Seeder
         $zakelijkUsers = array_values(array_filter($users, fn($user) => $user->role === 'zakelijk')); // Reindex the array
 
         $bedrijfDetails = [
-            ['naam' => 'Jumbo', 'custom_url' => 'jumbo'],
-            ['naam' => 'MediaMarkt', 'custom_url' => 'mediamarkt']
+            ['naam' => 'Jumbo', 'slug' => 'jumbo'],
+            ['naam' => 'MediaMarkt', 'slug' => 'mediamarkt']
         ];
 
         foreach ($bedrijfDetails as $key => $details) {
             if (isset($zakelijkUsers[$key])) {
                 Bedrijf::factory()->create([
                     'naam' => $details['naam'],
-                    'custom_url' => $details['custom_url'],
+                    'slug' => $details['slug'],
                     'user_id' => $zakelijkUsers[$key]->id,
                 ]);
             }

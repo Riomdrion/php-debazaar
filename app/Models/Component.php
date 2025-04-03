@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Component extends Model
 {
-    public function bedrijf() {
-        return $this->belongsTo(Bedrijf::class);
+    protected $fillable = ['bedrijf_id', 'type', 'data', 'order'];
+
+    protected $casts = [
+        'data' => 'array',
+    ];
+
+    public function bedrijf()
+    {
+        return $this->belongsTo(Bedrijf::class, 'bedrijf_id');
     }
 }

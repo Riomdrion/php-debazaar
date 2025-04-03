@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('naam');
-            $table->string('custom_url')->unique();
+            $table->string('slug')->unique();
             $table->string('huisstijl')->nullable(); // kleurcode, fonts, etc.
             $table->timestamps();
         });

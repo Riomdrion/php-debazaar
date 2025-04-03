@@ -26,15 +26,15 @@
             <x-input-error :messages="$errors->get('user_type')" class="mt-2" />
         </div>
 
-        <!-- Company Name and Custom URL -->
+        <!-- Company Name and slug -->
         <div id="company_fields" class="mt-4" style="display: none;">
             <x-input-label for="company_name" :value="__('Company Name')" />
             <x-text-input id="company_name" class="block mt-1 w-full" type="text" name="company_name" :value="old('company_name')" autocomplete="organization" />
             <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
 
-            <x-input-label for="custom_url" :value="__('Custom URL')" class="mt-4" />
-            <x-text-input id="custom_url" class="block mt-1 w-full" type="text" name="custom_url" :value="old('custom_url')" autocomplete="url" />
-            <x-input-error :messages="$errors->get('custom_url')" class="mt-2" />
+            <x-input-label for="slug" :value="__('slug')" class="mt-4" />
+            <x-text-input id="slug" class="block mt-1 w-full" type="text" name="slug" :value="old('slug')" autocomplete="url" />
+            <x-input-error :messages="$errors->get('slug')" class="mt-2" />
         </div>
 
         <!-- Password -->
