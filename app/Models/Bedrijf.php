@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Bedrijf extends Model
 {
+    /** @use HasFactory<\Database\Factories\BedrijfFactory> */
+    use HasFactory, Notifiable;
+
     // Specify which fields can be mass assigned
     protected $fillable = [
         'naam',         // Add 'naam' to allow mass assignment
