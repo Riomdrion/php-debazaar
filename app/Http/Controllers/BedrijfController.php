@@ -46,12 +46,10 @@ class BedrijfController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($slug)
     {
-        // Haal specifiek bedrijf op
-        $bedrijf = Bedrijf::findOrFail($id);
-
-        return view('bedrijven.show', compact('bedrijf'));
+        $bedrijf = Bedrijf::where('slug', $slug)->firstOrFail();
+        return view('bedrijf.show', compact('bedrijf'));
     }
 
     /**
@@ -65,9 +63,20 @@ class BedrijfController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $slug)
     {
+        $bedrijf = Bedrijf::where('slug', $slug)->firstOrFail();
 
+        $request->validate([
+            'naam' => 'required|string',
+            'slug' => 'required|string|unique:bedrijven,slug,' . $bedrijf->id,
+            'beschrijving' => 'nullable|string',
+            'huisstijl' => 'nullable|string',
+        ]);
+
+        $bedrijf->update($request->all());
+
+        return redirect()->back()->with('success', 'Bedrijfsinstellingen zijn bijgewerkt.');
     }
 
     /**

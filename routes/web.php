@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\PageBuilderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Auth;
@@ -40,11 +42,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-// Advertenties (koop/verkoop)
-Route::resource('bedrijven', BedrijfController::class)->parameters([
-    'bedrijven' => 'bedrijf',
-]);
-
 // Groepeer routes die alleen voor ingelogde gebruikers toegankelijk zijn
 Route::middleware('auth')->group(function () {
 
@@ -64,6 +61,15 @@ Route::middleware('auth')->group(function () {
         'advertenties' => 'advertentie',
     ]);
 
+    // Landingspagina van bedrijf (publiek zichtbaar)
+    Route::get('/{slug}', [LandingPageController::class, 'show'])->name('bedrijf.landing');
+
+    // Pagebuilder voor bedrijven (alleen ingelogd)
+    Route::get('/{slug}/pagebuilder', [PageBuilderController::class, 'edit'])->name('pagebuilder.edit');
+    Route::post('/{slug}/pagebuilder', [PageBuilderController::class, 'update'])->name('pagebuilder.update');
+
+
+    // Verhuuradvertenties
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
         'verhuuradvertenties' => 'verhuuradvertentie',
     ]);
