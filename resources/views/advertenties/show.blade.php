@@ -14,8 +14,11 @@
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">{{ $advertentie->titel }}</h1>
                 <p class="text-gray-600 mt-4">{{ $advertentie->beschrijving }}</p>
-                <p class="text-xl font-semibold text-green-600 mt-4">
-                    &euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
+                <p class="text-xl font-semibold text-green-600 mt-4">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
+                <p class="text-gray-500 mt-2">
+                    Status: <span class="{{ $advertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">
+                        {{ $advertentie->is_actief ? 'Actief' : 'Inactief' }}
+                    </span>
             </div>
             <div>
                 @if ($advertentie->user && $advertentie->user->bedrijf)
@@ -67,43 +70,68 @@
         <!-- bid placement  form -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">💰 Bod plaatsen</h2>
-
             @if ($advertentie->bids->count() < 4)
-                <form method="POST" action="{{ route('bids.store', $advertentie->id) }}">
-                    @csrf
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-medium mb-1">Bedrag (€)</label>
-                        <input type="number" name="bedrag" min="0.01" step="0.01"
-                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
-                               required>
-                    </div>
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                        Bieden
-                    </button>
-                </form>
+                @if ($advertentie->bids->where('WinningBid', true)->isEmpty())
+                    <form method="POST" action="{{ route('bids.store', $advertentie->id) }}">
+                        @csrf
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-medium mb-1">Bedrag (€)</label>
+                            <input type="number" name="bedrag" min="0.01" step="0.01"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
+                                   required>
+                        </div>
+                        <button type="submit"
+                                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                            Bieden
+                        </button>
+                    </form>
+                @else
+                    <p class="text-red-600 font-medium">Er is al een winnend bod</p>
+                @endif
             @else
                 <p class="text-red-600 font-medium">Er zijn al 4 biedingen geplaatst voor deze advertentie.</p>
             @endif
         </div>
-        <!-- Display Bids -->
+            <!-- Display Bids -->
             <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
                 <h2 class="text-xl font-semibold mb-4 text-gray-800">📄 Bestaande biedingen</h2>
-
                 @if($advertentie->bids->count() > 0)
                     <ul class="space-y-2">
-                        @foreach($advertentie->bids->sortByDesc('bedrag') as $bid)
-                            <li class="border border-gray-200 rounded-lg px-4 py-2 bg-gray-50 flex justify-between items-center">
-                                <span>€{{ number_format($bid->bedrag, 2, ',', '.') }}</span>
-                                <span class="text-sm text-gray-500">Gebruiker: {{ $bid->user->name }}</span>
+                        @if ($advertentie->bids->where('WinningBid', true)->isEmpty())
+                            @foreach($advertentie->bids->sortByDesc('bedrag') as $bid)
+                                <li class="border border-gray-200 rounded-lg px-4 py-2 bg-gray-50 flex justify-between items-center">
+                                    <span>€{{ number_format($bid->bedrag, 2, ',', '.') }}</span>
+                                    <span class="text-sm text-gray-500">Gebruiker: {{ $bid->user->name }}</span>
+                                    <form method="POST" action="{{ route('bids.update')}}">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="WinningBid" value="1">
+                                        <input type="hidden" name="bid_id" value="{{ $bid->id }}">
+                                        <input type="hidden" name="advertentie_id" value="{{ $advertentie->id }}">
+                                        <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                                            Zet als winnend bod
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ route('bids.destroy', $advertentie->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                                            Verwijder bod
+                                        </button>
+                                    </form>
+                                </li>
+                            @endforeach
+                        @else
+                            <li class="border border-green-400 rounded-lg px-4 py-2 bg-green-200 flex justify-between items-center">
+                                <span>€{{ number_format($advertentie->bids->where('WinningBid', true)->first()->bedrag, 2, ',', '.') }}</span>
+                                <span class="text-sm text-gray-500">Gebruiker: {{ $advertentie->bids->where('WinningBid', true)->first()->user->name }}</span>
                             </li>
-                        @endforeach
+                        @endif
                     </ul>
                 @else
                     <p class="text-gray-600">Er zijn nog geen biedingen geplaatst voor deze advertentie.</p>
                 @endif
             </div>
-
 
 
             <!-- Review Placement Form -->

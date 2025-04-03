@@ -31,4 +31,35 @@ class BidController extends Controller
 
         return redirect()->back()->with('success', 'Bod succesvol geplaatst!');
     }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'WinningBid' => 'required|numeric|min:1',
+            'advertentie_id' => 'required|exists:advertenties,id',
+            'bid_id' => 'required|exists:bids,id',
+        ]);
+        $advertentie = Advertentie::findOrFail($request->input('advertentie_id'));
+        $bid = Bid::findorFail($request->input('bid_id'));
+
+        $bid->WinningBid = $request->input('WinningBid');
+        $bid->save();
+
+        Advertentie::where('id', $advertentie->id)->update(['is_actief' => 0]);
+
+        return redirect()->back()->with('success', 'Bod succesvol bijgewerkt!');
+    }
+
+    public function destroy($advertentieId)
+    {
+        $advertentie = Advertentie::findOrFail($advertentieId);
+
+        $bid = Bid::where('advertentie_id', $advertentie->id)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $bid->delete();
+
+        return redirect()->back()->with('success', 'Bod succesvol verwijderd!');
+    }
 }
