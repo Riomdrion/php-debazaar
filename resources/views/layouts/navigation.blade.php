@@ -9,7 +9,7 @@
     }
 @endphp
 
-<nav class="{{ $navClass }}" style="{{ $style }}">
+<nav class="bg-{{ Auth::user()->bedrijf->huisstijl }}-500 dark:bg-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
