@@ -66,7 +66,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/{slug}/pagebuilder', [PageBuilderController::class, 'edit'])->name('pagebuilder.edit');
     Route::post('/{slug}/pagebuilder', [PageBuilderController::class, 'update'])->name('pagebuilder.update');
 
-
     // Verhuuradvertenties
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
         'verhuuradvertenties' => 'verhuuradvertentie',
