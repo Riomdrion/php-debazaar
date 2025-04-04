@@ -15,14 +15,12 @@ class DashBoardController extends Controller
      */
     public function index(Request $request)
     {
-        // Retrieve page numbers for each pagination type from query
         $normalPage = $request->input('normalPage', 1);
         $rentalPage = $request->input('rentalPage', 1);
 
-        // Fetch paginated results with specified page numbers
         $recentNormalAds = Advertentie::latest()->paginate(4, ['*'], 'normalPage', $normalPage);
         $recentRentalAds = VerhuurAdvertentie::where('is_actief', 1)->latest()->paginate(4, ['*'], 'rentalPage', $rentalPage);
 
-        return view('dashboard', compact('recentNormalAds', 'recentRentalAds'));
+        return view('dashboard', compact('recentNormalAds', 'recentRentalAds', 'normalPage', 'rentalPage'));
     }
 }
