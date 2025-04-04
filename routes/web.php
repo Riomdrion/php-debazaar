@@ -38,9 +38,7 @@ Route::get('/', function () {
 
 // Voorbeeld: home controller
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [App\Http\Controllers\DashBoardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 // Groepeer routes die alleen voor ingelogde gebruikers toegankelijk zijn
 Route::middleware('auth')->group(function () {
