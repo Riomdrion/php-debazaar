@@ -33,13 +33,13 @@
                         <span class="text-green-600 font-bold text-lg">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</span>
                         <a href="{{ route('advertenties.show', $advertentie->id) }}"
                            class="text-blue-600 font-medium hover:underline">
-                            👉 Bekijk
+                            👉 {{ __('adverts.bekijk') }}
                         </a>
                     </div>
                 </div>
             @empty
                 <div class="col-span-full text-center text-gray-500 mt-8">
-                    Geen advertenties gevonden.
+                    {{ __('adverts.Geen_advertenties_gevonden') }}.
                 </div>
             @endforelse
         </div>

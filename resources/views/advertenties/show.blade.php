@@ -5,7 +5,7 @@
             <div class="flex justify-end">
                 <a href="{{ route('advertenties.edit', $advertentie->id) }}"
                    class="text-blue-600 hover:underline font-medium">
-                    ✏️ Bewerken
+                    ✏️ {{ __('adverts.bewerken') }}
                 </a>
             </div>
         @endif
@@ -17,14 +17,14 @@
                 <p class="text-xl font-semibold text-green-600 mt-4">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
                 <p class="text-gray-500 mt-2">
                     Status: <span class="{{ $advertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">
-                        {{ $advertentie->is_actief ? 'Actief' : 'Inactief' }}
+                    {{ $advertentie->is_actief ? __('adverts.actief') : __('adverts.Inactief') }}
                     </span>
             </div>
             <div>
                 @if ($advertentie->user && $advertentie->user->bedrijf)
                     <a href="{{ route('bedrijf.landing', ['slug' => $advertentie->user->bedrijf->slug]) }}"
                        class="text-blue-500 hover:underline">
-                        Bekijk Bedrijfsreviews
+                        {{ __('adverts.Bekijk_Bedrijfsreviews') }}
                     </a>
                 @endif
                 @if ($advertentie->qr_code)
@@ -35,7 +35,7 @@
 
         @if ($advertentie->gekoppeldeAdvertenties->isNotEmpty())
             <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
-                <h3 class="text-lg font-semibold mb-4 text-gray-800">Gekoppelde advertenties</h3>
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">{{ __('adverts.Gekoppelde_advertenties') }}</h3>
                 <ul class="list-disc ml-6 space-y-2">
                     @foreach ($advertentie->gekoppeldeAdvertenties as $gekoppeld)
                         <li>
@@ -51,57 +51,57 @@
 
         <!-- Favorite Placement Form -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ Favoriet maken</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ {{ __('adverts.Favoriet_maken') }}</h2>
             <form method="POST" action="{{ route('favorites.toggle') }}">
                 @csrf
                 <input type="hidden" name="advertentie_id" value="{{ $advertentie->id }}">
                 <div class="flex items-center space-x-2">
                     <input type="checkbox" name="is_favoriet"
                            {{ $isFavoriet ? 'checked' : '' }} class="form-checkbox text-blue-600">
-                    <label class="text-gray-700">Toevoegen aan favorieten</label>
+                    <label class="text-gray-700">{{ __('adverts.Toevoegen_aan_favorieten') }}</label>
                 </div>
                 <button type="submit"
                         class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                    Opslaan
+                    {{ __('adverts.opslaan') }}
                 </button>
             </form>
         </div>
 
         <!-- bid placement  form -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">💰 Bod plaatsen</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">💰 {{ __('adverts.Bod_plaatsen') }}</h2>
             @if ($advertentie->bids->count() < 4)
                 @if ($advertentie->bids->where('WinningBid', true)->isEmpty())
                     <form method="POST" action="{{ route('bids.store', $advertentie->id) }}">
                         @csrf
                         <div class="mb-4">
-                            <label class="block text-gray-700 font-medium mb-1">Bedrag (€)</label>
+                            <label class="block text-gray-700 font-medium mb-1">{{ __('adverts.bedrag') }} (€)</label>
                             <input type="number" name="bedrag" min="0.01" step="0.01"
                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
                                    required>
                         </div>
                         <button type="submit"
                                 class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                            Bieden
+                            {{ __('adverts.bedrag') }}
                         </button>
                     </form>
                 @else
-                    <p class="text-red-600 font-medium">Er is al een winnend bod</p>
+                    <p class="text-red-600 font-medium">{{ __('adverts.Er_is_al_een_winnend_bod') }}</p>
                 @endif
             @else
-                <p class="text-red-600 font-medium">Er zijn al 4 biedingen geplaatst voor deze advertentie.</p>
+                <p class="text-red-600 font-medium">{{ __('adverts.Er_zijn_al_4_biedingen_geplaatst_voor_deze_advertentie') }}.</p>
             @endif
         </div>
             <!-- Display Bids -->
             <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">📄 Bestaande biedingen</h2>
+                <h2 class="text-xl font-semibold mb-4 text-gray-800">📄 {{ __('adverts.Bestaande_biedingen') }}</h2>
                 @if($advertentie->bids->count() > 0)
                     <ul class="space-y-2">
                         @if ($advertentie->bids->where('WinningBid', true)->isEmpty())
                             @foreach($advertentie->bids->sortByDesc('bedrag') as $bid)
                                 <li class="border border-gray-200 rounded-lg px-4 py-2 bg-gray-50 flex justify-between items-center">
                                     <span>€{{ number_format($bid->bedrag, 2, ',', '.') }}</span>
-                                    <span class="text-sm text-gray-500">Gebruiker: {{ $bid->user->name }}</span>
+                                    <span class="text-sm text-gray-500">{{ __('adverts.gebruiker') }}: {{ $bid->user->name }}</span>
                                     <form method="POST" action="{{ route('bids.update')}}">
                                         @csrf
                                         @method('PUT')
@@ -109,14 +109,14 @@
                                         <input type="hidden" name="bid_id" value="{{ $bid->id }}">
                                         <input type="hidden" name="advertentie_id" value="{{ $advertentie->id }}">
                                         <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                                            Zet als winnend bod
+                                            {{ __('adverts.Zet_als_winnend_bod') }}
                                         </button>
                                     </form>
                                     <form method="POST" action="{{ route('bids.destroy', $advertentie->id) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-                                            Verwijder bod
+                                            {{ __('adverts.Verwijder_bod') }}
                                         </button>
                                     </form>
                                 </li>
@@ -124,23 +124,23 @@
                         @else
                             <li class="border border-green-400 rounded-lg px-4 py-2 bg-green-200 flex justify-between items-center">
                                 <span>€{{ number_format($advertentie->bids->where('WinningBid', true)->first()->bedrag, 2, ',', '.') }}</span>
-                                <span class="text-sm text-gray-500">Gebruiker: {{ $advertentie->bids->where('WinningBid', true)->first()->user->name }}</span>
+                                <span class="text-sm text-gray-500">{{ __('adverts.gebruiker') }}: {{ $advertentie->bids->where('WinningBid', true)->first()->user->name }}</span>
                             </li>
                         @endif
                     </ul>
                 @else
-                    <p class="text-gray-600">Er zijn nog geen biedingen geplaatst voor deze advertentie.</p>
+                    <p class="text-gray-600">{{ __('adverts.Er_zijn_nog_geen_biedingen_geplaatst_voor_deze_advertentie') }}</p>
                 @endif
             </div>
 
 
             <!-- Review Placement Form -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">📝 Review plaatsen</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">📝 {{ __('adverts.Review_plaatsen') }}</h2>
             <form method="POST" action="{{ route('reviews.store')}}">
                 @csrf
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-1">Review</label>
+                    <label class="block text-gray-700 font-medium mb-1">{{ __('adverts.Review') }}</label>
                     <textarea name="tekst"
                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
                               rows="3" required></textarea>
@@ -154,14 +154,14 @@
                 </div>
                 <button type="submit"
                         class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                    Plaatsen
+                    {{ __('adverts.plaatsen') }}
                 </button>
             </form>
         </div>
 
         <!-- Display Reviews -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">📊 Reviews</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">📊 {{ __('adverts.Review') }}</h2>
             @if($advertentie->reviews->isNotEmpty())
                 <div class="space-y-4">
                     @foreach($advertentie->reviews as $review)
@@ -182,7 +182,7 @@
                     @endforeach
                 </div>
             @else
-                <p class="text-gray-500">Nog geen reviews geplaatst.</p>
+                <p class="text-gray-500">{{ __('adverts.Nog_geen_reviews_geplaatst') }}.</p>
             @endif
         </div>
     </div>
