@@ -64,12 +64,12 @@ Route::middleware('auth')->group(function () {
         'advertenties' => 'advertentie',
     ]);
 
+    Route::get('/contracts/create', [ContractController::class, 'create'])->name('contracts.create');
+
     // Verhuuradvertenties
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
         'verhuuradvertenties' => 'verhuuradvertentie',
     ]);
-
-    Route::get('/bedrijven/{bedrijf}', [BedrijfController::class, 'show'])->name('bedrijfs.show');
 
     Route::get('/admin/bedrijven-zonder-factuur', function () {
         if (!Auth::check() || Auth::user()->role !== 'admin') {
@@ -97,9 +97,6 @@ Route::middleware('auth')->group(function () {
     ]);
 
     Route::post('advertenties/{advertentie}/review', [ReviewController::class, 'store'])->name('reviews.store');
-
-    // Contracts (PDF-upload en -export)
-    Route::resource('contracts', ContractController::class);
 
     // Reviews
     // Alleen index, store, destroy (geen update/edit nodig als je dat niet wilt)
