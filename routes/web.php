@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdvertentieController;
 use App\Http\Controllers\VerhuurAdvertentieController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BedrijfController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AgendaController;
@@ -68,6 +69,18 @@ Route::middleware('auth')->group(function () {
         'verhuuradvertenties' => 'verhuuradvertentie',
     ]);
 
+    Route::get('/bedrijven/{bedrijf}', [BedrijfController::class, 'show'])->name('bedrijfs.show');
+
+    Route::get('/admin/bedrijven-zonder-factuur', function () {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect('/dashboard')->with('error', 'Je hebt geen toegang tot deze pagina.');
+        }
+
+        // Haal de bedrijven op zonder factuur
+        $bedrijven = \App\Models\Bedrijf::doesntHave('contracts')->get();
+        return view('admin.bedrijven_zonder_factuur', compact('bedrijven'));
+    })->name('admin.bedrijven.zonder.factuur')->middleware('auth');
+
     // Landingspagina van bedrijf (publiek zichtbaar)
     Route::get('/{slug}', [LandingPageController::class, 'show'])->name('bedrijf.landing');
 
@@ -113,5 +126,7 @@ Route::middleware('auth')->group(function () {
 });
 require __DIR__ . '/auth.php';
 Auth::routes();
+
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
