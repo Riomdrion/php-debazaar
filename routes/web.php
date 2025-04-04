@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\CsvImportController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PageBuilderController;
 use App\Http\Controllers\ProfileController;
@@ -59,6 +60,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/bedrijfsprofiel/{id}', [BedrijfController::class, 'edit'])->name('bedrijf.edit');
     Route::patch('/bedrijfsprofiel', [BedrijfController::class, 'update'])->name('bedrijf.update');
 
+    // csv import
+    Route::get('/advertenties/csv-import/{type}/create', [CsvImportController::class, 'create'])
+        ->name('advertenties.csvimport.create');
+
+    // Verwerk de upload (store)
+    Route::post('/advertenties/csv-import/{type}/store', [CsvImportController::class, 'store'])
+        ->name('advertenties.csvimport.store');
+
     // Advertenties (koop/verkoop)
     Route::resource('advertenties', AdvertentieController::class)->parameters([
         'advertenties' => 'advertentie',
@@ -69,7 +78,7 @@ Route::middleware('auth')->group(function () {
         'verhuuradvertenties' => 'verhuuradvertentie',
     ]);
 
-    Route::get('/bedrijven/{bedrijf}', [BedrijfController::class, 'show'])->name('bedrijfs.show');
+//    Route::get('/bedrijven/{bedrijf}', [BedrijfController::class, 'show'])->name('bedrijfs.show');
 
     Route::get('/admin/bedrijven-zonder-factuur', function () {
         if (!Auth::check() || Auth::user()->role !== 'admin') {
