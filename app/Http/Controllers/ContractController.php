@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Contract;
 use Illuminate\Http\Request;
 use App\Models\Bedrijf;
-class ContractController
+use PDF;  // Zorg ervoor dat je een PDF-library zoals 'dompdf' hebt geïnstalleerd en gebruikt
+
+class ContractController extends Controller
 {
-    // In ContractController
     public function create($bedrijf_id)
     {
         $bedrijf = Bedrijf::find($bedrijf_id);
         if (!$bedrijf) {
             return redirect()->route('admin.bedrijven.zonder.factuur')->with('error', 'Bedrijf niet gevonden.');
         }
-        return view('contracts.create', compact('bedrijf'));
+        $contract = Contract::where('bedrijf_id', $bedrijf_id)->first();
+        return view('contracts.create', compact('bedrijf', 'contract'));
     }
 
     public function store(Request $request)
@@ -23,17 +25,42 @@ class ContractController
             'titel' => 'required|string',
             'bedrijf_id' => 'required|exists:bedrijfs,id',
             'factuur' => 'required|mimes:pdf|max:2048',
+            'prijs' => 'required|numeric',
         ]);
 
-        // Je logica voor het maken van de PDF en opslag
-        // Zorg ervoor dat je het contract opslaat met is_goedgekeurd op 0
-        // bijv:
+        // Haal bedrijfsgegevens op
+        $bedrijf = Bedrijf::findOrFail($request->bedrijf_id);
+
+        // Alleen basiscontractgegevens opslaan
         $contract = new Contract();
         $contract->bedrijf_id = $request->bedrijf_id;
-        // Opslaan van andere contract details en bestand...
-        $contract->is_goedgekeurd = 0; // Zorg dat het begin niet-goedgekeurd is
+        $contract->is_goedgekeurd = 0;
+
+        // Opslaan van het geüploade factuur PDF bestand
+        if ($request->hasFile('factuur')) {
+            $factuur = $request->file('factuur');
+            $bestandsnaam = time() . '_' . $factuur->getClientOriginalName();
+            $pad = $factuur->storeAs('public/contracts', $bestandsnaam);
+            $contract->bestand = 'storage/contracts/' . $bestandsnaam;
+        }
+
         $contract->save();
 
-        return redirect()->route('admin.bedrijven.zonder.factuur')->with('success', 'Contract aangemaakt.');
+        // PDF Genereren met alle gegevens
+        $data = [
+            'bedrijf' => $bedrijf->naam,
+            'titel' => $request->titel,
+            'bestand' => $bestandsnaam ?? '',
+            'prijs' => $request->prijs,
+            'slug' => $bedrijf->slug,
+            'huisstijl' => $bedrijf->huisstijl,
+        ];
+
+        $pdf = PDF::loadView('contracts.pdf', $data);
+        $pdfPath = 'contracts/contract_' . $bedrijf->id . '_' . time() . '.pdf';
+        $pdf->save(storage_path('app/public/' . $pdfPath));
+
+        return redirect()->route('admin.bedrijven.zonder.factuur')
+            ->with('success', 'Contract aangemaakt en PDF opgeslagen.');
     }
 }

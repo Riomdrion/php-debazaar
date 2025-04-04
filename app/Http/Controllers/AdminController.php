@@ -12,7 +12,11 @@ class AdminController extends Controller
             return redirect('/')->with('error', 'Je hebt geen toegang tot deze pagina.');
         }
 
-        $bedrijven = Bedrijf::doesntHave('contracts')->get();
+        // Fetch companies based on multiple conditions
+        $bedrijven = Bedrijf::whereDoesntHave('contracts')
+            ->orWhere(/* Other condition, e.g., 'status', '=', 'active' */)
+            ->get();
+
         return view('admin.bedrijven_zonder_factuur', compact('bedrijven'));
     }
 }

@@ -123,4 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+     * Package Service Providers...
+     */
+    Barryvdh\DomPDF\ServiceProvider::class,  // Voeg deze regel toe.
+
 ];
