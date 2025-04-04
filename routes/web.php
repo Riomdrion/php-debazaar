@@ -59,6 +59,11 @@ Route::middleware('auth')->group(function () {
         'advertenties' => 'advertentie',
     ]);
 
+    // Verhuuradvertenties
+    Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
+        'verhuuradvertenties' => 'verhuuradvertentie',
+    ]);
+
     // Landingspagina van bedrijf (publiek zichtbaar)
     Route::get('/{slug}', [LandingPageController::class, 'show'])->name('bedrijf.landing');
 
@@ -67,10 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/{slug}/pagebuilder', [PageBuilderController::class, 'update'])->name('pagebuilder.update');
 
 
-    // Verhuuradvertenties
-    Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
-        'verhuuradvertenties' => 'verhuuradvertentie',
-    ]);
+
 
     // Agenda
     Route::resource('agenda', AgendaController::class)->parameters([
