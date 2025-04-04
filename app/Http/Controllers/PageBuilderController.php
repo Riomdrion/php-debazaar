@@ -47,6 +47,6 @@ class PageBuilderController extends Controller
             }
         });
 
-        return redirect()->back()->with('success', 'Landingpage is succesvol bijgewerkt.');
+        return redirect()->action([LandingPageController::class, 'show'], ['slug' => $slug])->with('success', 'Landingpage is succesvol bijgewerkt.');
     }
 }

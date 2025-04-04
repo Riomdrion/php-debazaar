@@ -2,10 +2,12 @@
     <div class="max-w-4xl mx-auto py-12 px-6">
         <div class="flex justify-between items-center mb-10">
             <h1 class="text-4xl font-extrabold text-gray-800">{{ $bedrijf->naam }}</h1>
-            <a href="{{ route('pagebuilder.edit', ['slug' => $bedrijf->slug]) }}"
-               class="inline-block px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                ✏️ Pagebuilder
-            </a>
+            @if(auth()->user()->id == $bedrijf->user_id)
+                <a href="{{ route('pagebuilder.edit', ['slug' => $bedrijf->slug]) }}"
+                   class="inline-block px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
+                    ✏️ Pagina Bewerken
+                </a>
+            @endif
         </div>
 
         @foreach($components as $component)

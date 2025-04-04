@@ -19,12 +19,12 @@
             <div id="components-list">
                 {{-- bestaande componenten --}}
                 @foreach ($bedrijf->components as $index => $component)
-                    <x-component-builder
-                        :index="$index"
-                        :type="$component->type"
-                        :data="$component->data"
-                        :order="$component->order ?? 0"
-                    />
+                    <div class="component-wrapper"
+                         data-index="{{ $index }}"
+                         data-type="{{ $component->type }}"
+                         data-data='@json($component->data)'
+                         data-order="{{ $component->order ?? 0 }}">
+                    </div>
                 @endforeach
 
             </div>
@@ -44,91 +44,84 @@
     <script>
         let componentIndex = {{ count($components) }};
 
+        function renderFields(index, type, data = {}) {
+            let html = `
+            <div class="p-4 border rounded mb-4 bg-white shadow" data-index="${index}">
+                <label class="block font-semibold mb-1">Type</label>
+                <select name="components[${index}][type]" class="component-type w-full border p-2 rounded mb-2" required>
+                    <option value="">-- Kies een type --</option>
+                    <option value="text" ${type === 'text' ? 'selected' : ''}>Tekst</option>
+                    <option value="image" ${type === 'image' ? 'selected' : ''}>Afbeelding</option>
+                    <option value="video" ${type === 'video' ? 'selected' : ''}>Video</option>
+                    <option value="button" ${type === 'button' ? 'selected' : ''}>Knop</option>
+                </select>
+
+                <div class="dynamic-fields mb-2">`;
+
+            if (type === 'text') {
+                html += `
+                <label class="block text-sm">Titel</label>
+                <input type="text" name="components[${index}][data][title]" value="${data.title ?? ''}" class="title w-full border p-2 rounded mb-2">
+                <label class="block text-sm">Tekst</label>
+                <textarea name="components[${index}][data][body]" class="body w-full border p-2 rounded mb-2">${data.body ?? ''}</textarea>
+            `;
+            } else if (type === 'image') {
+                html += `
+                <label class="block text-sm">Afbeeldings-URL</label>
+                <input type="text" name="components[${index}][data][url]" value="${data.url ?? ''}" class="url w-full border p-2 rounded mb-2">
+                <label class="block text-sm">Alt-tekst</label>
+                <input type="text" name="components[${index}][data][alt]" value="${data.alt ?? ''}" class="alt w-full border p-2 rounded mb-2">
+            `;
+            } else if (type === 'video') {
+                html += `
+                <label class="block text-sm">YouTube Embed URL</label>
+                <input type="text" name="components[${index}][data][embed]" value="${data.embed ?? ''}" class="embed w-full border p-2 rounded mb-2">
+            `;
+            } else if (type === 'button') {
+                html += `
+                <label class="block text-sm">Knoptekst</label>
+                <input type="text" name="components[${index}][data][label]" value="${data.label ?? ''}" class="label w-full border p-2 rounded mb-2">
+                <label class="block text-sm">Link</label>
+                <input type="text" name="components[${index}][data][url]" value="${data.url ?? ''}" class="url w-full border p-2 rounded mb-2">
+            `;
+            }
+
+            html += `
+                </div>
+
+                <label class="block font-semibold mb-1">Volgorde</label>
+                <input type="number" name="components[${index}][order]" value="${data.order ?? 0}" class="w-full border p-2 rounded">
+            </div>
+        `;
+
+            return html;
+        }
+
+        // Laad bestaande componenten
+        document.querySelectorAll('.component-wrapper').forEach(wrapper => {
+            const index = wrapper.dataset.index;
+            const type = wrapper.dataset.type;
+            const data = JSON.parse(wrapper.dataset.data || '{}');
+            data.order = wrapper.dataset.order ?? 0;
+
+            wrapper.outerHTML = renderFields(index, type, data);
+        });
+
+        // Voeg nieuwe component toe
         document.getElementById('add-component').addEventListener('click', function () {
             const list = document.getElementById('components-list');
             const index = componentIndex++;
 
-            const wrapper = document.createElement('div');
-            wrapper.classList.add('p-4', 'border', 'rounded', 'mb-4', 'bg-white', 'shadow');
-            wrapper.setAttribute('data-index', index);
-            wrapper.innerHTML = `
-            <label class="block font-semibold mb-1">Type</label>
-            <select name="components[${index}][type]" class="component-type w-full border p-2 rounded mb-2" required>
-                <option value="">-- Kies een type --</option>
-                <option value="text">Tekst</option>
-                <option value="image">Afbeelding</option>
-                <option value="video">Video</option>
-                <option value="button">Knop</option>
-            </select>
-
-            <div class="dynamic-fields mb-2"></div>
-
-            <textarea name="components[${index}][data]" class="data-json hidden"></textarea>
-
-            <label class="block font-semibold mb-1">Volgorde</label>
-            <input type="number" name="components[${index}][order]" value="0" class="w-full border p-2 rounded">
-        `;
-
-            list.appendChild(wrapper);
+            list.insertAdjacentHTML('beforeend', renderFields(index, '', {}));
         });
 
-        // Dynamisch veld aanpassen bij wijzigen van type
+        // Dynamisch aanpassen velden als je type verandert
         document.addEventListener('change', function (e) {
             if (e.target.classList.contains('component-type')) {
                 const wrapper = e.target.closest('[data-index]');
                 const index = wrapper.getAttribute('data-index');
-                const fields = wrapper.querySelector('.dynamic-fields');
-                const jsonField = wrapper.querySelector('.data-json');
-
-                let html = '';
-                let data = {};
-
-                switch (e.target.value) {
-                    case 'text':
-                        html = `
-                        <label class="block text-sm">Titel</label>
-                        <input type="text" class="title w-full border p-2 rounded mb-2">
-                        <label class="block text-sm">Tekst</label>
-                        <textarea class="body w-full border p-2 rounded mb-2"></textarea>
-                    `;
-                        break;
-                    case 'image':
-                        html = `
-                        <label class="block text-sm">Afbeeldings-URL</label>
-                        <input type="text" class="url w-full border p-2 rounded mb-2">
-                        <label class="block text-sm">Alt-tekst</label>
-                        <input type="text" class="alt w-full border p-2 rounded mb-2">
-                    `;
-                        break;
-                    case 'video':
-                        html = `
-                        <label class="block text-sm">YouTube Embed URL</label>
-                        <input type="text" class="embed w-full border p-2 rounded mb-2">
-                    `;
-                        break;
-                    case 'button':
-                        html = `
-                        <label class="block text-sm">Knoptekst</label>
-                        <input type="text" class="label w-full border p-2 rounded mb-2">
-                        <label class="block text-sm">Link</label>
-                        <input type="text" class="url w-full border p-2 rounded mb-2">
-                    `;
-                        break;
-                }
-
-                fields.innerHTML = html;
-
-                // Realtime sync van data naar JSON-veld
-                fields.addEventListener('input', function () {
-                    const inputs = fields.querySelectorAll('input, textarea');
-                    const obj = {};
-                    inputs.forEach(input => {
-                        if (input.classList.length > 0) {
-                            obj[input.classList[0]] = input.value;
-                        }
-                    });
-                    jsonField.value = JSON.stringify(obj);
-                });
+                const type = e.target.value;
+                wrapper.outerHTML = renderFields(index, type, {});
             }
         });
     </script>
