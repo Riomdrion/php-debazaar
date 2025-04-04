@@ -1,23 +1,23 @@
 <x-app-layout>
     <div class="p-6 max-w-7xl mx-auto space-y-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 Advertenties</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 {{ __('adverts.advertentie') }}</h1>
 
             <div>
                 <a href="{{ route('advertenties.csvimport.create', ['type' => 'advertenties']) }}"
                    class="inline-block px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
-                    ➕ importeer advertenties
+                    ➕ {{ __('adverts.importeer_advertenties') }}
                 </a>
                 <a href="{{ route('advertenties.create') }}"
                    class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                    ➕ Nieuwe advertentie
+                    ➕ {{ __('adverts.advertentie_aanmaken') }}
                 </a>
             </div>
         </div>
 
         <form method="GET" class="w-full md:w-1/3">
             <input type="text" name="zoek" value="{{ request('zoek') }}"
-                   placeholder="🔍 Zoek op titel..."
+                   placeholder="🔍 {{ __('adverts.Zoek_op_titel') }}..."
                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400">
         </form>
 
