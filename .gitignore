@@ -2,7 +2,10 @@
 /node_modules
 /public/build
 /public/hot
-/public/storage
+!/public/favicon.ico
+!/public/robots.txt
+!/public/.htaccess
+
 /storage/*.key
 /storage/pail
 /vendor
