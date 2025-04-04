@@ -1,3 +1,14 @@
+@php
+    $tailwindColorNames = [
+        'slate', 'gray', 'zinc', 'neutral', 'stone',
+        'red', 'orange', 'amber', 'yellow', 'lime',
+        'green', 'emerald', 'teal', 'cyan', 'sky',
+        'blue', 'indigo', 'violet', 'purple', 'fuchsia',
+        'pink', 'rose'
+    ];
+@endphp
+
+
 <x-app-layout>
     <div class="max-w-4xl mx-auto py-8">
         <h1 class="text-2xl font-semibold mb-6">Bedrijf bewerken: {{ $bedrijf->naam }}</h1>
@@ -53,17 +64,32 @@
                 @enderror
             </div>
 
-            {{-- Huisstijl --}}
             <div>
-                <label for="hs-color-input" class="block text-sm font-medium mb-2 dark:text-white">Color picker</label>
-                <input type="color"
-                       class="p-1 h-10 w-14 block bg-white border border-gray-200 cursor-pointer rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700"
-                       id="hs-color-input" name="huisstijl" value="{{ old('huisstijl', $bedrijf->huisstijl) }}"
-                       title="Choose your color">
+                <label for="huisstijl" class="block text-sm font-medium mb-2 dark:text-white">
+                    Kies een Tailwind-kleur
+                </label>
+                <select
+                    id="huisstijl"
+                    name="huisstijl"
+                    class="block w-full mt-1 p-2 border border-gray-300 rounded-md
+               focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-neutral-900 dark:border-neutral-700"
+                >
+                    <option value="">Geen kleur (standaard)</option>
+                    @foreach ($tailwindColorNames as $colorName)
+                        <option
+                            value="{{ $colorName }}"
+                            @if (old('huisstijl', $bedrijf->huisstijl) === $colorName) selected @endif
+                        >
+                            {{ ucfirst($colorName) }}
+                        </option>
+                    @endforeach
+                </select>
+
                 @error('huisstijl')
                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
+
             {{-- Logo --}}
             {{-- Submit button --}}
             <div>

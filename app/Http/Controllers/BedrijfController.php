@@ -77,6 +77,6 @@ class BedrijfController extends Controller
 
         $bedrijf->update($request->all());
 
-        return redirect()->back()->with('success', 'Bedrijfsinstellingen zijn bijgewerkt.');
+        return redirect()->route('bedrijf.landing', ['slug' => $bedrijf->slug])->with('success', 'Bedrijfsinstellingen zijn bijgewerkt.');
     }
 }
