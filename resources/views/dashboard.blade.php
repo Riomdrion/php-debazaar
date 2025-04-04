@@ -4,6 +4,12 @@
             <div class="p-6 max-w-7xl mx-auto space-y-6">
                 <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 Recente Advertenties</h1>
 
+                <form method="GET" class="w-full md:w-1/3">
+                    <input type="text" name="zoek" value="{{ request('zoek') }}"
+                           placeholder="🔍 Zoek op titel..."
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400">
+                </form>
+
                 <!-- Normal Advertisements -->
                 <h2 class="text-2xl font-bold text-gray-800">Normale Advertenties</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">

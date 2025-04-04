@@ -15,10 +15,24 @@ class VerhuurAdvertentieController extends Controller
 {
     public function index(Request $request)
     {
+        // Haal de zoekterm op uit de request
+        $zoekTerm = $request->input('zoek', '');
+
+        // Start met een basisquery
         $query = VerhuurAdvertentie::query();
 
+        // Voeg een zoekfunctie toe indien er een zoekterm is
+        if ($zoekTerm !== '') {
+            $query->where('titel', 'like', '%' . $zoekTerm . '%');
+        }
+
+        // Filter op actieve advertenties
         $query->where('is_actief', true);
+
+        // Sorteer op aanmakingsdatum
         $verhuuradvertenties = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Retourneer de view met gepagineerde resultaten
         return view('verhuuradvertenties.index', compact('verhuuradvertenties'));
     }
 

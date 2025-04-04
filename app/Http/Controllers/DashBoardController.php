@@ -15,11 +15,18 @@ class DashBoardController extends Controller
      */
     public function index(Request $request)
     {
+        $zoekTerm = $request->input('zoek', '');
         $normalPage = $request->input('normalPage', 1);
         $rentalPage = $request->input('rentalPage', 1);
 
-        $recentNormalAds = Advertentie::latest()->paginate(4, ['*'], 'normalPage', $normalPage);
-        $recentRentalAds = VerhuurAdvertentie::where('is_actief', 1)->latest()->paginate(4, ['*'], 'rentalPage', $rentalPage);
+        $recentNormalAds = Advertentie::when($zoekTerm, function ($query, $zoekTerm) {
+            return $query->where('titel', 'like', "%{$zoekTerm}%");
+        })->latest()->paginate(4, ['*'], 'normalPage', $normalPage);
+
+        $recentRentalAds = VerhuurAdvertentie::where('is_actief', 1)
+            ->when($zoekTerm, function ($query, $zoekTerm) {
+                return $query->where('titel', 'like', "%{$zoekTerm}%");
+            })->latest()->paginate(4, ['*'], 'rentalPage', $rentalPage);
 
         return view('dashboard', compact('recentNormalAds', 'recentRentalAds', 'normalPage', 'rentalPage'));
     }
