@@ -8,14 +8,15 @@ use Illuminate\Notifications\Notifiable;
 
 class Bedrijf extends Model
 {
-    /** @use HasFactory<\Database\Factories\BedrijfFactory> */
     use HasFactory, Notifiable;
 
+    protected $table = 'bedrijfs';
     // Specify which fields can be mass assigned
     protected $fillable = [
         'naam',         // Add 'naam' to allow mass assignment
         'slug',   // Add 'custom_url' to allow mass assignment
-        'user_id',      // Add 'user_id' if you also want to allow assignment during relationship linking
+        'user_id',
+        'huisstijl'// Add 'user_id' if you also want to allow assignment during relationship linking
     ];
 
     public function user() {

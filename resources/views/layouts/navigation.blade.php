@@ -39,6 +39,12 @@
                         <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             {{ __('Profile') }}
                         </a>
+                        <!-- bedrijf -->
+                        @if (Auth::user()->bedrijf)
+                            <a href="{{ route('bedrijf.edit', ['id' => Auth::user()->bedrijf->id]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                {{ __('Bedrijfs profiel') }}
+                            </a>
+                        @endif
                         <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf

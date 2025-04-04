@@ -54,6 +54,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Bedrijf bedrijf
+    Route::get('/bedrijfsprofiel/{id}', [BedrijfController::class, 'edit'])->name('bedrijf.edit');
+    Route::patch('/bedrijfsprofiel', [BedrijfController::class, 'update'])->name('bedrijf.update');
+
     // Advertenties (koop/verkoop)
     Route::resource('advertenties', AdvertentieController::class)->parameters([
         'advertenties' => 'advertentie',

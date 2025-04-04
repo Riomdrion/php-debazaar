@@ -55,35 +55,28 @@ class BedrijfController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-
+        $bedrijf = Bedrijf::findOrFail($id);
+        return view('bedrijf.edit', compact('bedrijf'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $slug)
+    public function update(Request $request)
     {
-        $bedrijf = Bedrijf::where('slug', $slug)->firstOrFail();
+        // Ophalen via ID
+        $bedrijf = Bedrijf::findOrFail($request->input('id'));
 
         $request->validate([
             'naam' => 'required|string',
-            'slug' => 'required|string|unique:bedrijven,slug,' . $bedrijf->id,
-            'beschrijving' => 'nullable|string',
+            'slug' => 'required|string|unique:bedrijfs,slug,' . $bedrijf->id,
             'huisstijl' => 'nullable|string',
         ]);
 
         $bedrijf->update($request->all());
 
         return redirect()->back()->with('success', 'Bedrijfsinstellingen zijn bijgewerkt.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-
     }
 }
