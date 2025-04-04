@@ -9,7 +9,11 @@
     }
 @endphp
 
-<nav class="bg-{{ Auth::user()->bedrijf->huisstijl }}-500 dark:bg-gray-800">
+    @if(Auth::user()->bedrijf)
+    <nav class="bg-{{ Auth::user()->bedrijf->huisstijl }}-500 dark:bg-gray-800">
+        @else
+    <nav class="bg-white dark:bg-gray-800">
+        @endif
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
