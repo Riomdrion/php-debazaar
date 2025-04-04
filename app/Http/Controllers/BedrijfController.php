@@ -79,4 +79,10 @@ class BedrijfController extends Controller
 
         return redirect()->route('bedrijf.landing', ['slug' => $bedrijf->slug])->with('success', 'Bedrijfsinstellingen zijn bijgewerkt.');
     }
+
+    public function wachtenOpFactuur(Bedrijf $bedrijf)
+    {
+        $contract = $bedrijf->contracts()->first();
+        return view('bedrijf.wachten_op_factuur', compact('bedrijf', 'contract'));
+    }
 }
