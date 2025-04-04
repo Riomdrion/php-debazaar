@@ -24,6 +24,7 @@ class PageBuilderController extends Controller
             return redirect()->back()->with('error', 'Geen geldige componentdata ontvangen.');
         }
 
+
         DB::transaction(function () use ($request, $bedrijf) {
             $bedrijf->components()->delete();
 
@@ -37,6 +38,11 @@ class PageBuilderController extends Controller
                     if (json_last_error() !== JSON_ERROR_NONE) {
                         throw new \Exception("Ongeldige JSON in component #{$index}.");
                     }
+                }
+
+                // Check if the type is 'video' and modify the URL if necessary
+                if ($compData['type'] === 'video' && isset($data['embed'])) {
+                    $data['embed'] = str_replace('https://youtu.be/', '', $data['embed']);
                 }
 
                 $bedrijf->components()->create([
