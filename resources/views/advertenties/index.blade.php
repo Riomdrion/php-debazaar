@@ -3,10 +3,16 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
             <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 Advertenties</h1>
 
-            <a href="{{ route('advertenties.create') }}"
-               class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                ➕ Nieuwe advertentie
-            </a>
+            <div>
+                <a href="{{ route('advertenties.csvimport.create', ['type' => 'advertenties']) }}"
+                   class="inline-block px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
+                    ➕ importeer advertenties
+                </a>
+                <a href="{{ route('advertenties.create') }}"
+                   class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    ➕ Nieuwe advertentie
+                </a>
+            </div>
         </div>
 
         <form method="GET" class="w-full md:w-1/3">
