@@ -30,13 +30,11 @@
                 </div>
 
             @elseif($type === 'video')
-                <div class="mb-10 aspect-w-16 aspect-h-9">
-                    <iframe
-                        src="{{ $data['embed'] ?? '#' }}"
-                        frameborder="0"
-                        allowfullscreen
-                        class="w-full h-full rounded-lg shadow-md">
-                    </iframe>
+                <div class="mb-10 aspect-w-16 aspect-h-9 flex justify-center items-center rounded-lg overflow-hidden">
+                    <iframe class="rounded-l-md" width="800" height="450" src="https://www.youtube.com/embed/{{ $data['embed'] ?? '#' }}"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
 
             @elseif($type === 'button')
