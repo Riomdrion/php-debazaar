@@ -2,7 +2,7 @@
     <div class="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md mt-10">
 
         <h1 class="text-2xl font-bold text-gray-900 mb-6">
-            Importeer {{ $type === 'verhuur' ? 'Verhuuradvertenties' : 'Advertenties' }} via CSV
+            Importeer {{ $type === 'verhuuradvertenties' ? 'Verhuuradvertenties' : 'Advertenties' }} via CSV
         </h1>
 
         @if ($errors->any())

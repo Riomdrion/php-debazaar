@@ -44,66 +44,56 @@ class CsvImportController extends Controller
             return back()->withErrors(['Bestand kan niet worden geopend.']);
         }
 
-        // Eventueel de eerste rij overslaan als dat kolom-headers zijn
-        // fgetcsv($handle);
-
-        // Teller voor aantal succesvol aangemaakte advertenties
         $createdCount = 0;
 
-        // Voorbeeld van kolommen die we in de CSV verwachten
-        // (pas aan aan jouw eigen kolommen)
-        // - titel
-        // - beschrijving
-        // - prijs/dagprijs/enz.
-        // - borg (alleen voor verhuur)
-        // - is_actief
-        // - etc...
         while (($data = fgetcsv($handle, 1000, ',')) !== false) {
-            // Kolommen mappen (afhankelijk van je CSV)
-            // Let op: bij te weinig kolommen -> controle + overslaan.
-            $titel       = $data[0] ?? null;
-            $beschrijving= $data[1] ?? null;
-            $prijs       = $data[2] ?? null;  // Dagprijs of koopprijs
-            $borg        = $data[3] ?? null;  // Alleen relevant bij verhuur
+            $titel = $data[0] ?? null;
+            $beschrijving = $data[1] ?? null;
+            $dagprijs = $data[2] ?? null;
+            $borg = $data[3] ?? null;
+            $vervangingswaarde = $data[4] ?? null;
 
-            // Als een van de verplichte velden ontbreekt, skip
-            if (!$titel || !$beschrijving || !$prijs) {
-                // Je kunt evt. loggen dat een regel is overgeslagen
+            // Verplicht velden controleren voor verhuuradvertentie
+            if ($type === 'verhuuradvertenties' && (!$titel || !$beschrijving || !$dagprijs || !$borg || !$vervangingswaarde)) {
                 continue;
             }
 
-            // 1) Controleer op limiet (max. 4 advertenties of max. 4 verhuuradvertenties)
-            //    Voorkomen dat we over de limiet gaan.
-            //    Je zou dit ook vóór de loop kunnen checken, maar dan kun je niet deels importeren.
-            if ($type === 'verhuur') {
+            // Verplicht velden controleren voor normale advertentie
+            if ($type !== 'verhuuradvertenties' && (!$titel || !$beschrijving || !$dagprijs)) {
+                continue;
+            }
+
+            if ($type === 'verhuuradvertenties') {
                 if (Auth::user()->verhuurAdvertenties()->count() >= 4) {
-                    // Geen nieuwe verhuuradvertentie meer mogelijk
                     break;
                 }
 
-                // 2) Valideren/opslaan (kopie van je store-logic uit VerhuurAdvertentieController)
                 $verhuurAdvertentie = new VerhuurAdvertentie();
-                $verhuurAdvertentie->titel        = $titel;
+                $verhuurAdvertentie->titel = $titel;
                 $verhuurAdvertentie->beschrijving = $beschrijving;
-                $verhuurAdvertentie->dagprijs     = (float)$prijs; // hier is prijs de dagprijs
-                $verhuurAdvertentie->borg         = (float)$borg;
-                $verhuurAdvertentie->user_id      = Auth::id();
-                // Als je CSV een kolom had voor is_actief
-                // $verhuurAdvertentie->is_actief = (bool)$data[4];
+                $verhuurAdvertentie->dagprijs = (float)$dagprijs;
+                $verhuurAdvertentie->borg = (float)$borg;
+                $verhuurAdvertentie->vervangingswaarde = (float)$vervangingswaarde;
+                $verhuurAdvertentie->user_id = Auth::id();
+                $verhuurAdvertentie->is_actief = true;
                 $verhuurAdvertentie->save();
 
-                // QR-code genereren
-                $qrCode  = new QrCode(route('verhuuradvertenties.show', $verhuurAdvertentie->id));
-                $writer  = new PngWriter();
-                $result  = $writer->write($qrCode);
+                // QR-code genereren en opslaan
+                $qrCode = new QrCode(route('verhuuradvertenties.show', $verhuurAdvertentie->id));
+                $writer = new PngWriter();
+                $result = $writer->write($qrCode);
+
+                if (!file_exists(public_path('qrcodes'))) {
+                    mkdir(public_path('qrcodes'), 0755, true);
+                }
+
                 $filename = 'qrcodes/' . Str::uuid() . '.png';
                 $path = public_path($filename);
                 $result->saveToFile($path);
 
-                $verhuurAdvertentie->qr_code = 'storage/' . $filename;
+                $verhuurAdvertentie->qr_code = $filename;
                 $verhuurAdvertentie->save();
 
-                // WearSettings aanmaken
                 WearSetting::create([
                     'verhuur_advertentie_id' => $verhuurAdvertentie->id,
                     'slijtage_per_dag' => 1.0,
@@ -113,42 +103,30 @@ class CsvImportController extends Controller
 
                 $createdCount++;
             } else {
-                // Gaan we ervan uit dat $type === 'normaal' (of iets anders voor de ‘gewone’ advertentie)
-                // Check limiet
                 if (Auth::user()->advertenties()->count() >= 4) {
-                    // Geen nieuwe 'gewone' advertentie meer mogelijk
                     break;
                 }
 
-                // 2) Opslaan (kopie van je store-logic uit AdvertentieController)
                 $advertentie = Auth::user()->advertenties()->create([
-                    'titel'       => $titel,
-                    'beschrijving'=> $beschrijving,
-                    'prijs'       => (float)$prijs,
+                    'titel' => $titel,
+                    'beschrijving' => $beschrijving,
+                    'prijs' => (float)$dagprijs,
                 ]);
 
-                // QR-code genereren
                 $qrCode = new QrCode(route('advertenties.show', $advertentie->id));
                 $writer = new PngWriter();
                 $result = $writer->write($qrCode);
 
-                // Zorg ervoor dat map bestaat (public/qrcodes)
                 if (!file_exists(public_path('qrcodes'))) {
                     mkdir(public_path('qrcodes'), 0755, true);
                 }
 
-                // Opslaan direct in public map
                 $filename = 'qrcodes/' . Str::uuid() . '.png';
                 $path = public_path($filename);
                 $result->saveToFile($path);
 
-                // URL opslaan
                 $advertentie->qr_code = $filename;
                 $advertentie->save();
-
-
-                // Als je koppelingen wilt verwerken, moet je de IDs uit CSV halen
-                // en net zoals in je store()-methode van Advertentie afhandelen
 
                 $createdCount++;
             }
