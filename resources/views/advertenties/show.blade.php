@@ -22,7 +22,7 @@
             </div>
             <div>
                 @if ($advertentie->user && $advertentie->user->bedrijf)
-                    <a href="{{ route('bedrijven.show', ['bedrijf' => $advertentie->user->bedrijf->id]) }}"
+                    <a href="{{ route('bedrijf.landing', ['slug' => $advertentie->user->bedrijf->slug]) }}"
                        class="text-blue-500 hover:underline">
                         Bekijk Bedrijfsreviews
                     </a>
