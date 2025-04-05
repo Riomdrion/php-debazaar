@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'Bedrijf_bewerken' => 'Bedrijf bewerken',
+    'Naam' => 'Naam',
+    'slug' => 'slug',
+    'Kies_een_Tailwind-kleur' => 'Kies een Tailwind-kleur',
+    'Geen_kleur_(standaard)' => 'Geen kleur (standaard)',
+    'Opslaan' => 'Opslaan',
+    'Pagina_Bewerken' => 'Pagina Bewerken',
+    'Onbekend_component_type' => 'Onbekend component type',
+    'tekst' => 'tekst',
+    'afbeelding' => 'afbeelding',
+    'video' => 'video',
+    'knop' => 'knop',
+    'Titel' => 'Titel',
+    'afbeelding_url' => 'afbeelding url',
+    'youtube_url' => 'youtube url',
+    'knoptekst' => 'knoptekst',
+    'Link' => 'Link',
+    'Alt-tekst' => 'Alt-tekst',
+    'Pagebuilder_voor' => 'Pagebuilder voor',
+    'Component_toevoegen' => 'Component toevoegen',
+    'Kies_een_type' => 'Kies een type',
+];
