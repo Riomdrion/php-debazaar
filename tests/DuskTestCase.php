@@ -38,15 +38,15 @@ abstract class DuskTestCase extends BaseTestCase
 
 
 
-//    protected function rodin(): User
-//    {
-//        return User::firstOrCreate(
-//            ['email' => 'rodin@example.com'],
-//            [
-//                'name' => 'Rodin',
-//                'password' => bcrypt('password4'),
-//                'email_verified_at' => now(),
-//            ]
-//        );
-//    }
+    protected function rodin(): User
+    {
+        return User::firstOrCreate(
+            ['email' => 'rodin@example.com'],
+            [
+                'name' => 'Rodin',
+                'password' => bcrypt('password4'),
+                'email_verified_at' => now(),
+            ]
+        );
+    }
 }
