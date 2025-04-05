@@ -11,7 +11,7 @@
 
 <x-app-layout>
     <div class="max-w-4xl mx-auto py-8">
-        <h1 class="text-2xl font-semibold mb-6">Bedrijf bewerken: {{ $bedrijf->naam }}</h1>
+        <h1 class="text-2xl font-semibold mb-6">{{ __('comp.Bedrijf_bewerken') }}: {{ $bedrijf->naam }}</h1>
 
         @if (session('success'))
             <div class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700">
@@ -29,7 +29,7 @@
             {{-- Naam --}}
             <div>
                 <label for="naam" class="block text-sm font-medium text-gray-700 mb-1">
-                    Naam
+                    {{ __('comp.Naam') }}
                 </label>
                 <input
                     type="text"
@@ -48,7 +48,7 @@
             {{-- Slug --}}
             <div>
                 <label for="slug" class="block text-sm font-medium text-gray-700 mb-1">
-                    Slug
+                    {{ __('comp.slug') }}
                 </label>
                 <input
                     type="text"
@@ -66,7 +66,7 @@
 
             <div>
                 <label for="huisstijl" class="block text-sm font-medium mb-2 dark:text-white">
-                    Kies een Tailwind-kleur
+                    {{ __('comp.Kies_een_Tailwind-kleur') }}
                 </label>
                 <select
                     id="huisstijl"
@@ -74,7 +74,7 @@
                     class="block w-full mt-1 p-2 border border-gray-300 rounded-md
                focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-neutral-900 dark:border-neutral-700"
                 >
-                    <option value="">Geen kleur (standaard)</option>
+                    <option value="">{{ __('comp.Geen_kleur_(standaard)') }}</option>
                     @foreach ($tailwindColorNames as $colorName)
                         <option
                             value="{{ $colorName }}"
@@ -99,7 +99,7 @@
                            font-semibold text-white tracking-widest hover:bg-indigo-700 focus:outline-none
                            focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                    Opslaan
+                    {{ __('comp.Opslaan') }}
                 </button>
             </div>
         </form>

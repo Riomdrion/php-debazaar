@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="max-w-4xl mx-auto py-8">
-        <h1 class="text-3xl font-bold mb-6">Pagebuilder voor {{ $bedrijf->naam }}</h1>
+        <h1 class="text-3xl font-bold mb-6">{{ __('comp.Pagebuilder_voor') }} {{ $bedrijf->naam }}</h1>
 
         @if(session('success'))
             <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
@@ -30,12 +30,12 @@
             </div>
 
             <button type="button" id="add-component" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mb-6">
-                + Component toevoegen
+                + {{ __('comp.Component_toevoegen') }}
             </button>
 
             <div>
                 <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded">
-                    Opslaan
+                    {{ __('comp.Opslaan') }}
                 </button>
             </div>
         </form>
