@@ -2,42 +2,41 @@
 
 namespace Tests;
 
-use App\Models\User;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Support\Collection;
 use Laravel\Dusk\TestCase as BaseTestCase;
-use PHPUnit\Framework\Attributes\BeforeClass;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    #[BeforeClass]
+    use CreatesApplication;
+
+
     public static function prepare(): void
     {
         if (! static::runningInSail()) {
-            static::startChromeDriver(['--port=9515']);
+            static::startChromeDriver();
         }
     }
 
-    protected function driver(): RemoteWebDriver
+
+    public function driver()
     {
-        $options = (new ChromeOptions)->addArguments([
-            '--window-size=1920,1080',
-            '--disable-gpu',
-            '--headless=new',
-            '--disable-search-engine-choice-screen',
-            '--disable-smooth-scrolling',
-        ]);
+        $options = (new \Facebook\WebDriver\Chrome\ChromeOptions)
+            ->addArguments(['--disable-gpu', '--headless']);
 
-        $options->setBinary('C:\Program Files\Google\Chrome\Application\chrome.exe');
+        $capabilities = \Facebook\WebDriver\Remote\DesiredCapabilities::chrome();
+        $capabilities->setCapability(
+            \Facebook\WebDriver\Chrome\ChromeOptions::CAPABILITY, $options
+        );
 
-        return RemoteWebDriver::create(
-            $_ENV['DUSK_DRIVER_URL'] ?? env('DUSK_DRIVER_URL', 'http://localhost:9515'),
-            [
-                ChromeOptions::CAPABILITY => $options,
-            ]
+        return \Facebook\WebDriver\Remote\RemoteWebDriver::create(
+            'http://localhost:50942', $capabilities
         );
     }
+
+
 
     protected function rodin(): User
     {
