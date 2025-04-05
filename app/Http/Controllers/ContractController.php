@@ -40,7 +40,6 @@ class ContractController extends Controller
         if ($request->hasFile('factuur')) {
             $factuur = $request->file('factuur');
             $bestandsnaam = time() . '_' . $factuur->getClientOriginalName();
-            $pad = $factuur->storeAs('public/contracts', $bestandsnaam);
             $contract->bestand = 'storage/contracts/' . $bestandsnaam;
         }
 
@@ -62,5 +61,52 @@ class ContractController extends Controller
 
         return redirect()->route('admin.bedrijven.zonder.factuur')
             ->with('success', 'Contract aangemaakt en PDF opgeslagen.');
+    }
+    public function show($id)
+    {
+        $contract = Contract::findOrFail($id);
+
+        // Volledig pad naar het PDF-bestand
+        $fullPath = storage_path('app/public/' . $contract->bestand);
+
+        // Controleer of het bestand bestaat
+        if (!file_exists($fullPath)) {
+            abort(404, 'Bestand niet gevonden');
+        }
+
+        // Stuur het bestand als download of inline weergave
+        return response()->file($fullPath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="contract.pdf"'
+        ]);
+    }
+    public function approve($id)
+    {
+        $contract = Contract::findOrFail($id);
+
+        // Zet is_goedgekeurd op 1
+        $contract->is_goedgekeurd = 1;
+        $contract->save();
+
+        return redirect()->back()->with('success', 'Contract is goedgekeurd');
+    }
+    // In je ContractController
+    public function goedkeuren()
+    {
+        // Haal het bedrijf op van de ingelogde gebruiker
+        $bedrijf = auth()->user()->bedrijf;
+
+        // Als de gebruiker geen bedrijf heeft, return een lege collectie of een foutmelding
+        if (!$bedrijf) {
+            return view('contracts.goedkeuren', ['contracts' => collect()]);
+        }
+
+        // Haal alleen de niet-goedgekeurde contracten op voor het bedrijf van de ingelogde gebruiker
+        $contracts = Contract::where('bedrijf_id', $bedrijf->id)
+            ->where('is_goedgekeurd', 0)
+            ->with('bedrijf')
+            ->get();
+
+        return view('contracts.goedkeuren', compact('contracts'));
     }
 }

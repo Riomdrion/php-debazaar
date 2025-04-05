@@ -86,6 +86,9 @@ Route::middleware('auth')->group(function () {
         return view('contracts.goedkeuren');
     })->name('contracts.goedkeuren'); // Correct spelling en name aanpassing
 
+    Route::get('/contracts/goedkeuren', [ContractController::class, 'goedkeuren'])
+        ->name('contracts.goedkeuren')
+        ->middleware('auth');
 
 
     Route::get('/admin/bedrijven-zonder-factuur', function () {

@@ -11,4 +11,8 @@ class Contract extends Model
     public function bedrijf() {
         return $this->belongsTo(Bedrijf::class);
     }
+    public function scopePending($query)
+    {
+        return $query->where('is_goedgekeurd', 0);
+    }
 }

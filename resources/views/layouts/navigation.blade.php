@@ -38,6 +38,13 @@
                                 :active="request()->routeIs('verhuuradvertenties')">
                         {{ __('adverts.verhuuradvertenties') }}
                     </x-nav-link>
+
+                    <!-- Zakelijk item -->
+                    @if (Auth::user()->role == 'zakelijk')
+                        <x-nav-link :href="route('contracts.goedkeuren')" :active="request()->routeIs('contracts.goedkeuren')">
+                            {{ __('Goedkeuren') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
