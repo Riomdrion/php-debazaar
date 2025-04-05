@@ -55,11 +55,11 @@
                 <div class="flex items-center space-x-2">
                     <input type="checkbox" name="is_favoriet"
                            {{ $isFavoriet ? 'checked' : '' }} class="form-checkbox text-blue-600">
-                    <label class="text-gray-700">{{ __('adverts.opslaan') }}</label>
+                    <label class="text-gray-700">{{ __('adverts.Toevoegen_aan_favorieten') }}</label>
                 </div>
                 <button type="submit"
                         class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                    {{ __('adverts.Toevoegen_aan_favorieten') }}
+                    {{ __('adverts.opslaan') }}
                 </button>
             </form>
         </div>

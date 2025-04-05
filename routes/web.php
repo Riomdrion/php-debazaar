@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
      * Resource routes voor jouw Bazaar-app
      * Deze genereren automatisch de 7 RESTful routes (index, create, store, show, edit, update, destroy)
      */
+    Route::get('/mydashboard', [\App\Http\Controllers\DashBoardController::class, 'index2'])->name('mydashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

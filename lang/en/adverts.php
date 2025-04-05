@@ -101,4 +101,14 @@ return [
     'Normale_Advertenties' => 'Normal Advertisements',
     'Geen_normale_advertenties_gevonden' => 'No normal advertisements found',
     'Geen_verhuur_advertenties_gevonden.' => 'No rental advertisements found.',
+    'Mijn_overzicht' => 'My Dashboard',
+    'Mijn_Gekochte_Items' => 'My Purchased Items',
+    'Geboden_bedrag' => 'Bid Amount',
+    'Bekijk_advertentie' => 'View Advertisement',
+    'Je_hebt_nog_geen_items_gewonnen' => 'You have not won any items yet.',
+    'Mijn_Favoriete_Advertenties' => 'My Favorite Advertisements',
+    'Geen_favoriete_normale_advertenties' => 'No favorite normal advertisements',
+    'Mijn_Favoriete_Verhuuradvertenties' => 'My Favorite Rental Advertisements',
+    'Geen_favoriete_verhuuradvertenties' => 'No favorite rental advertisements',
+
 ];
