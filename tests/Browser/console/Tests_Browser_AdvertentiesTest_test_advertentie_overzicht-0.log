@@ -3,18 +3,18 @@
         "level": "SEVERE",
         "message": "https:\/\/php-debazaar.test:5175\/@vite\/client - Failed to load resource: net::ERR_CONNECTION_REFUSED",
         "source": "network",
-        "timestamp": 1743867137169
+        "timestamp": 1743867131997
     },
     {
         "level": "SEVERE",
         "message": "https:\/\/php-debazaar.test:5175\/resources\/js\/app.js - Failed to load resource: net::ERR_CONNECTION_REFUSED",
         "source": "network",
-        "timestamp": 1743867137171
+        "timestamp": 1743867131998
     },
     {
         "level": "SEVERE",
         "message": "https:\/\/php-debazaar.test:5175\/resources\/css\/app.css - Failed to load resource: net::ERR_CONNECTION_REFUSED",
         "source": "network",
-        "timestamp": 1743867137171
+        "timestamp": 1743867132011
     }
 ]
