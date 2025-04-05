@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests;
-
+use app\Models\User;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -32,7 +32,7 @@ abstract class DuskTestCase extends BaseTestCase
         );
 
         return \Facebook\WebDriver\Remote\RemoteWebDriver::create(
-            'http://localhost:50942', $capabilities
+            'http://localhost:52256', $capabilities
         );
     }
 
