@@ -16,13 +16,10 @@
                                            width="100%"
                                            height="400px" />
                                 </div>
-                                <form action="{{ route('contracts.goedkeuren', $contract->id) }}"
-                                      method="POST"
-                                      class="mt-4">
+                                <form action="{{ route('contracts.approve', $contract->id) }}" method="POST" class="mt-4">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit"
-                                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                         Goedkeuren
                                     </button>
                                 </form>

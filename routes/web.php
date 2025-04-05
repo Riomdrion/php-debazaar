@@ -77,19 +77,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/contracts/create{bedrijf_id}', [ContractController::class, 'create'])->name('contracts.create');
     Route::post('/contracts', [ContractController::class, 'store'])->name('contracts.store');
 
+    Route::get('/contracts/goedkeuren', [ContractController::class, 'goedkeuren'])
+        ->name('contracts.goedkeuren')
+        ->middleware('auth');
+
+    Route::put('/contracts/{contract}/approve', [ContractController::class, 'approve'])->name('contracts.approve');
+
     // Verhuuradvertenties
     Route::resource('verhuuradvertenties', VerhuurAdvertentieController::class)->parameters([
         'verhuuradvertenties' => 'verhuuradvertentie',
     ]);
 
     // web.php
-    Route::get('contracts/goedkeuren', function () {
-        return view('contracts.goedkeuren');
-    })->name('contracts.goedkeuren'); // Correct spelling en name aanpassing
+//    Route::get('contracts/goedkeuren', function () {
+//        return view('contracts.goedkeuren');
+//    })->name('contracts.goedkeuren'); // Correct spelling en name aanpassing
 
-    Route::get('/contracts/goedkeuren', [ContractController::class, 'goedkeuren'])
-        ->name('contracts.goedkeuren')
-        ->middleware('auth');
+
 
 
     Route::get('/admin/bedrijven-zonder-factuur', function () {

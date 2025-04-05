@@ -28,24 +28,30 @@ class ContractController extends Controller
             'prijs' => 'required|numeric',
         ]);
 
-        // Haal bedrijfsgegevens op
         $bedrijf = Bedrijf::findOrFail($request->bedrijf_id);
-
-        // Alleen basiscontractgegevens opslaan
-        $contract = new Contract();
-        $contract->bedrijf_id = $request->bedrijf_id;
-        $contract->is_goedgekeurd = 0;
 
         // Opslaan van het geüploade factuur PDF bestand
         if ($request->hasFile('factuur')) {
             $factuur = $request->file('factuur');
-            $bestandsnaam = time() . '_' . $factuur->getClientOriginalName();
-            $contract->bestand = 'storage/contracts/' . $bestandsnaam;
+
+            // Genereer een consistente bestandsnaam
+            $bestandsnaam = 'contract_'.$bedrijf->id.'_'.time().'.'.$factuur->getClientOriginalExtension();
+
+            // Opslaan in storage/app/public/contracts
+            $pad = $factuur->storeAs('public/contracts', $bestandsnaam);
+
+            // Publiek toegankelijke pad voor weergave (zonder 'app/public')
+            $publiekPad = 'contracts/'.$bestandsnaam;
         }
 
+        // Contract aanmaken
+        $contract = new Contract();
+        $contract->bedrijf_id = $request->bedrijf_id;
+        $contract->bestand = $publiekPad; // Sla het publieke pad op
+        $contract->is_goedgekeurd = 0;
         $contract->save();
 
-        // PDF Genereren met alle gegevens
+        // PDF Genereren (indien nodig)
         $data = [
             'bedrijf' => $bedrijf->naam,
             'titel' => $request->titel,
@@ -56,8 +62,7 @@ class ContractController extends Controller
         ];
 
         $pdf = PDF::loadView('contracts.pdf', $data);
-        $pdfPath = 'contracts/contract_' . $bedrijf->id . '_' . time() . '.pdf';
-        $pdf->save(storage_path('app/public/' . $pdfPath));
+        $pdf->save(storage_path('app/public/'.$publiekPad));
 
         return redirect()->route('admin.bedrijven.zonder.factuur')
             ->with('success', 'Contract aangemaakt en PDF opgeslagen.');
