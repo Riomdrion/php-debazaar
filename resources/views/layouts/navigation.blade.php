@@ -39,6 +39,12 @@
                         {{ __('adverts.verhuuradvertenties') }}
                     </x-nav-link>
 
+                    <!-- Admin item -->
+                    @if (Auth::user()->role == 'admin')
+                        <x-nav-link :href="route('admin.bedrijven.zonder.factuur')" :active="request()->routeIs('admin.bedrijven.zonder.factuur')">
+                            {{ __('Factuur sturen') }}
+                        </x-nav-link>
+                    @endif
                     <!-- Zakelijk item -->
                     @if (Auth::user()->role == 'zakelijk')
                         <x-nav-link :href="route('contracts.goedkeuren')" :active="request()->routeIs('contracts.goedkeuren')">

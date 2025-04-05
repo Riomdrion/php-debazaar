@@ -114,4 +114,15 @@ class ContractController extends Controller
 
         return view('contracts.goedkeuren', compact('contracts'));
     }
+    public function download($id)
+    {
+        $contract = Contract::findOrFail($id);
+        $path = storage_path('app/public/' . $contract->bestand);
+
+        if (!file_exists($path)) {
+            abort(404, 'Bestand niet gevonden');
+        }
+
+        return response()->download($path, 'contract_' . $contract->bedrijf->naam . '.pdf');
+    }
 }

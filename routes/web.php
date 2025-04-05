@@ -76,6 +76,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/contracts/create{bedrijf_id}', [ContractController::class, 'create'])->name('contracts.create');
     Route::post('/contracts', [ContractController::class, 'store'])->name('contracts.store');
+    Route::get('/contracts/{id}/download', [ContractController::class, 'download'])
+        ->name('contracts.download');
 
     Route::get('/contracts/goedkeuren', [ContractController::class, 'goedkeuren'])
         ->name('contracts.goedkeuren')

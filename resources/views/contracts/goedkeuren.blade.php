@@ -16,13 +16,21 @@
                                            width="100%"
                                            height="400px" />
                                 </div>
-                                <form action="{{ route('contracts.approve', $contract->id) }}" method="POST" class="mt-4">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                                        Goedkeuren
-                                    </button>
-                                </form>
+                                <div class="mt-4 flex space-x-4">
+                                    <!-- Download knop -->
+                                    <a href="{{ route('contracts.download', $contract->id) }}"
+                                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Download PDF
+                                    </a>
+                                    <!-- Goedkeur knop -->
+                                    <form action="{{ route('contracts.approve', $contract->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                            Goedkeuren
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         @endforeach
                     </div>
