@@ -3,6 +3,6 @@
         "level": "SEVERE",
         "message": "https:\/\/php-debazaar.test\/landingpagetest - Failed to load resource: the server responded with a status of 404 ()",
         "source": "network",
-        "timestamp": 1743868042866
+        "timestamp": 1743868676568
     }
 ]

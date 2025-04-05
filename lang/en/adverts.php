@@ -88,7 +88,7 @@ return [
     'Verhuur_Advertenties' => 'Rental Advertisements',
     'importeer_verhuuradvertenties' => 'Import Rental Advertisements',
     'Nieuwe_verhuur_advertentie' => 'New rental advertisement',
-    'Geen_verhuurAdvertenties_gevonden.' => 'No rental advertisements found.',
+    'Geen_verhuurAdvertenties_gevonden' => 'No rental advertisements found.',
     'Verhuurplanning' => 'Rental Schedule',
     'Er_zijn_nog_geen_geplande_verhuurperiodes' => 'There are no scheduled rental periods yet.',
     'Van' => 'From',
