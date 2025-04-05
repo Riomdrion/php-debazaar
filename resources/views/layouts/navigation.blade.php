@@ -72,7 +72,7 @@
                     <!-- Dropdown Content -->
                     <div
                         class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden peer-checked:block">
-                        <a href="{{ route('profile.edit') }}"
+                        <a href="{{ route('profile.edit') }}" dusk="profile-link"
                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             {{ __('adverts.Profiel') }}
                         </a>

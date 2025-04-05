@@ -28,7 +28,7 @@ abstract class DuskTestCase extends BaseTestCase
         );
 
         return \Facebook\WebDriver\Remote\RemoteWebDriver::create(
-            'http://localhost:52256', $capabilities
+            'http://localhost:50942', $capabilities
         );
     }
 

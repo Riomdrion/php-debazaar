@@ -1,8 +1,8 @@
 [
     {
-        "level": "SEVERE",
-        "message": "https:\/\/php-debazaar.test\/landingpagetest - Failed to load resource: the server responded with a status of 404 ()",
-        "source": "network",
-        "timestamp": 1743868676568
+        "level": "WARNING",
+        "message": "https:\/\/php-debazaar.test:5174\/node_modules\/.vite\/deps\/vue.js?v=aae0aef9 2242:12 \"[Vue warn]: Failed to mount app: mount target selector \\\"#app\\\" returned null.\"",
+        "source": "console-api",
+        "timestamp": 1743885562253
     }
 ]

@@ -8,7 +8,7 @@
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">{{ __('adverts.titel') }}</label>
-                    <input type="text" name="titel"
+                    <input name="titel" type="text"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
                            required>
                 </div>
@@ -39,7 +39,7 @@
                 </div>
 
 
-                <button type="submit"
+                <button type="submit" dusk="advertentie-aanmaken-knop"
                         class="w-full md:w-auto px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
                     ✅ {{ __('adverts.advertentie_aanmaken') }}
                 </button>

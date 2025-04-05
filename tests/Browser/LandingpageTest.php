@@ -11,8 +11,8 @@ class LandingpageTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->rodin())
-                ->visit('/landingpagetest')
-                ->assertSee('LandingpageTest');
+                ->visit('/mediamarkt')
+                ->assertSee('review');
         });
     }
 }

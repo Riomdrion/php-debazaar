@@ -66,4 +66,5 @@
             </div>
         </div>
     </div>
+    Laatste advertenties
 </x-app-layout>
