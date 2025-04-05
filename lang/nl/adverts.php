@@ -100,4 +100,13 @@ return [
     'Normale_Advertenties' => 'Normale Advertenties',
     'Geen_normale_advertenties_gevonden' => 'Geen normale advertenties gevonden',
     'Geen_verhuur_advertenties_gevonden.' => 'Geen verhuur advertenties gevonden.',
+    'Mijn_overzicht' => 'Mijn overzicht',
+    'Mijn_Gekochte_Items' => 'Mijn Gekochte Items',
+    'Geboden_bedrag' => 'Geboden bedrag',
+    'Bekijk_advertentie' => 'Bekijk advertentie',
+    'Je_hebt_nog_geen_items_gewonnen' => 'Je hebt nog geen items gewonnen',
+    'Mijn_Favoriete_Advertenties' => 'Mijn Favoriete Advertenties',
+    'Geen_favoriete_normale_advertenties' => 'Geen favoriete normale advertenties',
+    'Mijn_Favoriete_Verhuuradvertenties' => 'Mijn Favoriete Verhuuradvertenties',
+    'Geen_favoriete_verhuuradvertenties' => 'Geen favoriete verhuuradvertenties',
 ];
