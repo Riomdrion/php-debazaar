@@ -71,7 +71,7 @@
                             {{ __('adverts.Profiel') }}
                         </a>
                         <!-- bedrijf -->
-                        @if (Auth::user()->bedrijf)
+                        @if (Auth::user()->role == 'zakelijk' && Auth::user()->bedrijf && optional(Auth::user()->bedrijf->contract)->is_goedgekeurd == false)
                             <a href="{{ route('bedrijf.edit', ['id' => Auth::user()->bedrijf->id]) }}"
                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                 {{ __('adverts.Bedrijfs_profiel') }}

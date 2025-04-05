@@ -27,7 +27,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p>Geen contracten wachten op goedkeuring.</p>
+                    <p>Factuur is nog niet verstuurd.</p>
                 @endif
             </div>
         </div>
