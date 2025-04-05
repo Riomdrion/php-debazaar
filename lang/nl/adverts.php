@@ -109,4 +109,5 @@ return [
     'Geen_favoriete_normale_advertenties' => 'Geen favoriete normale advertenties',
     'Mijn_Favoriete_Verhuuradvertenties' => 'Mijn Favoriete Verhuuradvertenties',
     'Geen_favoriete_verhuuradvertenties' => 'Geen favoriete verhuuradvertenties',
+    'dagen_over' => 'dagen over',
 ];

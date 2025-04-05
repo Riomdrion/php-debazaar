@@ -11,9 +11,10 @@
                     @if (auth()->id() === $verhuurAdvertentie->user_id)
                         <p><strong>{{ __('adverts.vervangingswaarde') }}:</strong> €{{ number_format($verhuurAdvertentie->vervangingswaarde, 2) }}</p>
                     @endif
-                    <p><strong>Status:</strong><span
-                                class="{{ $verhuurAdvertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">{{ $verhuurAdvertentie->is_actief ? 'Actief' : 'Inactief' }}</span>
-                    </p>
+                    <p class="text-gray-500 mt-2">{{ __('adverts.status') }}: <span class="{{ $verhuurAdvertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">{{ $verhuurAdvertentie->is_actief ? __('adverts.actief') : __('adverts.Inactief') }}</span>
+                        @if ($verhuurAdvertentie->is_actief)
+                            <span class="text-gray-500">({{ round(now()->diffInDays($verhuurAdvertentie->created_at->addDays(30))) }} {{ __('adverts.dagen_over') }})</span>
+                    @endif
                 </div>
                 <div>
                     @if ($verhuurAdvertentie->user && $verhuurAdvertentie->user->bedrijf)

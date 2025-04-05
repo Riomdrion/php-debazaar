@@ -15,10 +15,10 @@
                 <h1 class="text-3xl font-bold text-gray-800">{{ $advertentie->titel }}</h1>
                 <p class="text-gray-600 mt-4">{{ $advertentie->beschrijving }}</p>
                 <p class="text-xl font-semibold text-green-600 mt-4">&euro; {{ number_format($advertentie->prijs, 2, ',', '.') }}</p>
-                <p class="text-gray-500 mt-2">
-                    Status: <span class="{{ $advertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">
-                    {{ $advertentie->is_actief ? __('adverts.actief') : __('adverts.Inactief') }}
-                    </span>
+                <p class="text-gray-500 mt-2">{{ __('adverts.status') }}: <span class="{{ $advertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">{{ $advertentie->is_actief ? __('adverts.actief') : __('adverts.Inactief') }}</span>
+                @if ($advertentie->is_actief)
+                    <span class="text-gray-500">({{ round(now()->diffInDays($advertentie->created_at->addDays(30))) }} {{ __('adverts.dagen_over') }})</span>
+                @endif
             </div>
             <div>
                 @if ($advertentie->user && $advertentie->user->bedrijf)

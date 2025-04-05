@@ -110,5 +110,6 @@ return [
     'Geen_favoriete_normale_advertenties' => 'No favorite normal advertisements',
     'Mijn_Favoriete_Verhuuradvertenties' => 'My Favorite Rental Advertisements',
     'Geen_favoriete_verhuuradvertenties' => 'No favorite rental advertisements',
+    'dagen_over' => 'days left',
 
 ];
