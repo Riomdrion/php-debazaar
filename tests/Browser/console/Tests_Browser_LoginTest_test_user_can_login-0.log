@@ -1,20 +1,14 @@
 [
     {
-        "level": "SEVERE",
-        "message": "https:\/\/php-debazaar.test:5175\/@vite\/client - Failed to load resource: net::ERR_CONNECTION_REFUSED",
-        "source": "network",
-        "timestamp": 1743867137169
+        "level": "WARNING",
+        "message": "https:\/\/php-debazaar.test:5173\/node_modules\/.vite\/deps\/vue.js?v=aae0aef9 2242:12 \"[Vue warn]: Failed to mount app: mount target selector \\\"#app\\\" returned null.\"",
+        "source": "console-api",
+        "timestamp": 1743867760556
     },
     {
-        "level": "SEVERE",
-        "message": "https:\/\/php-debazaar.test:5175\/resources\/js\/app.js - Failed to load resource: net::ERR_CONNECTION_REFUSED",
-        "source": "network",
-        "timestamp": 1743867137171
-    },
-    {
-        "level": "SEVERE",
-        "message": "https:\/\/php-debazaar.test:5175\/resources\/css\/app.css - Failed to load resource: net::ERR_CONNECTION_REFUSED",
-        "source": "network",
-        "timestamp": 1743867137171
+        "level": "WARNING",
+        "message": "https:\/\/php-debazaar.test:5173\/node_modules\/.vite\/deps\/vue.js?v=aae0aef9 2242:12 \"[Vue warn]: Failed to mount app: mount target selector \\\"#app\\\" returned null.\"",
+        "source": "console-api",
+        "timestamp": 1743867761947
     }
 ]
