@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'Bedrijf_bewerken' => 'Edit Company',
+    'Naam' => 'Name',
+    'slug' => 'Slug',
+    'Kies_een_Tailwind-kleur' => 'Choose a Tailwind color',
+    'Geen_kleur_(standaard)' => 'No color (default)',
+    'Opslaan' => 'Save',
+    'Pagina_Bewerken' => 'Edit Page',
+    'Onbekend_component_type' => 'Unknown component type',
+    'tekst' => 'text',
+    'afbeelding' => 'image',
+    'video' => 'video',
+    'knop' => 'button',
+    'Titel' => 'Title',
+    'afbeelding_url' => 'Image URL',
+    'youtube_url' => 'Youtube URL',
+    'knoptekst' => 'Button text',
+    'Link' => 'Link',
+    'Alt-tekst' => 'Alt text',
+    'Pagebuilder_voor' => 'Pagebuilder for',
+    'Component_toevoegen' => 'Add component',
+    'Kies_een_type' => 'Choose a type',
+    ];

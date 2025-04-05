@@ -5,11 +5,11 @@
             <div class="flex space-x-6 justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ $verhuurAdvertentie->titel }}</h1>
-                    <p><strong>Beschrijving:</strong> {{ $verhuurAdvertentie->beschrijving }}</p>
-                    <p><strong>Dagprijs:</strong> €{{ number_format($verhuurAdvertentie->dagprijs, 2) }}</p>
-                    <p><strong>Borg:</strong> €{{ number_format($verhuurAdvertentie->borg, 2) }}</p>
+                    <p><strong>{{ __('adverts.beschrijving') }}:</strong> {{ $verhuurAdvertentie->beschrijving }}</p>
+                    <p><strong>{{ __('adverts.Dagprijs') }}:</strong> €{{ number_format($verhuurAdvertentie->dagprijs, 2) }}</p>
+                    <p><strong>{{ __('adverts.Borg') }}:</strong> €{{ number_format($verhuurAdvertentie->borg, 2) }}</p>
                     @if (auth()->id() === $verhuurAdvertentie->user_id)
-                        <p><strong>vervangingswaarde:</strong> €{{ number_format($verhuurAdvertentie->vervangingswaarde, 2) }}</p>
+                        <p><strong>{{ __('adverts.vervangingswaarde') }}:</strong> €{{ number_format($verhuurAdvertentie->vervangingswaarde, 2) }}</p>
                     @endif
                     <p><strong>Status:</strong><span
                                 class="{{ $verhuurAdvertentie->is_actief ? 'text-green-600' : 'text-red-600' }}">{{ $verhuurAdvertentie->is_actief ? 'Actief' : 'Inactief' }}</span>
@@ -19,7 +19,7 @@
                     @if ($verhuurAdvertentie->user && $verhuurAdvertentie->user->bedrijf)
                         <a href="{{ route('bedrijf.landing', ['slug' => $verhuurAdvertentie->user->bedrijf->slug]) }}"
                            class="text-blue-500 hover:underline">
-                            Bekijk Bedrijfsreviews
+                            {{ __('adverts.bekijk_bedrijfsreviews') }}
                         </a>
                     @endif
                     @if ($verhuurAdvertentie->qr_code)
@@ -32,7 +32,7 @@
                 <div class="mt-6 flex justify-between">
                     <a href="{{ route('verhuuradvertenties.edit', $verhuurAdvertentie->id) }}"
                        class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
-                        ✏️ Bewerken
+                        ✏️  {{ __('adverts.Bewerken') }}
                     </a>
 
                     <form action="{{ route('verhuuradvertenties.destroy', $verhuurAdvertentie->id) }}" method="POST"
@@ -41,31 +41,31 @@
                         @method('DELETE')
                         <button type="submit"
                                 class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
-                            🗑️ Verwijderen
+                            🗑️ {{ __('adverts.Verwijderen') }}
                         </button>
                     </form>
                 </div>
             @endif
         </div>
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ Favoriet maken</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">⭐ {{ __('adverts.Favoriet_maken') }}</h2>
             <form method="POST" action="{{ route('favorites.toggle') }}">
                 @csrf
                 <input type="hidden" name="verhuur_advertentie_id" value="{{ $verhuurAdvertentie->id }}">
                 <div class="flex items-center space-x-2">
                     <input type="checkbox" name="is_favoriet"
                            {{ $isFavoriet ? 'checked' : '' }} class="form-checkbox text-blue-600">
-                    <label class="text-gray-700">Toevoegen aan favorieten</label>
+                    <label class="text-gray-700">{{ __('adverts.opslaan') }}</label>
                 </div>
                 <button type="submit"
                         class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                    Opslaan
+                    {{ __('adverts.Toevoegen_aan_favorieten') }}
                 </button>
             </form>
         </div>
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100">
             <h2 class="text-xl font-semibold mb-4 text-gray-800">
-                📅 Verhuurplanning
+                📅 {{ __('adverts.Verhuurplanning') }}
             </h2>
 
             @php
@@ -73,7 +73,7 @@
             @endphp
 
             @if ($alleAgendaItems->isEmpty())
-                <p class="text-gray-600">Er zijn nog geen geplande verhuurperiodes.</p>
+                <p class="text-gray-600">{{ __('adverts.Er_zijn_nog_geen_geplande_verhuurperiodes') }}.</p>
             @else
                 <ul class="space-y-2">
                     @foreach ($alleAgendaItems as $item)
@@ -81,22 +81,22 @@
                             <div class="mb-6">
                                 <strong>{{ ucfirst($item->type) }}</strong><br>
                                 @if (auth()->id() === $item->user_id)
-                                    <strong>Titel:</strong> {{ $item->titel }}<br>
+                                    <strong>{{ __('adverts.Titel') }}:</strong> {{ $item->titel }}<br>
                                 @endif
-                                <strong>Van:</strong> {{ Carbon::parse($item->start)->format('d-m-Y H:i') }}<br>
-                                <strong>Tot:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}<br>
+                                <strong>{{ __('adverts.Van') }}:</strong> {{ Carbon::parse($item->start)->format('d-m-Y H:i') }}<br>
+                                <strong>{{ __('adverts.Tot') }}:</strong> {{ Carbon::parse($item->eind)->format('d-m-Y H:i') }}<br>
                             </div>
                             @if (Carbon::parse($item->eind)->isToday() || Carbon::parse($item->eind)->isPast())
                                 @if (auth()->id() === $item->user_id)
                                     @if ($item->rental)
                                         <a href="{{ route('rentals.show', [$item->rental->id]) }}"
                                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                                            Bekijk Rental
+                                            {{ __('adverts.Bekijk_Rental') }}
                                         </a>
                                     @else
                                         <a href="{{ route('rentals.create', [$verhuurAdvertentie->id, $item->id]) }}"
                                            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                                            Inleveren
+                                            {{ __('adverts.Inleveren') }}
                                         </a>
                                     @endif
                                 @endif
@@ -107,7 +107,7 @@
             @endif
         </div>
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">➕ Agenda-item toevoegen</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">➕ {{ __('adverts.Agenda-item_toevoegen') }}</h2>
 
             <form method="POST" action="{{ route('agenda.store') }}">
                 @csrf
@@ -116,47 +116,47 @@
                 <input type="hidden" name="titel" value="{{ auth()->user()->name }}_{{ $verhuurAdvertentie->titel }}_{{ now()->format('Y-m-d_H-i-s') }}">
 
                 <div class="mb-4">
-                    <label for="start" class="block font-semibold text-gray-700">Startdatum/tijd</label>
+                    <label for="start" class="block font-semibold text-gray-700">{{ __('adverts.Startdatum_tijd') }}</label>
                     <input type="datetime-local" name="start" id="start" required
                            class="w-full border rounded-lg px-3 py-2 mt-1"
                            onchange="validateDates()">
                 </div>
 
                 <div class="mb-4">
-                    <label for="eind" class="block font-semibold text-gray-700">Einddatum/tijd</label>
+                    <label for="eind" class="block font-semibold text-gray-700">{{ __('adverts.Einddatum_tijd') }}</label>
                     <input type="datetime-local" name="eind" id="eind" required
                            class="w-full border rounded-lg px-3 py-2 mt-1"
                            onchange="validateDates()">
                 </div>
                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-                    Opslaan
+                    {{ __('adverts.opslaan') }}
                 </button>
             </form>
         </div>
 
         <!-- Review Placement Form -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">📝 Review plaatsen</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">📝 {{ __('review.Review_plaatsen') }}</h2>
             <form method="POST" action="{{ route('reviews.store') }}">
                 @csrf
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-1">Review</label>
+                    <label class="block text-gray-700 font-medium mb-1">{{ __('review.Review') }}</label>
                     <textarea name="tekst" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300" rows="3" required></textarea>
                     <input type="hidden" value="{{ $verhuurAdvertentie->id }}" name="verhuur_advertentie_id">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-1">Score (1 t/m 5)</label>
+                    <label class="block text-gray-700 font-medium mb-1">{{ __('review.Score') }} (1 t/m 5)</label>
                     <input type="number" name="score" min="1" max="5" class="w-20 border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring focus:border-blue-300" required>
                 </div>
                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                    Plaatsen
+                    {{ __('review.Plaatsen') }}
                 </button>
             </form>
         </div>
 
         <!-- Display Reviews -->
         <div class="bg-white shadow-md rounded-2xl p-6 border border-gray-100 mt-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">📊 Reviews</h2>
+            <h2 class="text-xl font-semibold mb-4 text-gray-800">📊 {{ __('review.Reviews') }}</h2>
             @if($verhuurAdvertentie->reviews->isNotEmpty())
                 <div class="space-y-4">
                     @foreach($verhuurAdvertentie->reviews as $review)
@@ -177,7 +177,7 @@
                     @endforeach
                 </div>
             @else
-                <p class="text-gray-500">Nog geen reviews geplaatst.</p>
+                <p class="text-gray-500">{{ __('review.Nog_geen_reviews_geplaatst') }}.</p>
             @endif
         </div>
     </div>
