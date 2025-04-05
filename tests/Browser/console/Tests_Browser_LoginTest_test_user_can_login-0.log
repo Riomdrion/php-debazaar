@@ -3,12 +3,12 @@
         "level": "WARNING",
         "message": "https:\/\/php-debazaar.test:5173\/node_modules\/.vite\/deps\/vue.js?v=aae0aef9 2242:12 \"[Vue warn]: Failed to mount app: mount target selector \\\"#app\\\" returned null.\"",
         "source": "console-api",
-        "timestamp": 1743867760556
+        "timestamp": 1743868044346
     },
     {
         "level": "WARNING",
         "message": "https:\/\/php-debazaar.test:5173\/node_modules\/.vite\/deps\/vue.js?v=aae0aef9 2242:12 \"[Vue warn]: Failed to mount app: mount target selector \\\"#app\\\" returned null.\"",
         "source": "console-api",
-        "timestamp": 1743867761947
+        "timestamp": 1743868045744
     }
 ]

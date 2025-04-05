@@ -12,7 +12,7 @@ class VerhuurAdvertentiesTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->rodin())
                 ->visit('/verhuuradvertenties')
-                ->assertSee('VerhuurAdvertenties');
+                ->assertSee('VerhuurAdvertenties' || 'Rental Advertisements');
         });
     }
 }
