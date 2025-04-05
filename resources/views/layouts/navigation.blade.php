@@ -70,6 +70,12 @@
                                 {{ __('adverts.Bedrijfs_profiel') }}
                             </a>
                         @endif
+                        <!-- my_advertenties -->
+                        <a href="{{ route('mydashboard') }}"
+                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            mydashboard
+{{--                            {{ __('adverts.Profiel') }}--}}
+                        </a>
                         <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf
