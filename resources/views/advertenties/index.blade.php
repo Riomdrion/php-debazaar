@@ -4,14 +4,16 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">📢 {{ __('adverts.advertentie') }}</h1>
 
             <div>
-                <a href="{{ route('advertenties.csvimport.create', ['type' => 'advertenties']) }}"
-                   class="inline-block px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
-                    ➕ {{ __('adverts.importeer_advertenties') }}
-                </a>
-                <a href="{{ route('advertenties.create') }}"
-                   class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                    ➕ {{ __('adverts.advertentie_aanmaken') }}
-                </a>
+                @if (auth()->user()->role != 'gebruiker')
+                    <a href="{{ route('advertenties.csvimport.create', ['type' => 'advertenties']) }}"
+                       class="inline-block px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
+                        ➕ {{ __('adverts.importeer_advertenties') }}
+                    </a>
+                    <a href="{{ route('advertenties.create') }}"
+                       class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        ➕ {{ __('adverts.advertentie_aanmaken') }}
+                    </a>
+                @endif
             </div>
         </div>
 
