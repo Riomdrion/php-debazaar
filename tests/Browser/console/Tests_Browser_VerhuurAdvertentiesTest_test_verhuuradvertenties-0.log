@@ -1,8 +1,8 @@
 [
     {
         "level": "WARNING",
-        "message": "https:\/\/php-debazaar.test:5173\/node_modules\/.vite\/deps\/vue.js?v=dd5fb912 2242:12 \"[Vue warn]: Failed to mount app: mount target selector \\\"#app\\\" returned null.\"",
+        "message": "https:\/\/php-debazaar.test:5173\/node_modules\/.vite\/deps\/vue.js?v=aae0aef9 2242:12 \"[Vue warn]: Failed to mount app: mount target selector \\\"#app\\\" returned null.\"",
         "source": "console-api",
-        "timestamp": 1743868174750
+        "timestamp": 1743867763752
     }
 ]
