@@ -21,7 +21,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img src="{{ asset('images/Logo.png') }}"
+                        <img src="{{ asset('Logo.png') }}"
                              class="block w-[150px] h-auto fill-current text-gray-800 dark:text-gray-200"
                              alt="Application Logo"/>
                     </a>
@@ -61,7 +61,7 @@
                         class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden peer-checked:block">
                         <a href="{{ route('profile.edit') }}"
                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('adverts.Profile') }}
+                            {{ __('adverts.Profiel') }}
                         </a>
                         <!-- bedrijf -->
                         @if (Auth::user()->bedrijf)
