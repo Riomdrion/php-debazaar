@@ -69,10 +69,11 @@ class AdvertentiesTest extends DuskTestCase
      */
     public function testUserCanViewAdvertisementDetails()
     {
-        $this->browse(function (Browser $browser) {
+        $advertentie = Advertentie::first();
+        $this->browse(function (Browser $browser) use ($advertentie) {
             // Veronderstel dat advertentie met id 1 bestaat.
             $browser->loginAs($this->rodin())
-                ->visit('/advertenties/1')
+                ->visit('/advertenties/'. $advertentie->id)
                 ->assertSee('Beschrijving');
         });
     }
@@ -82,11 +83,12 @@ class AdvertentiesTest extends DuskTestCase
      */
     public function testUserCanFavoriteAdvertisement()
     {
-        $this->browse(function (Browser $browser) {
+        $advertentie = Advertentie::first();
+        $this->browse(function (Browser $browser) use ($advertentie) {
             // Veronderstel dat de 'favorite'-functionaliteit aanwezig is op de details-pagina.
             $browser->loginAs($this->rodin())
-                ->visit('/advertenties/1')
-                ->click('@favorite-button') // Gebruik een Dusk selector voor de favoriet-knop.
+                ->visit('/advertenties/'. $advertentie->id)
+                ->check('@favorite-button') // Gebruik een Dusk selector voor de favoriet-knop.
                 ->assertSee('Toegevoegd aan favorieten');
         });
     }

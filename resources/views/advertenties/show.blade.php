@@ -56,7 +56,7 @@
                 @csrf
                 <input type="hidden" name="advertentie_id" value="{{ $advertentie->id }}">
                 <div class="flex items-center space-x-2">
-                    <input type="checkbox" name="is_favoriet"
+                    <input type="checkbox" name="is_favoriet" dusk="favoriet-checkbox"
                            {{ $isFavoriet ? 'checked' : '' }} class="form-checkbox text-blue-600">
                     <label class="text-gray-700">{{ __('adverts.Toevoegen_aan_favorieten') }}</label>
                 </div>
