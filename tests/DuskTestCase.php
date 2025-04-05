@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\User;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Support\Collection;
@@ -34,6 +35,18 @@ abstract class DuskTestCase extends BaseTestCase
             $_ENV['DUSK_DRIVER_URL'] ?? env('DUSK_DRIVER_URL', 'http://localhost:9515'),
             [
                 ChromeOptions::CAPABILITY => $options,
+            ]
+        );
+    }
+
+    protected function rodin(): User
+    {
+        return User::firstOrCreate(
+            ['email' => 'rodin@example.com'],
+            [
+                'name' => 'Rodin',
+                'password' => bcrypt('password4'),
+                'email_verified_at' => now(),
             ]
         );
     }

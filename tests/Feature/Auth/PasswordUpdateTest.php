@@ -5,9 +5,10 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Tests\DuskTestCase;
 use Tests\TestCase;
 
-class PasswordUpdateTest extends TestCase
+class PasswordUpdateTest extends DuskTestCase
 {
     use RefreshDatabase;
 

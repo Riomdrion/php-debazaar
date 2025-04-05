@@ -3,8 +3,9 @@
 namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Tests\DuskTestCase;
 
-class ExampleTest extends TestCase
+class ExampleTest extends DuskTestCase
 {
     /**
      * A basic test example.

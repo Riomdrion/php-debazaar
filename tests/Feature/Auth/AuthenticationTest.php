@@ -4,9 +4,10 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\DuskTestCase;
 use Tests\TestCase;
 
-class AuthenticationTest extends TestCase
+class AuthenticationTest extends DuskTestCase
 {
     use RefreshDatabase;
 

@@ -22,7 +22,7 @@ class LoginTest extends DuskTestCase
             $browser->visit('/login')
                 ->type('email', $user->email)
                 ->type('password', 'secret')
-                ->press('Inloggen')
+                ->press(' log in ')
                 ->assertPathIs('/dashboard');
         });
     }

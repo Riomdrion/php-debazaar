@@ -3,9 +3,10 @@
 namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\DuskTestCase;
 use Tests\TestCase;
 
-class RegistrationTest extends TestCase
+class RegistrationTest extends DuskTestCase
 {
     use RefreshDatabase;
 
