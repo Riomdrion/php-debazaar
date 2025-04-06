@@ -22,7 +22,7 @@ class AdvertentieController extends Controller
             $query->where('titel', 'like', '%' . $request->zoek . '%');
         }
         $query->where('is_actief', true);
-        $advertenties = $query->orderBy('created_at', 'desc')->paginate(10);
+        $advertenties = $query->orderBy('created_at', 'desc')->paginate(12);
         return view('advertenties.index', compact('advertenties'));
     }
 

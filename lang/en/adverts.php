@@ -100,7 +100,7 @@ return [
     'Recente_Advertenties' => 'Recent Advertisements',
     'Normale_Advertenties' => 'Normal Advertisements',
     'Geen_normale_advertenties_gevonden' => 'No normal advertisements found',
-    'Geen_verhuur_advertenties_gevonden.' => 'No rental advertisements found.',
+    'Geen_verhuur_advertenties_gevonden' => 'No rental advertisements found.',
     'Mijn_overzicht' => 'My Dashboard',
     'Mijn_Gekochte_Items' => 'My Purchased Items',
     'Geboden_bedrag' => 'Bid Amount',

@@ -99,7 +99,7 @@ return [
     'Recente_Advertenties' => 'Recente Advertenties',
     'Normale_Advertenties' => 'Normale Advertenties',
     'Geen_normale_advertenties_gevonden' => 'Geen normale advertenties gevonden',
-    'Geen_verhuur_advertenties_gevonden.' => 'Geen verhuur advertenties gevonden.',
+    'Geen_verhuur_advertenties_gevonden' => 'Geen verhuur advertenties gevonden.',
     'Mijn_overzicht' => 'Mijn overzicht',
     'Mijn_Gekochte_Items' => 'Mijn Gekochte Items',
     'Geboden_bedrag' => 'Geboden bedrag',

@@ -30,7 +30,7 @@ class VerhuurAdvertentieController extends Controller
         $query->where('is_actief', true);
 
         // Sorteer op aanmakingsdatum
-        $verhuuradvertenties = $query->orderBy('created_at', 'desc')->paginate(10);
+        $verhuuradvertenties = $query->orderBy('created_at', 'desc')->paginate(12);
 
         // Retourneer de view met gepagineerde resultaten
         return view('verhuuradvertenties.index', compact('verhuuradvertenties'));
