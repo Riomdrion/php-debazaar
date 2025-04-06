@@ -64,8 +64,10 @@ class ContractController extends Controller
         $pdf = PDF::loadView('contracts.pdf', $data);
         $pdf->save(storage_path('app/public/'.$publiekPad));
 
-        return redirect()->route('admin.bedrijven.zonder.factuur')
-            ->with('success', 'Contract aangemaakt en PDF opgeslagen.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Contract is succesvol verstuurd naar ' . $bedrijf->naam
+        ]);
     }
     public function show($id)
     {

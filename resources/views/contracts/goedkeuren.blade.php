@@ -14,7 +14,7 @@
                                     <embed src="{{ asset($contract->bestand) }}"
                                            type="application/pdf"
                                            width="100%"
-                                           height="400px" />
+                                           height="600px" />
                                 </div>
                                 <div class="mt-4 flex space-x-4">
                                     <!-- Download knop -->
@@ -35,7 +35,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p>Factuur is nog niet verstuurd.</p>
+                    <p>Factuur:</p>
                 @endif
             </div>
         </div>
