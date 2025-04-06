@@ -119,4 +119,39 @@ class AdvertentiesTest extends DuskTestCase
                 ->assertSee('Dit is een test review.');
         });
     }
+
+    /**
+     * Test dat een gebruiker biedingen kan plaatsen en dat maximaal 4 biedingen
+     * van dezelfde gebruiker op één advertentie worden toegelaten.
+     */
+    public function testUserCanPlaceBidAndMaxLimit()
+    {
+        // Haal een voorbeeldadvertentie op
+        $advertentie = Advertentie::first();
+        // Haal een testgebruiker op (zorg dat deze methode een geldige gebruiker teruggeeft)
+        $user = $this->rodin();
+
+        $this->browse(function (Browser $browser) use ($advertentie, $user) {
+            $browser->loginAs($user)
+                ->visit('/advertenties/' . $advertentie->id);
+
+            // Plaats 4 biedingen (stel voor dit voorbeeld bedragen 10, 20, 30, 40)
+            for ($i = 1; $i <= 4; $i++) {
+                $bidAmount = 10 * $i; // voorbeeldbedrag
+                $browser->type('@bieding-input', $bidAmount)
+                    ->click('@bieding-button')
+                    ->pause(500); // wacht even zodat de bieding kan worden verwerkt
+            }
+
+            // Controleer via JavaScript of er precies 4 biedingen zijn
+            $count = $browser->script("return document.querySelectorAll('.bid-item').length;");
+            $this->assertEquals(4, $count[0]);
+        });
+
+        // Controleer in de database dat er niet meer dan 4 biedingen voor deze gebruiker en advertentie zijn opgeslagen.
+        $this->assertEquals(4, \App\Models\bid::where('user_id', $user->id)
+            ->where('advertentie_id', $advertentie->id)
+            ->count());
+    }
+
 }

@@ -76,11 +76,11 @@
                         @csrf
                         <div class="mb-4">
                             <label class="block text-gray-700 font-medium mb-1">{{ __('adverts.bedrag') }} (€)</label>
-                            <input type="number" name="bedrag" min="0.01" step="0.01"
+                            <input type="number" name="bedrag" min="0.01" step="0.01" dusk="bieding-input"
                                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
                                    required>
                         </div>
-                        <button type="submit"
+                        <button type="submit" dusk="bieding-button"
                                 class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
                             {{ __('adverts.bedrag') }}
                         </button>
@@ -89,7 +89,7 @@
                     <p class="text-red-600 font-medium">{{ __('adverts.Er_is_al_een_winnend_bod') }}</p>
                 @endif
             @else
-                <p class="text-red-600 font-medium">{{ __('adverts.Er_zijn_al_4_biedingen_geplaatst_voor_deze_advertentie') }}.</p>
+                <p class="text-red-600 font-medium" id="max-bid-error" dusk="max-bid-error">{{ __('adverts.Er_zijn_al_4_biedingen_geplaatst_voor_deze_advertentie') }}.</p>
             @endif
         </div>
             <!-- Display Bids -->
@@ -99,7 +99,7 @@
                     <ul class="space-y-2">
                         @if ($advertentie->bids->where('WinningBid', true)->isEmpty())
                             @foreach($advertentie->bids->sortByDesc('bedrag') as $bid)
-                                <li class="border border-gray-200 rounded-lg px-4 py-2 bg-gray-50 flex justify-between items-center">
+                                <li dusk="bid-item" id="bid-item" class="bid-item border border-gray-200 rounded-lg px-4 py-2 bg-gray-50 flex justify-between items-center">
                                     <span>€{{ number_format($bid->bedrag, 2, ',', '.') }}</span>
                                     <span class="text-sm text-gray-500">{{ __('adverts.gebruiker') }}: {{ $bid->user->name }}</span>
                                     <form method="POST" action="{{ route('bids.update')}}">
