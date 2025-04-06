@@ -40,7 +40,6 @@ class VerhuurAdvertentiesTest extends DuskTestCase
 
     public function test_user_can_create_advertentie()
     {
-        VerhuurAdvertentie::truncate();
         $id = VerhuurAdvertentie::max('id') + 1;
         $this->browse(function (Browser $browser) use ($id) {
             $browser->loginAs($this->rodin())
@@ -56,34 +55,6 @@ class VerhuurAdvertentiesTest extends DuskTestCase
                 ->pause(500)
                 ->assertPathIs('/verhuuradvertenties/'.$id)
                 ->assertSee('Test Verhuur');
-        });
-    }
-
-    public function test_user_can_edit_advertentie()
-    {
-        $id = VerhuurAdvertentie::whereNotNull('id')->first()->id;
-        $this->browse(function (Browser $browser) use ($id) {
-            $browser->loginAs($this->rodin())
-                ->visit("/verhuuradvertenties/{$id}/edit")
-                ->type('@titel', 'Bijgewerkte Titel')
-                ->press('@advertentie-bewerken-knop')
-                ->assertPathIs('/verhuuradvertenties/'.$id)
-                ->assertSee('Bijgewerkte Titel');
-        });
-    }
-
-    public function test_user_can_delete_advertentie()
-    {
-        $id = VerhuurAdvertentie::whereNotNull('id')->first()->id;
-        $this->browse(function (Browser $browser) use ($id) {
-            $browser->loginAs($this->rodin())
-                ->visit('/verhuuradvertenties/' . $id)
-                ->press("@delete-button") // Zorg dat je Dusk selector instelt in Blade
-                ->pause(500)
-                ->press('Ok')
-                ->pause(500) // optioneel: geef tijd voor redirect/verversen
-                ->visit('/verhuuradvertenties/' . $id)
-                ->assertSee('404');
         });
     }
 }

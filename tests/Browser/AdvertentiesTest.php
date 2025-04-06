@@ -41,8 +41,6 @@ class AdvertentiesTest extends DuskTestCase
      */
     public function testUserCanCreateAdvertisement()
     {
-        Favoriet::truncate();
-        Advertentie::truncate();
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->rodin())
                 ->visit('/advertenties/create')
@@ -117,6 +115,7 @@ class AdvertentiesTest extends DuskTestCase
             // Veronderstel dat de review-formulier op de advertentie-detailpagina staat.
             $browser->loginAs($this->rodin())
                 ->visit('/advertenties/'. $advertentie->id)
+                ->pause(300)
                 ->type('@review-tekst', 'Dit is een test review.')
                 ->type('@review-score', '5')
                 ->press('@review-knop')
