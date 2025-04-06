@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bedrijf_id')->constrained('bedrijfs');
+            $table->foreignId('bedrijf_id')->constrained('bedrijfs')->onDelete('cascade');
             $table->string('bestand'); // pad naar opgeslagen PDF
             $table->boolean('is_goedgekeurd')->default(false);
             $table->timestamps();

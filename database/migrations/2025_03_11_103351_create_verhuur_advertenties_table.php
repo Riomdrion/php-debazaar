@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('verhuur_advertenties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('titel');
             $table->text('beschrijving');
             $table->decimal('dagprijs', 8, 2);

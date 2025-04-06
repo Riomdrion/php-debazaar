@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rentals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('agenda_item_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('agenda_item_id')->constrained()->onDelete('cascade');
             $table->decimal('slijtage_kosten', 10, 2)->nullable();
             $table->string('retour_foto')->nullable();
             $table->timestamps();

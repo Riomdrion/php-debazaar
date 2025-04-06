@@ -19,7 +19,7 @@
 
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">{{ __('adverts.Titel') }}</label>
-                    <input type="text" name="titel"
+                    <input type="text" name="titel" dusk="titel"
                            value="{{ old('titel', $verhuurAdvertentie->titel) }}"
                            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-400"
                            required>

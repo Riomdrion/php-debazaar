@@ -3,6 +3,8 @@
 namespace Tests\Browser;
 
 use App\Models\Advertentie;
+use App\Models\Bid;
+use App\Models\Favoriet;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Models\User;
@@ -39,6 +41,8 @@ class AdvertentiesTest extends DuskTestCase
      */
     public function testUserCanCreateAdvertisement()
     {
+        Favoriet::truncate();
+        Advertentie::truncate();
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->rodin())
                 ->visit('/advertenties/create')
@@ -126,6 +130,7 @@ class AdvertentiesTest extends DuskTestCase
      */
     public function testUserCanPlaceBidAndMaxLimit()
     {
+        Bid::truncate();
         // Haal een voorbeeldadvertentie op
         $advertentie = Advertentie::first();
         // Haal een testgebruiker op (zorg dat deze methode een geldige gebruiker teruggeeft)

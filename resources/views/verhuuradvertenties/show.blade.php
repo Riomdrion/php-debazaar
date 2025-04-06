@@ -40,7 +40,7 @@
                           onsubmit="return confirm('Weet je zeker dat je deze advertentie wilt verwijderen?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit"
+                        <button type="submit" dusk="delete-button"
                                 class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
                             🗑️ {{ __('adverts.Verwijderen') }}
                         </button>

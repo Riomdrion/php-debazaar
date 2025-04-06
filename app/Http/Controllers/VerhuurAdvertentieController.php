@@ -119,6 +119,7 @@ class VerhuurAdvertentieController extends Controller
             'borg' => 'required|numeric|min:0',
             'is_actief' => 'sometimes|boolean',
             'vervangingswaarde' => 'nullable|numeric|min:0',
+            'slijtage_per_dag' => 'required|numeric|min:0',
         ]);
 
         $verhuurAdvertentie->fill($validated);

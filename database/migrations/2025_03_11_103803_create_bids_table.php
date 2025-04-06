@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bids', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('advertentie_id')->constrained();
+            $table->foreignId('advertentie_id')->constrained()->onDelete('cascade');
             $table->decimal('bedrag', 10, 2)->default(0);
             $table->boolean('WinningBid')->default(false);
             $table->timestamps();

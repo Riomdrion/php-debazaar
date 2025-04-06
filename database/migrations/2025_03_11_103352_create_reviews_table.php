@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // wie schrijft de review
-
-            // Doelen van de review (slechts één wordt gebruikt per record)
             $table->foreignId('advertentie_id')->nullable()->constrained('advertenties')->onDelete('cascade');
             $table->foreignId('verhuur_advertentie_id')->nullable()->constrained('verhuur_advertenties')->onDelete('cascade');
             $table->foreignId('bedrijf_id')->nullable()->constrained('bedrijfs')->onDelete('cascade');

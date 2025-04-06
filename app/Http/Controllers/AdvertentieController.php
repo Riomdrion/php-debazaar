@@ -56,7 +56,6 @@ class AdvertentieController extends Controller
 
         $advertentie = Auth::user()->advertenties()->create($validated);
 
-        // ✅ QR-code correct opbouwen (v5-stijl)
         $qrCode = (new QrCode(route('advertenties.show', $advertentie->id)));
 
         $writer = new PngWriter();

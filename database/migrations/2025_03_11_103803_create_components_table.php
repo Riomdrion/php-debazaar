@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('components', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bedrijf_id')->constrained();
+            $table->foreignId('bedrijf_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['text', 'image', 'video', 'button']); // uitgelicht, tekstblok, afbeelding, etc.
             $table->json('data');
             $table->integer('order')->default(0);
