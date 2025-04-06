@@ -140,7 +140,7 @@ class AdvertentiesTest extends DuskTestCase
                 $bidAmount = 10 * $i; // voorbeeldbedrag
                 $browser->type('@bieding-input', $bidAmount)
                     ->click('@bieding-button')
-                    ->pause(500); // wacht even zodat de bieding kan worden verwerkt
+                    ->pause(100); // wacht even zodat de bieding kan worden verwerkt
             }
 
             // Controleer via JavaScript of er precies 4 biedingen zijn
