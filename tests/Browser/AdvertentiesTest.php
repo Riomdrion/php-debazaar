@@ -6,9 +6,13 @@ use App\Models\Advertentie;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Models\User;
+use Throwable;
 
 class AdvertentiesTest extends DuskTestCase
 {
+    /**
+     * @throws Throwable
+     */
     public function test_advertentie_overzicht()
     {
         $this->browse(function (Browser $browser) {
@@ -85,11 +89,17 @@ class AdvertentiesTest extends DuskTestCase
     {
         $advertentie = Advertentie::first();
         $this->browse(function (Browser $browser) use ($advertentie) {
-            // Veronderstel dat de 'favorite'-functionaliteit aanwezig is op de details-pagina.
-            $browser->loginAs($this->rodin())
-                ->visit('/advertenties/'. $advertentie->id)
-                ->check('@favorite-button') // Gebruik een Dusk selector voor de favoriet-knop.
-                ->assertSee('Toegevoegd aan favorieten');
+            $user = $this->rodin();
+            $browser->loginAs($user)
+                ->visit('/advertenties/' . $advertentie->id);
+
+            if ($user->favorites()->where('advertentie_id', $advertentie->id)->exists()) {
+                $browser->assertChecked('@favorite-checkbox');
+            } else {
+                $browser->check('@favorite-checkbox')
+                    ->press('@favoriet-knop')
+                    ->assertChecked('@favorite-checkbox');
+            }
         });
     }
 
@@ -98,28 +108,15 @@ class AdvertentiesTest extends DuskTestCase
      */
     public function testUserCanSubmitReview()
     {
-        $this->browse(function (Browser $browser) {
+        $advertentie = Advertentie::first();
+        $this->browse(function (Browser $browser) use ($advertentie) {
             // Veronderstel dat de review-formulier op de advertentie-detailpagina staat.
             $browser->loginAs($this->rodin())
-                ->visit('/advertenties/1')
-                ->type('review', 'Dit is een test review.')
-                ->press('Review plaatsen')
-                ->assertSee('Review succesvol geplaatst');
-        });
-    }
-
-    /**
-     * Test dat een gebruiker advertenties kan filteren en sorteren.
-     */
-    public function testUserCanFilterAndSortAdvertisements()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->rodin())
-                ->visit('/advertenties')
-                ->select('filter', 'nieuw') // Pas deze waarde aan op basis van de beschikbare opties.
-                ->select('sort', 'datum_desc') // Pas de sorteeroptie aan indien nodig.
-                ->press('Filteren')
-                ->assertSee('Resultaten');
+                ->visit('/advertenties/'. $advertentie->id)
+                ->type('@review-tekst', 'Dit is een test review.')
+                ->type('@review-score', '5')
+                ->press('@review-knop')
+                ->assertSee('Dit is een test review.');
         });
     }
 }

@@ -56,11 +56,11 @@
                 @csrf
                 <input type="hidden" name="advertentie_id" value="{{ $advertentie->id }}">
                 <div class="flex items-center space-x-2">
-                    <input type="checkbox" name="is_favoriet" dusk="favoriet-checkbox"
+                    <input type="checkbox" name="is_favoriet" dusk="favorite-checkbox"
                            {{ $isFavoriet ? 'checked' : '' }} class="form-checkbox text-blue-600">
                     <label class="text-gray-700">{{ __('adverts.Toevoegen_aan_favorieten') }}</label>
                 </div>
-                <button type="submit"
+                <button type="submit" dusk="favoriet-knop"
                         class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
                     {{ __('adverts.opslaan') }}
                 </button>
@@ -141,18 +141,18 @@
                 @csrf
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-1">{{ __('adverts.Review') }}</label>
-                    <textarea name="tekst"
+                    <textarea name="tekst" dusk="review-tekst"
                               class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:border-blue-300"
                               rows="3" required></textarea>
                     <input type="hidden" value="{{ $advertentie->id }}" name="advertentie_id">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 font-medium mb-1">Score (1 t/m 5)</label>
-                    <input type="number" name="score" min="1" max="5"
+                    <input type="number" name="score" min="1" max="5" dusk="review-score"
                            class="w-20 border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring focus:border-blue-300"
                            required>
                 </div>
-                <button type="submit"
+                <button type="submit" dusk="review-knop"
                         class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
                     {{ __('adverts.plaatsen') }}
                 </button>

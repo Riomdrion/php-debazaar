@@ -2,6 +2,9 @@
 
 namespace Tests;
 use app\Models\User;
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
@@ -19,16 +22,16 @@ abstract class DuskTestCase extends BaseTestCase
 
     public function driver()
     {
-        $options = (new \Facebook\WebDriver\Chrome\ChromeOptions)
+        $options = (new ChromeOptions)
             ->addArguments(['--disable-gpu', '--headless']);
 
-        $capabilities = \Facebook\WebDriver\Remote\DesiredCapabilities::chrome();
+        $capabilities = DesiredCapabilities::chrome();
         $capabilities->setCapability(
-            \Facebook\WebDriver\Chrome\ChromeOptions::CAPABILITY, $options
+            ChromeOptions::CAPABILITY, $options
         );
 
-        return \Facebook\WebDriver\Remote\RemoteWebDriver::create(
-            'http://localhost:50942', $capabilities
+        return RemoteWebDriver::create(
+            'http://localhost:53499', $capabilities
         );
     }
 
